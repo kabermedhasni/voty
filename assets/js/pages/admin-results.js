@@ -10,12 +10,15 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Fetch all elections
   async function fetchElections() {
     try {
+      console.log('[Admin Results] Fetching elections...');
       const response = await fetch(`../apis/api.php?action=getAllElections`);
+      console.log('[Admin Results] Elections response status:', response.status);
       if (!response.ok) throw new Error('Failed to fetch elections');
       const data = await response.json();
+      console.log('[Admin Results] Elections data:', data);
       return data;
     } catch (error) {
-      console.error('Error fetching elections:', error);
+      console.error('[Admin Results] Error fetching elections:', error);
       return [];
     }
   }
@@ -23,12 +26,15 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Fetch candidates by election
   async function fetchCandidatesByElection(electionId) {
     try {
+      console.log('[Admin Results] Fetching candidates for election:', electionId);
       const response = await fetch(`../apis/api.php?action=getCandidatesByElection&id_election=${electionId}`);
+      console.log('[Admin Results] Candidates response status:', response.status);
       if (!response.ok) throw new Error('Failed to fetch candidates');
       const data = await response.json();
+      console.log('[Admin Results] Candidates data:', data);
       return data;
     } catch (error) {
-      console.error('Error fetching candidates:', error);
+      console.error('[Admin Results] Error fetching candidates:', error);
       return [];
     }
   }
@@ -36,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Fetch votes from Hedera API via Node.js server
   async function fetchVotesFromHedera(electionId) {
     try {
+      console.log('[Admin Results] Fetching votes from Hedera for election:', electionId);
       const response = await fetch('http://localhost:3000/api/get-votes', {
         method: 'POST',
         headers: {
@@ -44,14 +51,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         body: JSON.stringify({})
       });
       
+      console.log('[Admin Results] Votes response status:', response.status);
       if (!response.ok) throw new Error('Failed to fetch votes');
       const result = await response.json();
+      console.log('[Admin Results] Votes result:', result);
       
       // The response has format: { data: [ { positionId, voterId, candidateId }, ... ] }
       const votes = result.data || [];
+      console.log('[Admin Results] Total votes retrieved:', votes.length);
       return votes;
     } catch (error) {
-      console.error('Error fetching votes from Hedera:', error);
+      console.error('[Admin Results] Error fetching votes from Hedera:', error);
       return [];
     }
   }
@@ -212,9 +222,19 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Initialize
   async function init() {
+    console.log('[Admin Results] Initializing...');
+    console.log('[Admin Results] Dropdown elements:', {
+      electionSelectHidden,
+      electionDropdownMenu,
+      electionDropdownButton,
+      resultsContent
+    });
+    
     elections = await fetchElections();
+    console.log('[Admin Results] Elections loaded:', elections.length);
     
     if (elections.length === 0) {
+      console.warn('[Admin Results] No elections available');
       if (electionDropdownMenu) {
         electionDropdownMenu.innerHTML = '<div class="dropdown-item" style="pointer-events: none; opacity: 0.6;"><span>No elections available</span></div>';
       }
@@ -226,68 +246,74 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const lang = document.documentElement.lang || 'en';
     const organizerField = `${lang}_organizer`;
+    console.log('[Admin Results] Language:', lang, 'Organizer field:', organizerField);
     
     // Populate custom dropdown
     if (electionDropdownMenu) {
+      console.log('[Admin Results] Populating dropdown menu...');
       electionDropdownMenu.innerHTML = elections.map(election => {
         const organizer = election[organizerField] || election.en_organizer;
         return `<div class="dropdown-item" data-value="${election.id}">
           <span>${election.year} - ${organizer}</span>
         </div>`;
       }).join('');
+      console.log('[Admin Results] Dropdown menu populated with', elections.length, 'items');
       
-      // Manually initialize dropdown items click handlers
-      setTimeout(() => {
-        const dropdownContainer = document.getElementById('electionDropdown');
-        const dropdownButton = dropdownContainer?.querySelector('.dropdown-button');
-        const dropdownMenu = dropdownContainer?.querySelector('.dropdown-menu');
-        const dropdownItems = dropdownContainer?.querySelectorAll('.dropdown-item');
+      // Manually attach click handlers to dropdown items since they were dynamically added
+      const dropdownContainer = document.getElementById('electionDropdown');
+      const dropdownButton = dropdownContainer?.querySelector('.dropdown-button');
+      const dropdownMenu = dropdownContainer?.querySelector('.dropdown-menu');
+      const dropdownItems = dropdownContainer?.querySelectorAll('.dropdown-item');
+      
+      console.log('[Admin Results] Attaching click handlers to', dropdownItems.length, 'items');
+      
+      dropdownItems.forEach((item, index) => {
+        console.log('[Admin Results] Item', index, ':', {
+          value: item.getAttribute('data-value'),
+          text: item.textContent.trim(),
+          classList: Array.from(item.classList),
+          style: item.getAttribute('style')
+        });
         
-        if (dropdownButton && dropdownMenu && dropdownItems.length > 0) {
-          // Ensure dropdown toggle works
-          dropdownButton.addEventListener('click', function() {
-            dropdownButton.classList.toggle('active');
-            dropdownMenu.classList.toggle('active');
-          });
+        // Add mouseenter event for debugging
+        item.addEventListener('mouseenter', () => {
+          console.log('[Admin Results] Mouse entered item:', index);
+        });
+        
+        item.addEventListener('click', (e) => {
+          console.log('[Admin Results] Click event fired on item:', index);
+          e.stopPropagation();
+          e.preventDefault();
+          const value = item.getAttribute('data-value');
+          console.log('[Admin Results] Item clicked directly:', { index, value });
           
-          // Add click handlers to items
-          dropdownItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-              e.stopPropagation();
-              const value = item.getAttribute('data-value');
-              
-              // Close dropdown
-              dropdownButton.classList.remove('active');
-              dropdownMenu.classList.remove('active');
-              
-              // Dispatch custom event
-              const event = new CustomEvent('dropdown:select', {
-                bubbles: true,
-                detail: { container: dropdownContainer, button: dropdownButton, menu: dropdownMenu, item, value }
-              });
-              dropdownContainer.dispatchEvent(event);
-              document.dispatchEvent(event);
-            });
-          });
+          // Close dropdown
+          if (dropdownButton && dropdownMenu) {
+            dropdownButton.classList.remove('active');
+            dropdownMenu.classList.remove('active');
+          }
           
-          // Close when clicking outside
-          document.addEventListener('click', function(event) {
-            if (!dropdownContainer.contains(event.target)) {
-              dropdownButton.classList.remove('active');
-              dropdownMenu.classList.remove('active');
-            }
+          // Dispatch custom event
+          const event = new CustomEvent('dropdown:select', {
+            bubbles: true,
+            detail: { container: dropdownContainer, button: dropdownButton, menu: dropdownMenu, item, value }
           });
-        }
-      }, 100);
+          console.log('[Admin Results] Dispatching dropdown:select event with value:', value);
+          document.dispatchEvent(event);
+        });
+      });
     }
     
     if (electionDropdownButton) {
       electionDropdownButton.textContent = 'Select an election...';
+      console.log('[Admin Results] Dropdown button text set');
     }
 
     // Check URL parameter
     const params = new URLSearchParams(window.location.search);
     const electionId = params.get('id_election');
+    console.log('[Admin Results] URL election ID:', electionId);
+    
     if (electionId && electionSelectHidden) {
       electionSelectHidden.value = electionId;
       
@@ -296,6 +322,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       if (selectedElection && electionDropdownButton) {
         const organizer = selectedElection[organizerField] || selectedElection.en_organizer;
         electionDropdownButton.textContent = `${selectedElection.year} - ${organizer}`;
+        console.log('[Admin Results] Selected election:', selectedElection);
       }
       
       loadElectionResults(electionId);
@@ -304,30 +331,37 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Handle dropdown selection via event delegation
   document.addEventListener('dropdown:select', (e) => {
-    const { container, value } = e.detail;
+    console.log('[Admin Results] Dropdown select event received:', e.detail);
+    const { container, value, button } = e.detail;
     
-    if (container.id === 'electionDropdown' && value) {
+    if (container && container.id === 'electionDropdown' && value) {
+      console.log('[Admin Results] Election selected:', value);
+      
       // Update hidden input
       if (electionSelectHidden) {
         electionSelectHidden.value = value;
+        console.log('[Admin Results] Hidden input updated');
+      }
+      
+      // Update button text
+      const selectedElection = elections.find(e => String(e.id) === String(value));
+      if (selectedElection && electionDropdownButton) {
+        const lang = document.documentElement.lang || 'en';
+        const organizerField = `${lang}_organizer`;
+        const organizer = selectedElection[organizerField] || selectedElection.en_organizer;
+        electionDropdownButton.textContent = `${selectedElection.year} - ${organizer}`;
+        console.log('[Admin Results] Button text updated to:', electionDropdownButton.textContent);
       }
       
       // Update URL
       const url = new URL(window.location);
       url.searchParams.set('id_election', value);
       window.history.pushState({}, '', url);
+      console.log('[Admin Results] URL updated');
       
       loadElectionResults(value);
     } else {
-      resultsContent.innerHTML = `
-        <div class="empty-state">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-          </svg>
-          <h3>No Election Selected</h3>
-          <p>Please select an election to view its results</p>
-        </div>
-      `;
+      console.warn('[Admin Results] Invalid dropdown selection:', { container: container?.id, value });
     }
   });
 
