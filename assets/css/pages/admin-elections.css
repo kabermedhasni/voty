@@ -1,5 +1,287 @@
-@import url("./super-admin-elections.css");
-
 .admin-elections-container {
-    min-height: 90vh;
+  min-height: 93vh;
+  margin: 4vh;
+  max-width: 70%;
+  margin-left: 12%;
+  /* display: flex;
+  align-items: center;
+  gap: 5vh;
+  flex-direction: column; */
+}
+
+.admin-elections-container .header-elections {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    }
+
+.admin-elections-container .btn-add-election .add-election {
+    height: 5vh;
+    width: 25vh;
+    font-size: 1.5vh;
+    color: #fff;
+    background-color: #00593f;
+    border: 2px solid #036d4f;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.admin-elections-container .btn-add-election .add-election:hover {
+    background: #00422f;
+}
+
+.admin-elections-container .btn-add-election .add-election:active {
+    transform: scale(0.95);
+}
+
+/* Elections Grid */
+.elections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Election Card */
+.election-card {
+    background: #2a2a2a;
+    border: 2px solid #3a3a3a;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.election-card:hover {
+    border-color: #06ac7d;
+}
+
+/* Card Header */
+.election-card-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #3a3a3a;
+}
+
+.election-year-badge {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #06ac7d;
+    letter-spacing: 2px;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background: rgba(6, 172, 125, 0.15);
+    color: #06ac7d;
+    border: 1px solid #06ac7d;
+}
+
+.status-inactive {
+    background: rgba(153, 153, 153, 0.15);
+    color: #999;
+    border: 1px solid #666;
+}
+
+/* Card Body */
+.election-card-body {
+    padding: 1.5rem;
+}
+
+.election-organizer {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 1.5rem 0;
+}
+
+.election-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.date-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ccc;
+    font-size: 0.95rem;
+}
+
+.date-item svg {
+    color: #06ac7d;
+    flex-shrink: 0;
+}
+
+.date-item strong {
+    color: #fff;
+}
+
+/* Card Actions */
+.election-card-actions {
+    padding: 1.5rem;
+    border-top: 2px solid #3a3a3a;
+    background: #1a1a1a;
+}
+
+.btn-block {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.action-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.75rem 1rem;
+    background: #2a2a2a;
+    border: 2px solid #3a3a3a;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    border-color: #505050;
+}
+
+.btn-action.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+}
+
+.btn-action.disabled:hover {
+    transform: none;
+}
+
+.btn-action svg {
+    flex-shrink: 0;
+}
+
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Optional: unify look */
+input[type=number] {
+  appearance: textfield; /* works for modern browsers */
+}
+
+/* Table styles for positions list modal */
+.positions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.positions-table thead tr {
+    background: #2a2a2a;
+    border-bottom: 2px solid #3a3a3a;
+}
+
+.positions-table thead th {
+    padding: 1rem;
+    text-align: left;
+    color: #06ac7d;
+    font-weight: 600;
+}
+
+.positions-table tbody tr {
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.positions-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.positions-table tbody td {
+    padding: 1rem;
+    color: #ccc;
+}
+
+@media (max-width: 1024px) {
+    .elections-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-elections-container {
+        margin: 2vh;
+        max-width: 100%;
+        margin-left: 0;
+    }
+
+    .header-elections {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-add-election .add-election {
+        width: 100%;
+    }
+
+    .elections-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .election-card-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .action-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-elections-container {
+        padding: 1rem;
+    }
+
+    .election-year-badge {
+        font-size: 1.5rem;
+    }
+
+    .election-organizer {
+        font-size: 1.25rem;
+    }
+
+    .btn-action {
+        font-size: 0.85rem;
+        padding: 0.65rem 0.85rem;
+    }
 }

@@ -25,7 +25,9 @@ const enDescInput = document.getElementById('en_description');
 const frDescInput = document.getElementById('fr_description');
 const arDescInput = document.getElementById('ar_description');
 const supportingPartyInput = document.getElementById('supporting_party');
-const idPositionSelect = document.getElementById('id_position');
+const idPositionHidden = document.getElementById('id_position');
+const positionDropdownMenu = document.getElementById('positionDropdownMenu');
+const positionDropdownButton = document.querySelector('#positionDropdown .dropdown-text');
 const photoInput = document.getElementById('photo');
 const partyLogoInput = document.getElementById('party_logo');
 const photoPreview = document.getElementById('photoPreview');
@@ -152,26 +154,84 @@ async function loadPositionsForElection(electionId) {
 }
 
 function populatePositionDropdown() {
-  if (!idPositionSelect) return;
+  if (!positionDropdownMenu) return;
   
-  // Clear existing options
-  idPositionSelect.innerHTML = '<option value="">Select a position</option>';
+  // Clear existing items
+  positionDropdownMenu.innerHTML = '';
   
   if (positions.length === 0) {
-    idPositionSelect.innerHTML = '<option value="">No positions available - Please add positions first</option>';
-    idPositionSelect.disabled = true;
+    const emptyItem = document.createElement('div');
+    emptyItem.className = 'dropdown-item';
+    emptyItem.style.pointerEvents = 'none';
+    emptyItem.style.opacity = '0.6';
+    emptyItem.innerHTML = '<span>No positions available - Please add positions first</span>';
+    positionDropdownMenu.appendChild(emptyItem);
     notify('No positions available for this election. Please add positions first.', 'warning');
     return;
   }
   
-  idPositionSelect.disabled = false;
   positions.forEach(pos => {
-    const option = document.createElement('option');
-    option.value = pos.id;
+    const item = document.createElement('div');
+    item.className = 'dropdown-item';
+    item.setAttribute('data-value', pos.id);
     // Use the appropriate language name
-    option.textContent = pos.en_name || pos.fr_name || pos.ar_name || 'Position';
-    idPositionSelect.appendChild(option);
+    const displayName = pos.en_name || pos.fr_name || pos.ar_name || 'Position';
+    item.innerHTML = `<span>${displayName}</span>`;
+    positionDropdownMenu.appendChild(item);
   });
+  
+  // Manually initialize dropdown items click handlers
+  setTimeout(() => {
+    const dropdownContainer = document.getElementById('positionDropdown');
+    const dropdownButton = dropdownContainer?.querySelector('.dropdown-button');
+    const dropdownMenu = dropdownContainer?.querySelector('.dropdown-menu');
+    const dropdownItems = dropdownContainer?.querySelectorAll('.dropdown-item');
+    
+    if (dropdownButton && dropdownMenu && dropdownItems.length > 0) {
+      // Remove existing listeners by cloning
+      const newButton = dropdownButton.cloneNode(true);
+      dropdownButton.parentNode.replaceChild(newButton, dropdownButton);
+      
+      // Add toggle functionality
+      newButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        newButton.classList.toggle('active');
+        dropdownMenu.classList.toggle('active');
+      });
+      
+      // Add click handlers to items
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const value = item.getAttribute('data-value');
+          
+          if (!value) return;
+          
+          // Close dropdown
+          newButton.classList.remove('active');
+          dropdownMenu.classList.remove('active');
+          
+          // Dispatch custom event
+          const event = new CustomEvent('dropdown:select', {
+            bubbles: true,
+            detail: { container: dropdownContainer, button: newButton, menu: dropdownMenu, item, value }
+          });
+          dropdownContainer.dispatchEvent(event);
+          document.dispatchEvent(event);
+        });
+      });
+      
+      // Close when clicking outside
+      const closeHandler = function(event) {
+        if (!dropdownContainer.contains(event.target)) {
+          newButton.classList.remove('active');
+          dropdownMenu.classList.remove('active');
+        }
+      };
+      document.removeEventListener('click', closeHandler);
+      document.addEventListener('click', closeHandler);
+    }
+  }, 50);
 }
 
 function openAddModal() {
@@ -196,7 +256,13 @@ function openAddModal() {
 function openEditModal(id) {
   const cand = candidates.find(c => String(c.id) === String(id));
   if (!cand) return;
+  
+  // Populate dropdown first
+  populatePositionDropdown();
+  
+  // Then populate form with candidate data
   populateForm(cand);
+  
   candidateModal?.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -215,6 +281,10 @@ function resetForm() {
   partyLogoPreview && partyLogoPreview.classList.remove('active');
   if (photoLabel) photoLabel.textContent = 'Upload image';
   if (partyLogoLabel) partyLogoLabel.textContent = 'Upload image';
+  
+  // Reset position dropdown
+  if (idPositionHidden) idPositionHidden.value = '';
+  if (positionDropdownButton) positionDropdownButton.textContent = 'Select a position';
 }
 
 function populateForm(c) {
@@ -225,7 +295,17 @@ function populateForm(c) {
   if (frDescInput) frDescInput.value = c.fr_description || '';
   if (arDescInput) arDescInput.value = c.ar_description || '';
   if (supportingPartyInput) supportingPartyInput.value = c.Supporting_party || '';
-  if (idPositionSelect) idPositionSelect.value = c.id_position || '';
+  
+  // Set position dropdown
+  if (idPositionHidden && c.id_position) {
+    idPositionHidden.value = c.id_position;
+    // Update dropdown button text
+    const selectedPos = positions.find(p => String(p.id) === String(c.id_position));
+    if (selectedPos && positionDropdownButton) {
+      const displayName = selectedPos.en_name || selectedPos.fr_name || selectedPos.ar_name || 'Position';
+      positionDropdownButton.textContent = displayName;
+    }
+  }
 
   if (c.photo_path && photoPreview) {
     photoPreview.innerHTML = `<img src="../${c.photo_path}" alt="Candidate photo">`;
@@ -263,10 +343,9 @@ async function handleCreate(e) {
   if (!candidateForm) return;
 
   // Validate position is selected
-  const selectedPosition = idPositionSelect?.value;
+  const selectedPosition = idPositionHidden?.value;
   if (!selectedPosition) {
     notify('Please select a position for this candidate', 'error');
-    idPositionSelect?.focus();
     return;
   }
 
@@ -349,3 +428,19 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+// Handle custom dropdown selections
+document.addEventListener('dropdown:select', (e) => {
+  const { container, value } = e.detail;
+  
+  // Position dropdown
+  if (container.id === 'positionDropdown') {
+    const hiddenInput = document.getElementById('id_position');
+    const button = container.querySelector('.dropdown-button .dropdown-text');
+    const selectedItem = container.querySelector(`.dropdown-item[data-value="${value}"]`);
+    
+    if (hiddenInput && button && selectedItem) {
+      hiddenInput.value = value;
+      button.textContent = selectedItem.textContent.trim();
+    }
+  }
+});

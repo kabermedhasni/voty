@@ -79,14 +79,45 @@ include '../includes/admin-header.php';
                             <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">
                                 <strong><?php echo t('election_type', 'Type d\'élection'); ?>:</strong>
                             </label>
-                            <select class="election-type-dropdown" data-election-id="<?= $election['id']; ?>" onchange="updateElectionType(<?= $election['id']; ?>, this.value)" style="width: 100%; padding: 0.5rem; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 6px; color: #fff; font-size: 0.9rem;">
-                                <option value="" <?= empty($election['election_type']) ? 'selected' : '' ?>><?php echo t('select_type', 'Sélectionner un type'); ?></option>
-                                <option value="university" <?= ($election['election_type'] ?? '') === 'university' ? 'selected' : '' ?>><?php echo t('university', 'Universitaire'); ?></option>
-                                <option value="municipal" <?= ($election['election_type'] ?? '') === 'municipal' ? 'selected' : '' ?>><?php echo t('municipal', 'Municipal'); ?></option>
-                                <option value="governmental" <?= ($election['election_type'] ?? '') === 'governmental' ? 'selected' : '' ?>><?php echo t('governmental', 'Gouvernemental'); ?></option>
-                                <option value="student" <?= ($election['election_type'] ?? '') === 'student' ? 'selected' : '' ?>><?php echo t('student', 'Étudiant'); ?></option>
-                                <option value="professional" <?= ($election['election_type'] ?? '') === 'professional' ? 'selected' : '' ?>><?php echo t('professional', 'Professionnel'); ?></option>
-                            </select>
+                            <div class="dropdown-container" id="electionTypeDropdown_<?= $election['id']; ?>" data-election-id="<?= $election['id']; ?>">
+                                <button type="button" class="dropdown-button" style="width: 100%;">
+                                    <span class="dropdown-text">
+                                        <?php 
+                                        $typeLabels = [
+                                            'university' => t('university', 'Universitaire'),
+                                            'municipal' => t('municipal', 'Municipal'),
+                                            'governmental' => t('governmental', 'Gouvernemental'),
+                                            'student' => t('student', 'Étudiant'),
+                                            'professional' => t('professional', 'Professionnel')
+                                        ];
+                                        echo empty($election['election_type']) ? t('select_type', 'Sélectionner un type') : ($typeLabels[$election['election_type']] ?? $election['election_type']);
+                                        ?>
+                                    </span>
+                                    <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-item" data-value="">
+                                        <span><?php echo t('select_type', 'Sélectionner un type'); ?></span>
+                                    </div>
+                                    <div class="dropdown-item" data-value="university">
+                                        <span><?php echo t('university', 'Universitaire'); ?></span>
+                                    </div>
+                                    <div class="dropdown-item" data-value="municipal">
+                                        <span><?php echo t('municipal', 'Municipal'); ?></span>
+                                    </div>
+                                    <div class="dropdown-item" data-value="governmental">
+                                        <span><?php echo t('governmental', 'Gouvernemental'); ?></span>
+                                    </div>
+                                    <div class="dropdown-item" data-value="student">
+                                        <span><?php echo t('student', 'Étudiant'); ?></span>
+                                    </div>
+                                    <div class="dropdown-item" data-value="professional">
+                                        <span><?php echo t('professional', 'Professionnel'); ?></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="election-dates">
@@ -233,9 +264,18 @@ include '../includes/admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
-                        <select id="add_id_position" name="id_position" required>
-                            <option value=""><?php echo t('select_position', 'Sélectionner une position'); ?></option>
-                        </select>
+                        <div class="dropdown-container" id="addPositionDropdown">
+                            <button type="button" class="dropdown-button" style="width: 100%;">
+                                <span class="dropdown-text"><?php echo t('select_position', 'Sélectionner une position'); ?></span>
+                                <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" id="addPositionDropdownMenu">
+                                <!-- Items will be populated dynamically -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="add_id_position" name="id_position" required>
                     </div>
                 </div>
 
@@ -421,6 +461,7 @@ include '../includes/admin-header.php';
 </div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script src="../assets/js/pages/admin-elections.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

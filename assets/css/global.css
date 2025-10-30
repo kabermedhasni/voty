@@ -282,11 +282,29 @@ html[dir="rtl"] .toast-counter { right: -15px; }
   z-index: 10;
   width: 100%;
   min-width: max-content;
+  max-height: 148px;
+  overflow-y: auto;
 }
-html[dir="ltr"] .dropdown-menu { right: 0; }
-html[dir="rtl"] .dropdown-menu { left: 0; right: auto; }
+html[dir="ltr"] .dropdown-menu { left: 0; }
+html[dir="rtl"] .dropdown-menu { right: 0; left: auto; }
 .dropdown-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
 .dropdown-item:hover { background-color: #3a3a3a; }
+
+/* Custom scrollbar for dropdown */
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-menu::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 3px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5a;
+}
 
 /* Touch devices: remove hover effects for dropdown */
 @media (max-width: 768px) {

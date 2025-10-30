@@ -201,10 +201,23 @@ include '../includes/super-admin-header.php';
                         </div>
                         <div class="form-group">
                             <h6><?php echo t('status', 'Statut'); ?> <span class="required">*</span></h6>
-                            <select id="election_status" name="status" required>
-                                <option value="1"><?php echo t('active', 'Actif'); ?></option>
-                                <option value="0"><?php echo t('inactive', 'Inactif'); ?></option>
-                            </select>
+                            <div class="dropdown-container" id="statusDropdown">
+                                <button type="button" class="dropdown-button">
+                                    <span class="dropdown-text"><?php echo t('select_status', 'Sélectionner un statut'); ?></span>
+                                    <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-item" data-value="1">
+                                        <span><?php echo t('active', 'Actif'); ?></span>
+                                    </div>
+                                    <div class="dropdown-item" data-value="0">
+                                        <span><?php echo t('inactive', 'Inactif'); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="election_status" name="status" required value="1">
                         </div>
                     </div>
 
@@ -239,6 +252,7 @@ include '../includes/super-admin-header.php';
 
 </div>
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script type="module" src="../assets/js/utilities/multi-select-dropdown.js"></script>
 <script src="../assets/js/pages/super-admin-elections.js" defer></script>
 

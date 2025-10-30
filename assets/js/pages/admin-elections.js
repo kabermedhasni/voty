@@ -97,7 +97,8 @@ function addNewCandidate(electionId, lang) {
   const closeBtn = document.getElementById('closeAddCandidateModal');
   const cancelBtn = document.getElementById('cancelAddCandidateBtn');
   const saveBtn = document.getElementById('saveAddCandidateBtn');
-  const positionSelect = document.getElementById('add_id_position');
+  const positionDropdownMenu = document.getElementById('addPositionDropdownMenu');
+  const positionDropdownButton = document.querySelector('#addPositionDropdown .dropdown-text');
   
   if (!modal || !form) return;
   
@@ -105,23 +106,34 @@ function addNewCandidate(electionId, lang) {
   form.reset();
   document.getElementById('add_election_id').value = electionId;
   
-  // Fetch all positions for this election and populate dropdown
+  // Reset dropdown
+  if (positionDropdownButton) {
+    positionDropdownButton.textContent = 'Select a position';
+  }
+  
+  // Load positions for this election
   fetch(`../apis/api.php?action=getPositionByElection&id_election=${electionId}`)
     .then(res => res.json())
     .then(positions => {
+      positionDropdownMenu.innerHTML = '';
+      
       if (!positions || positions.length === 0) {
-        alert('No positions found for this election. Please add positions first.');
+        alert('Please create a position for this election first.');
         return;
       }
       
-      // Clear and populate position dropdown
-      positionSelect.innerHTML = '<option value="">Select a position</option>';
       positions.forEach(pos => {
-        const option = document.createElement('option');
-        option.value = pos.id;
-        option.textContent = pos.en_name || pos.fr_name || pos.ar_name || 'Position';
-        positionSelect.appendChild(option);
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.setAttribute('data-value', pos.id);
+        item.innerHTML = `<span>${pos.en_name} / ${pos.fr_name}</span>`;
+        positionDropdownMenu.appendChild(item);
       });
+      
+      // Re-initialize dropdown after populating
+      if (typeof initDropdowns === 'function') {
+        initDropdowns(document.getElementById('addPositionDropdown'));
+      }
       
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -144,9 +156,9 @@ function addNewCandidate(electionId, lang) {
     e.preventDefault();
     
     // Validate position is selected
-    if (!positionSelect.value) {
+    const positionInput = document.getElementById('add_id_position');
+    if (!positionInput || !positionInput.value) {
       alert('Please select a position for this candidate.');
-      positionSelect.focus();
       return;
     }
     
@@ -468,28 +480,56 @@ function managePositions(electionId) {
   }
 }
 
-// Update election type from dropdown on election card
-function updateElectionType(electionId, electionType) {
+// Handle custom dropdown selections
+document.addEventListener('dropdown:select', (e) => {
+  const { container, value } = e.detail;
+  
+  // Position dropdown in add candidate modal
+  if (container.id === 'addPositionDropdown') {
+    const hiddenInput = document.getElementById('add_id_position');
+    const button = container.querySelector('.dropdown-button .dropdown-text');
+    const selectedItem = container.querySelector(`.dropdown-item[data-value="${value}"]`);
+    
+    if (hiddenInput && button && selectedItem) {
+      hiddenInput.value = value;
+      button.textContent = selectedItem.textContent.trim();
+    }
+  }
+  
+  // Election type dropdown in election card
+  if (container.id && container.id.startsWith('electionTypeDropdown_')) {
+    const electionId = container.getAttribute('data-election-id');
+    const button = container.querySelector('.dropdown-button .dropdown-text');
+    const selectedItem = container.querySelector(`.dropdown-item[data-value="${value}"]`);
+    
+    if (button && selectedItem && electionId) {
+      button.textContent = selectedItem.textContent.trim();
+      updateElectionType(electionId, value);
+    }
+  }
+});
+
+// Update election type via API
+function updateElectionType(electionId, type) {
   const formData = new FormData();
   formData.append('action', 'updateElectionType');
   formData.append('election_id', electionId);
-  formData.append('election_type', electionType);
-
+  formData.append('election_type', type);
+  
   fetch('../apis/api.php', {
     method: 'POST',
     body: formData
   })
   .then(res => res.json())
   .then(data => {
-    if (data.status === 'success') {
-      showNotification('Election type updated successfully!', 'success');
+    if (data.status === 'success' || data.success) {
+      console.log('Election type updated');
     } else {
-      showNotification(data.message || 'Failed to update election type', 'error');
+      alert(data.message || data.error || 'Failed to update election type');
     }
   })
   .catch(err => {
     console.error('Error:', err);
-    showNotification('An error occurred while updating election type', 'error');
+    alert('An error occurred while updating election type');
   });
 }
-

@@ -42,9 +42,18 @@ include '../includes/admin-header.php';
             <h2><?php echo t('select_election', 'Select Election'); ?></h2>
         </div>
         <div class="election-select-wrapper">
-            <select id="electionSelect" class="form-select">
-                <option value=""><?php echo t('loading', 'Loading...'); ?></option>
-            </select>
+            <div class="dropdown-container" id="electionDropdown">
+                <button type="button" class="dropdown-button" style="width: 100%;">
+                    <span class="dropdown-text"><?php echo t('loading', 'Loading...'); ?></span>
+                    <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="electionDropdownMenu">
+                    <!-- Items will be populated dynamically -->
+                </div>
+            </div>
+            <input type="hidden" id="electionSelect">
         </div>
     </div>
 
@@ -61,6 +70,7 @@ include '../includes/admin-header.php';
 </div>
 
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script src="../assets/js/pages/admin-results.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

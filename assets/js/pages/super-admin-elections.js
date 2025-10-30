@@ -418,3 +418,20 @@ function getListOfCandidates(electionId) {
 function getResults(electionId) {
     window.location.href = `../admin/admin-results.php?id_election=${electionId}`;
 }
+
+// Handle custom dropdown selections
+document.addEventListener('dropdown:select', (e) => {
+    const { container, value } = e.detail;
+    
+    // Status dropdown
+    if (container.id === 'statusDropdown') {
+        const hiddenInput = document.getElementById('election_status');
+        const button = container.querySelector('.dropdown-button .dropdown-text');
+        const selectedItem = container.querySelector(`.dropdown-item[data-value="${value}"]`);
+        
+        if (hiddenInput && button && selectedItem) {
+            hiddenInput.value = value;
+            button.textContent = selectedItem.textContent.trim();
+        }
+    }
+});

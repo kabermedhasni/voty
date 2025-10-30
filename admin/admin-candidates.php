@@ -79,9 +79,18 @@ include '../includes/admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
-                        <select id="id_position" name="id_position" required>
-                            <option value=""><?php echo t('select_position', 'Sélectionner une position'); ?></option>
-                        </select>
+                        <div class="dropdown-container" id="positionDropdown">
+                            <button type="button" class="dropdown-button" style="width: 100%;">
+                                <span class="dropdown-text"><?php echo t('select_position', 'Sélectionner une position'); ?></span>
+                                <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" id="positionDropdownMenu">
+                                <!-- Items will be populated dynamically -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="id_position" name="id_position" required>
                     </div>
                 </div>
 
@@ -167,6 +176,7 @@ include '../includes/admin-header.php';
     </div>
 </div>
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script src="../assets/js/pages/admin-candidates.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
-  const electionSelect = document.getElementById('electionSelect');
+  const electionSelectHidden = document.getElementById('electionSelect');
+  const electionDropdownMenu = document.getElementById('electionDropdownMenu');
+  const electionDropdownButton = document.querySelector('#electionDropdown .dropdown-text');
   const resultsContent = document.getElementById('resultsContent');
 
   let elections = [];
@@ -213,38 +215,109 @@ document.addEventListener('DOMContentLoaded', async function () {
     elections = await fetchElections();
     
     if (elections.length === 0) {
-      electionSelect.innerHTML = '<option value="">No elections available</option>';
+      if (electionDropdownMenu) {
+        electionDropdownMenu.innerHTML = '<div class="dropdown-item" style="pointer-events: none; opacity: 0.6;"><span>No elections available</span></div>';
+      }
+      if (electionDropdownButton) {
+        electionDropdownButton.textContent = 'No elections available';
+      }
       return;
     }
 
     const lang = document.documentElement.lang || 'en';
     const organizerField = `${lang}_organizer`;
     
-    electionSelect.innerHTML = '<option value="">Select an election...</option>' +
-      elections.map(election => {
+    // Populate custom dropdown
+    if (electionDropdownMenu) {
+      electionDropdownMenu.innerHTML = elections.map(election => {
         const organizer = election[organizerField] || election.en_organizer;
-        return `<option value="${election.id}">${election.year} - ${organizer}</option>`;
+        return `<div class="dropdown-item" data-value="${election.id}">
+          <span>${election.year} - ${organizer}</span>
+        </div>`;
       }).join('');
+      
+      // Manually initialize dropdown items click handlers
+      setTimeout(() => {
+        const dropdownContainer = document.getElementById('electionDropdown');
+        const dropdownButton = dropdownContainer?.querySelector('.dropdown-button');
+        const dropdownMenu = dropdownContainer?.querySelector('.dropdown-menu');
+        const dropdownItems = dropdownContainer?.querySelectorAll('.dropdown-item');
+        
+        if (dropdownButton && dropdownMenu && dropdownItems.length > 0) {
+          // Ensure dropdown toggle works
+          dropdownButton.addEventListener('click', function() {
+            dropdownButton.classList.toggle('active');
+            dropdownMenu.classList.toggle('active');
+          });
+          
+          // Add click handlers to items
+          dropdownItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const value = item.getAttribute('data-value');
+              
+              // Close dropdown
+              dropdownButton.classList.remove('active');
+              dropdownMenu.classList.remove('active');
+              
+              // Dispatch custom event
+              const event = new CustomEvent('dropdown:select', {
+                bubbles: true,
+                detail: { container: dropdownContainer, button: dropdownButton, menu: dropdownMenu, item, value }
+              });
+              dropdownContainer.dispatchEvent(event);
+              document.dispatchEvent(event);
+            });
+          });
+          
+          // Close when clicking outside
+          document.addEventListener('click', function(event) {
+            if (!dropdownContainer.contains(event.target)) {
+              dropdownButton.classList.remove('active');
+              dropdownMenu.classList.remove('active');
+            }
+          });
+        }
+      }, 100);
+    }
+    
+    if (electionDropdownButton) {
+      electionDropdownButton.textContent = 'Select an election...';
+    }
 
     // Check URL parameter
     const params = new URLSearchParams(window.location.search);
     const electionId = params.get('id_election');
-    if (electionId) {
-      electionSelect.value = electionId;
+    if (electionId && electionSelectHidden) {
+      electionSelectHidden.value = electionId;
+      
+      // Update button text
+      const selectedElection = elections.find(e => String(e.id) === String(electionId));
+      if (selectedElection && electionDropdownButton) {
+        const organizer = selectedElection[organizerField] || selectedElection.en_organizer;
+        electionDropdownButton.textContent = `${selectedElection.year} - ${organizer}`;
+      }
+      
       loadElectionResults(electionId);
     }
   }
 
-  // Event listeners
-  electionSelect.addEventListener('change', (e) => {
-    const electionId = e.target.value;
-    if (electionId) {
+  // Handle dropdown selection via event delegation
+  document.addEventListener('dropdown:select', (e) => {
+    const { container, value } = e.detail;
+    
+    if (container.id === 'electionDropdown' && value) {
+      // Update hidden input
+      if (electionSelectHidden) {
+        electionSelectHidden.value = value;
+      }
+      
       // Update URL
       const url = new URL(window.location);
-      url.searchParams.set('id_election', electionId);
+      url.searchParams.set('id_election', value);
       window.history.pushState({}, '', url);
       
-      loadElectionResults(electionId);
+      loadElectionResults(value);
     } else {
       resultsContent.innerHTML = `
         <div class="empty-state">
