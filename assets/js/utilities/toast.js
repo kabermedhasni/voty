@@ -272,3 +272,6 @@ function removeToast(toastElement, message, skipAnimation = false) {
     }, 300);
   }
 }
+
+// Expose showToast globally
+window.showToast = showToast;

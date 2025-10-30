@@ -270,6 +270,6 @@ include '../includes/super-admin-header.php';
 <script type="module" src="../assets/js/utilities/multi-select-dropdown.js"></script>
 <script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
 <script type="module" src="../assets/js/utilities/searchable-multi-select.js"></script>
-<script src="../assets/js/pages/super-admin-elections.js" defer></script>
+<script type="module" src="../assets/js/pages/super-admin-elections.js"></script>
 
 <?php include '../includes/admin-footer.php'; ?>
