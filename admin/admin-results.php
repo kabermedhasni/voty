@@ -84,6 +84,6 @@ include '../includes/admin-header.php';
 <script src="../assets/js/utilities/utils.js" defer></script>
 <script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
-<script src="../assets/js/pages/admin-results.js" defer></script>
+<script type="module" src="../assets/js/pages/admin-results.js"></script>
 
 <?php include '../includes/admin-footer.php'; ?>

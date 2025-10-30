@@ -1,3 +1,5 @@
+import { makeDropdownSearchable } from '../utilities/searchable-dropdown.js';
+
 document.addEventListener('DOMContentLoaded', async function () {
   const electionSelectHidden = document.getElementById('electionSelect');
   const electionDropdownMenu = document.getElementById('electionDropdownMenu');
@@ -264,6 +266,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         </div>`;
       }).join('');
       console.log('[Admin Results] Dropdown menu populated with', elections.length, 'items');
+      
+      // Initialize searchable dropdown after items are added
+      const electionDropdownContainer = document.getElementById('electionDropdown');
+      if (electionDropdownContainer) {
+        const placeholder = electionDropdownContainer.dataset.searchPlaceholder || 'Search...';
+        makeDropdownSearchable(electionDropdownContainer, {
+          searchPlaceholder: placeholder,
+          noResultsText: 'No results found'
+        });
+      }
       
       // Manually attach click handlers to dropdown items since they were dynamically added
       const dropdownContainer = document.getElementById('electionDropdown');
