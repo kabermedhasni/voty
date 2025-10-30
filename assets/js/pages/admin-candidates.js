@@ -115,13 +115,17 @@ function createCandidateCard(candidate) {
   const logoSrc = candidate.path_supporting_party_logo ? `..\\${candidate.path_supporting_party_logo}` : '..\\assets\\images\\candidates\\party\\party-placeholder.jpg';
   const displayName = candidate.name || '';
   const displayDesc = candidate.fr_description || candidate.en_description || '';
+  const displayPosition = candidate.en_name || candidate.fr_name || candidate.ar_name || '';
 
   return `
     <div class="candidate-card">
       <div class="candidate-header">
         <img src="${photoSrc}" alt="${escapeHtml(displayName)}" class="candidate-photo">
         <div class="candidate-info">
-          <div class="candidate-name">${escapeHtml(displayName)}</div>
+          <div class="candidate-name-position">
+            <div class="candidate-name">${escapeHtml(displayName)}</div>
+            ${displayPosition ? `<div class=\"candidate-position\">${escapeHtml(displayPosition)}</div>` : ''}
+          </div>
           <div class="candidate-party">
             <img src="${logoSrc}" alt="${escapeHtml(candidate.Supporting_party || '')}" class="party-logo">
             <span class="party-name">${escapeHtml(candidate.Supporting_party || '')}</span>
@@ -366,8 +370,9 @@ async function handleCreate(e) {
 
   try {
     const formData = new FormData(candidateForm);
-    // Use candidate-handler.php which expects 'create'
-    formData.append('action', 'create');
+    // Check if we're editing (has ID) or creating new
+    const isEdit = candidateIdInput?.value;
+    formData.append('action', isEdit ? 'update' : 'create');
 
     const res = await fetch('../apis/candidate-handler.php', {
       method: 'POST',
@@ -395,7 +400,44 @@ async function handleCreate(e) {
 
 async function handleDeleteCandidate(id) {
   if (!id) return;
-  if (!confirm('Delete this candidate?')) return;
+  
+  // Show custom delete modal
+  const deleteModal = document.getElementById('deleteModal');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const closeDeleteModal = document.getElementById('closeDeleteModal');
+  
+  if (!deleteModal) {
+    // Fallback to confirm if modal doesn't exist
+    if (!confirm('Delete this candidate?')) return;
+    await performDelete(id);
+    return;
+  }
+  
+  deleteModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  const closeHandler = () => {
+    deleteModal.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  
+  const confirmHandler = async () => {
+    closeHandler();
+    await performDelete(id);
+  };
+  
+  // Remove old event listeners by cloning
+  const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
+  confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
+  
+  newConfirmBtn.addEventListener('click', confirmHandler);
+  cancelDeleteBtn.onclick = closeHandler;
+  closeDeleteModal.onclick = closeHandler;
+  deleteModal.querySelector('.modal-overlay').onclick = closeHandler;
+}
+
+async function performDelete(id) {
   try {
     const fd = new FormData();
     fd.append('action', 'delete');
@@ -407,6 +449,7 @@ async function handleDeleteCandidate(id) {
       const electionId = getQueryParam('id_election');
       if (electionId) filterCandidatesByElection(electionId);
       renderCandidates();
+      notify('Candidate deleted successfully', 'success');
     } else {
       notify(data.message || data.error || 'Failed to delete candidate', 'error');
     }

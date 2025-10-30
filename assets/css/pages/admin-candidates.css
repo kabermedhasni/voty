@@ -39,6 +39,12 @@
   position: relative;
 }
 
+.candidate-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .btn-primary {
   background: #00593f;
   color: #fff;
