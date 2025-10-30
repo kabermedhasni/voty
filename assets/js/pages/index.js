@@ -40,11 +40,46 @@ document.addEventListener('DOMContentLoaded', () => {
     position: document.getElementById('position-title')
   };
 
+  // Search functionality - set up event listeners once
+  const searchElectionsInput = document.getElementById('searchElectionsInput');
+  const searchCandidatesInput = document.getElementById('searchCandidatesInput');
+  
+  if (searchElectionsInput) {
+    searchElectionsInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const electionCards = containers.electionsGrid.querySelectorAll('.election-card');
+      
+      electionCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matches = text.includes(searchTerm);
+        card.style.display = matches ? '' : 'none';
+      });
+    });
+  }
+  
+  if (searchCandidatesInput) {
+    searchCandidatesInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const candidateCards = containers.candidatesGrid.querySelectorAll('.candidate-card-index');
+      
+      candidateCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matches = text.includes(searchTerm);
+        card.style.display = matches ? '' : 'none';
+      });
+    });
+  }
+
   // Utility Functions
   function showStep(stepName) {
     Object.values(steps).forEach(step => step.classList.add('hidden'));
     steps[stepName].classList.remove('hidden');
     state.currentStep = stepName;
+    
+    // Clear search inputs when switching steps
+    if (searchElectionsInput) searchElectionsInput.value = '';
+    if (searchCandidatesInput) searchCandidatesInput.value = '';
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

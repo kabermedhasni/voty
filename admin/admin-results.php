@@ -42,7 +42,7 @@ include '../includes/admin-header.php';
             <h2><?php echo t('select_election', 'Select Election'); ?></h2>
         </div>
         <div class="election-select-wrapper">
-            <div class="dropdown-container" id="electionDropdown">
+            <div class="dropdown-container" id="electionDropdown" data-searchable data-search-placeholder="<?php echo t('search_elections', 'Rechercher des \u00e9lections...'); ?>">
                 <button type="button" class="dropdown-button" style="width: 100%;">
                     <span class="dropdown-text"><?php echo t('loading', 'Loading...'); ?></span>
                     <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,6 +54,17 @@ include '../includes/admin-header.php';
                 </div>
             </div>
             <input type="hidden" id="electionSelect">
+        </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section" id="searchSection" style="display: none;">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
         </div>
     </div>
 
@@ -69,8 +80,10 @@ include '../includes/admin-header.php';
     </div>
 </div>
 
+<link rel="stylesheet" href="../assets/css/utilities/searchable-dropdown.css">
 <script src="../assets/js/utilities/utils.js" defer></script>
 <script type="module" src="../assets/js/utilities/dropdown.js"></script>
+<script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
 <script src="../assets/js/pages/admin-results.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

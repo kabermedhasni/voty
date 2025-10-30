@@ -48,6 +48,18 @@ include '../includes/super-admin-header.php';
             <button class="add-election" onclick="addElection(<?= '\''.$current_lang.'\''; ?>)"><?php echo t('add_election', 'Ajouter une nouvelle élection'); ?></button>
         </div>
     </div>
+    
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Rechercher des élections...'); ?>">
+        </div>
+    </div>
+    
     <div class="elections-grid">
         <?php foreach($elections as $election): ?>
             <div class="election-card">
@@ -169,7 +181,7 @@ include '../includes/super-admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('admin_responsible', 'Administrateur responsable'); ?> <span class="required">*</span></h6>
-                        <div class="multi-select-container" id="adminMultiSelect">
+                        <div class="multi-select-container" id="adminMultiSelect" data-searchable data-search-placeholder="<?php echo t('search_admins', 'Rechercher des administrateurs...'); ?>">
                             <div class="multi-select-button">
                                 <div class="multi-select-display" data-placeholder="<?php echo t('select_admins', 'Sélectionner les administrateurs'); ?>"></div>
                                 <span class="multi-select-chevron">
@@ -251,9 +263,13 @@ include '../includes/super-admin-header.php';
 
 
 </div>
+<link rel="stylesheet" href="../assets/css/utilities/searchable-dropdown.css">
+<link rel="stylesheet" href="../assets/css/utilities/searchable-multi-select.css">
 <script src="../assets/js/utilities/utils.js" defer></script>
 <script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script type="module" src="../assets/js/utilities/multi-select-dropdown.js"></script>
+<script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
+<script type="module" src="../assets/js/utilities/searchable-multi-select.js"></script>
 <script src="../assets/js/pages/super-admin-elections.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

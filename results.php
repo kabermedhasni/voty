@@ -56,6 +56,17 @@ include 'includes/header.php';
 ?>
 <div class="results-container">
     <?php if (count($elections) > 0): ?>
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+            </div>
+        </div>
+        
         <?php foreach($elections as $election): ?>
             <div class="header">
                 <span class="title"><?= !empty($election['election_type']) ? ucfirst($election['election_type']) . ' Elections' : 'Elections' ?></span>

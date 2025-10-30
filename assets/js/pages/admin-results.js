@@ -124,6 +124,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Render results
   function renderResults(results) {
+    // Show search section when results are displayed
+    const searchSection = document.getElementById('searchSection');
+    if (searchSection) {
+      searchSection.style.display = (!results || Object.keys(results).length === 0) ? 'none' : 'block';
+    }
+    
     if (!results || Object.keys(results).length === 0) {
       resultsContent.innerHTML = `
         <div class="empty-state">
@@ -364,6 +370,23 @@ document.addEventListener('DOMContentLoaded', async function () {
       console.warn('[Admin Results] Invalid dropdown selection:', { container: container?.id, value });
     }
   });
+
+  // Search functionality
+  const searchInput = document.getElementById('searchCandidatesInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const candidateResults = resultsContent.querySelectorAll('.candidate-result');
+      
+      candidateResults.forEach(result => {
+        const name = result.querySelector('h4')?.textContent.toLowerCase() || '';
+        const party = result.querySelector('.candidate-party')?.textContent.toLowerCase() || '';
+        
+        const matches = name.includes(searchTerm) || party.includes(searchTerm);
+        result.style.display = matches ? '' : 'none';
+      });
+    });
+  }
 
   init();
 });

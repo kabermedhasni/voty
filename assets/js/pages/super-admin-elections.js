@@ -1,3 +1,24 @@
+// Search functionality for elections
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchElectionsInput');
+  const electionsGrid = document.querySelector('.elections-grid');
+  
+  if (searchInput && electionsGrid) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const electionCards = electionsGrid.querySelectorAll('.election-card');
+      
+      electionCards.forEach(card => {
+        const organizer = card.querySelector('.election-organizer')?.textContent.toLowerCase() || '';
+        const year = card.querySelector('.election-year-badge')?.textContent.toLowerCase() || '';
+        
+        const matches = organizer.includes(searchTerm) || year.includes(searchTerm);
+        card.style.display = matches ? '' : 'none';
+      });
+    });
+  }
+});
+
 function stopElection(electionId, lang) {
     const modal = document.getElementById('stopElectionModal');
     const message = document.getElementById('stopElectionMessage');

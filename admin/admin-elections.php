@@ -42,6 +42,17 @@ include '../includes/admin-header.php';
         <h1><?php echo t('manage_elections', 'Gérer les élections'); ?></h1>
     </div>
     
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Rechercher des élections...'); ?>">
+        </div>
+    </div>
+    
     <?php if (empty($elections)): ?>
         <div class="no-elections-message">
             <p><?php echo t('no_elections_assigned', 'Aucune élection ne vous est assignée.'); ?></p>
@@ -77,9 +88,9 @@ include '../includes/admin-header.php';
                         
                         <div class="election-type-selector" style="margin: 1rem 0;">
                             <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">
-                                <strong><?php echo t('election_type', 'Type d\'élection'); ?>:</strong>
+                                <strong><?php echo t('election_type', 'Type d\'\u00e9lection'); ?>:</strong>
                             </label>
-                            <div class="dropdown-container" id="electionTypeDropdown_<?= $election['id']; ?>" data-election-id="<?= $election['id']; ?>">
+                            <div class="dropdown-container" id="electionTypeDropdown_<?= $election['id']; ?>" data-election-id="<?= $election['id']; ?>" data-searchable data-search-placeholder="<?php echo t('search_type', 'Rechercher...'); ?>">
                                 <button type="button" class="dropdown-button" style="width: 100%;">
                                     <span class="dropdown-text">
                                         <?php 
@@ -220,6 +231,15 @@ include '../includes/admin-header.php';
                     </svg>
                 </button>
             </div>
+            <div class="modal-search-section">
+                <div class="search-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                        <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" id="searchModalCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+                </div>
+            </div>
             <div class="modal-body" id="candidateListContent">
                 <div class="loading-spinner">
                     <svg class="spinner-svg" viewBox="25 25 50 50">
@@ -264,7 +284,7 @@ include '../includes/admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
-                        <div class="dropdown-container" id="addPositionDropdown">
+                        <div class="dropdown-container" id="addPositionDropdown" data-searchable data-search-placeholder="<?php echo t('search_position', 'Rechercher une position...'); ?>">
                             <button type="button" class="dropdown-button" style="width: 100%;">
                                 <span class="dropdown-text"><?php echo t('select_position', 'Sélectionner une position'); ?></span>
                                 <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -459,9 +479,11 @@ include '../includes/admin-header.php';
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="../assets/css/utilities/searchable-dropdown.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="../assets/js/utilities/utils.js" defer></script>
 <script type="module" src="../assets/js/utilities/dropdown.js"></script>
+<script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
 <script src="../assets/js/pages/admin-elections.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

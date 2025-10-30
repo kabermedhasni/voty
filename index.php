@@ -36,6 +36,17 @@ include 'includes/header.php';
         <p class="step-subtitle"><?php echo t('select_election_desc', 'Choose which election you want to participate in'); ?></p>
       </div>
       
+      <!-- Search Section -->
+      <div class="search-section">
+        <div class="search-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Rechercher des élections...'); ?>">
+        </div>
+      </div>
+      
       <div class="elections-grid" id="elections-grid">
         <!-- Elections will be loaded here dynamically -->
         <div class="loading-spinner">
@@ -76,6 +87,17 @@ include 'includes/header.php';
         </button>
         <h2 class="step-title" id="position-title"></h2>
         <p class="step-subtitle"><?php echo t('select_candidate_desc', 'Choose your preferred candidate'); ?></p>
+      </div>
+      
+      <!-- Search Section -->
+      <div class="search-section">
+        <div class="search-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+        </div>
       </div>
       
       <div class="candidates-grid" id="candidates-grid">

@@ -3,6 +3,46 @@
 
 // Admin elections utilities with modal support
 
+// Search functionality for elections
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchElectionsInput');
+  const electionsGrid = document.querySelector('.elections-grid');
+  
+  if (searchInput && electionsGrid) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const electionCards = electionsGrid.querySelectorAll('.election-card');
+      
+      electionCards.forEach(card => {
+        const organizer = card.querySelector('.election-organizer')?.textContent.toLowerCase() || '';
+        const year = card.querySelector('.election-year-badge')?.textContent.toLowerCase() || '';
+        const type = card.querySelector('.election-type-selector')?.textContent.toLowerCase() || '';
+        
+        const matches = organizer.includes(searchTerm) || 
+                       year.includes(searchTerm) || 
+                       type.includes(searchTerm);
+        
+        card.style.display = matches ? '' : 'none';
+      });
+    });
+  }
+  
+  // Search functionality for modal candidates list
+  const searchModalInput = document.getElementById('searchModalCandidatesInput');
+  if (searchModalInput) {
+    searchModalInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const candidateItems = document.querySelectorAll('#candidateListContent .candidate-item');
+      
+      candidateItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const matches = text.includes(searchTerm);
+        item.style.display = matches ? '' : 'none';
+      });
+    });
+  }
+});
+
 function getListOfCandidates(electionId) {
   const modal = document.getElementById('candidateListModal');
   const content = document.getElementById('candidateListContent');

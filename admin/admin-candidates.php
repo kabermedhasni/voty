@@ -36,6 +36,17 @@ include '../includes/admin-header.php';
         <h1><?php echo t('manage_candidates', 'Gérer les candidats'); ?></h1>
     </div>
 
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+        </div>
+    </div>
+
     <div class="candidates-grid" id="candidatesGrid">
         <div class="loading-spinner">
             <svg class="spinner-svg" viewBox="25 25 50 50">
@@ -79,7 +90,7 @@ include '../includes/admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
-                        <div class="dropdown-container" id="positionDropdown">
+                        <div class="dropdown-container" id="positionDropdown" data-searchable data-search-placeholder="<?php echo t('search_position', 'Rechercher une position...'); ?>">
                             <button type="button" class="dropdown-button" style="width: 100%;">
                                 <span class="dropdown-text"><?php echo t('select_position', 'Sélectionner une position'); ?></span>
                                 <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,8 +214,10 @@ include '../includes/admin-header.php';
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="../assets/css/utilities/searchable-dropdown.css">
 <script src="../assets/js/utilities/utils.js" defer></script>
 <script type="module" src="../assets/js/utilities/dropdown.js"></script>
+<script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
 <script src="../assets/js/pages/admin-candidates.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

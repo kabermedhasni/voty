@@ -50,6 +50,58 @@ button {
 }
 
 /* ---------------------------------- */
+/* Search Section Styles              */
+/* ---------------------------------- */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-box {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  background: #2a2a2a;
+  border: 2px solid #3a3a3a;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #06ac7d;
+}
+
+.search-box input::placeholder {
+  color: #999;
+}
+
+/* Modal search section */
+.modal-search-section {
+  padding: 1rem 1rem 1rem 1rem;
+  border-bottom: 2px solid #3a3a3a;
+}
+
+.modal-search-section .search-box {
+  max-width: 100%;
+}
+
+/* ---------------------------------- */
 /* Form elements (global defaults)    */
 /* ---------------------------------- */
 .form-group {

@@ -47,6 +47,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadCandidates();
   // Don't filter - show all candidates for admin's elections
   renderCandidates();
+  
+  // Search functionality
+  const searchInput = document.getElementById('searchCandidatesInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const candidateCards = candidatesGrid.querySelectorAll('.candidate-card');
+      
+      candidateCards.forEach(card => {
+        const name = card.querySelector('.candidate-name')?.textContent.toLowerCase() || '';
+        const position = card.querySelector('.candidate-position')?.textContent.toLowerCase() || '';
+        const party = card.querySelector('.candidate-party')?.textContent.toLowerCase() || '';
+        
+        const matches = name.includes(searchTerm) || 
+                       position.includes(searchTerm) || 
+                       party.includes(searchTerm);
+        
+        card.style.display = matches ? '' : 'none';
+      });
+    });
+  }
 
   initEvents();
 

@@ -1,0 +1,70 @@
+/* Searchable Multi-Select Styles */
+
+.multi-select-search {
+  position: relative;
+  padding: 0.5rem;
+  border-bottom: 1px solid #3a3a3a;
+  background: #2a2a2a;
+}
+
+.multi-select-search svg {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+.multi-select-search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem !important;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.multi-select-search-input:focus {
+  outline: none;
+  border-color: #06ac7d;
+}
+
+.multi-select-search-input::placeholder {
+  color: #999;
+}
+
+.multi-select-no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+/* Adjust multi-select menu max-height when searchable */
+.multi-select-container[data-searchable] .multi-select-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Scrollbar styling for multi-select */
+.multi-select-container[data-searchable] .multi-select-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.multi-select-container[data-searchable] .multi-select-menu::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.multi-select-container[data-searchable] .multi-select-menu::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+.multi-select-container[data-searchable] .multi-select-menu::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}

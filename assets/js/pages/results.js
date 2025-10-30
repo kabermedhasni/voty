@@ -1,3 +1,20 @@
+// Search functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchCandidatesInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      const candidateItems = document.querySelectorAll('.candidate-item');
+      
+      candidateItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const matches = text.includes(searchTerm);
+        item.style.display = matches ? '' : 'none';
+      });
+    });
+  }
+});
+
 function getVotes(){
     // Set all percentages to "No votes yet" initially
     const allPercentageSpans = document.querySelectorAll('.percentage');
