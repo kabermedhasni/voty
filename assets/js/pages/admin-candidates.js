@@ -253,9 +253,15 @@ function openAddModal() {
   document.body.style.overflow = 'hidden';
 }
 
-function openEditModal(id) {
+async function openEditModal(id) {
   const cand = candidates.find(c => String(c.id) === String(id));
   if (!cand) return;
+  
+  // Load positions for the candidate's election
+  const electionId = cand.position_election_id;
+  if (electionId) {
+    await loadPositionsForElection(electionId);
+  }
   
   // Populate dropdown first
   populatePositionDropdown();
