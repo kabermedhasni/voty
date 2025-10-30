@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 30, 2025 at 02:34 AM
+-- Generation Time: Oct 30, 2025 at 10:34 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -88,7 +88,8 @@ INSERT INTO `election` (`id`, `en_organizer`, `fr_organizer`, `ar_organizer`, `e
 (22, 'jfkdlj', 'jkdlj', 'ابيتا', 'university', '2025', '2000-12-12', '2054-12-12', 'publish', 1, 1, '2025-10-27 14:17:53'),
 (23, 'jflj', 'fjdkl', 'تبنيست', 'municipal', '2002', '2000-12-12', '2028-02-02', 'nopublish', 1, 1, '2025-10-27 15:12:56'),
 (24, 'jflj', 'fjdkl', 'تبنيست', 'municipal', '2002', '2000-12-12', '2028-02-02', 'nopublish', 1, 1, '2025-10-27 15:13:00'),
-(25, 'fdjkla', 'dfjklaj', 'تبيست j', 'governmental', '2004', '2000-12-12', '2025-12-12', 'nopublish', 1, 1, '2025-10-27 15:18:22');
+(25, 'fdjkla', 'dfjklaj', 'تبيست j', 'governmental', '2004', '2000-12-12', '2025-12-12', 'nopublish', 1, 1, '2025-10-27 15:18:22'),
+(26, 'UN', 'UN', 'نشلاشثق', '', '2027', '2025-12-10', '2027-12-12', 'nopublish', 1, 1, '2025-10-30 09:01:56');
 
 -- --------------------------------------------------------
 
@@ -113,7 +114,9 @@ INSERT INTO `election_admins` (`id`, `admin_user_id`, `election_id`, `assigned_a
 (37, 2, 17, '2025-10-27 15:52:19'),
 (42, 2, 15, '2025-10-27 17:01:57'),
 (44, 2, 23, '2025-10-27 19:23:46'),
-(45, 5, 25, '2025-10-28 18:28:15');
+(45, 5, 25, '2025-10-28 18:28:15'),
+(46, 2, 26, '2025-10-30 10:32:43'),
+(47, 5, 26, '2025-10-30 10:32:43');
 
 -- --------------------------------------------------------
 
@@ -178,12 +181,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `user_id_hmac`, `username`, `nationality_hmac`, `email_encrypted`, `role`, `password_hash`, `created_at`) VALUES
 (1, '6P0tcPVynCO8AMTLWkPn+jqP8wFuaFJUquPPHKICqCM=', 'Kaber Sidi', '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'super_admin', '$2y$10$DDPXzcf0fHCM2.bw1rs6ruoBz3Qw0bmmSmWfMvPOEtYXkRqoS3PiC', '2025-10-09 20:11:43'),
-(2, 'AcYqkgbFqszGYv7Sx1QfpI/7U9Pc1KFByDCU86gx4x0=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', '$2y$10$S01d.vIaX.mp16C4G2MsV.Z/SBb7dcBPbChyga2TiwRCXRx29q92e', '2025-10-09 20:11:44'),
-(3, 'F7nxTRhdnCmbxlw1SVh0mFEvMrmBZ8WVYHMUTwAXQl0=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', NULL, '2025-10-09 20:11:44'),
+(2, 'AcYqkgbFqszGYv7Sx1QfpI/7U9Pc1KFByDCU86gx4x0=', 'Ayman', '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'admin', '$2y$10$S01d.vIaX.mp16C4G2MsV.Z/SBb7dcBPbChyga2TiwRCXRx29q92e', '2025-10-09 20:11:44'),
+(3, 'F7nxTRhdnCmbxlw1SVh0mFEvMrmBZ8WVYHMUTwAXQl0=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', '$2y$10$ARNDP3ZBx3Rb8KXYBDte5uxmBj6UCKrWJlJmurgfg2ki0uDKLBIcu', '2025-10-09 20:11:44'),
 (4, '7Ta5LD9Y8NPlE2/z+kOQzR7JYQX7AiwZ5yi8zSf+nYA=', 'Zein El abidine', '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'super_admin', '$2y$10$9WXiTQx9DFjL78OqNW.sN.lYcuwVy4Ab8eJ/GAl9Ps3zD.fhxyyDa', '2025-10-09 20:11:44'),
 (5, '2nQiqlJzFg5VBPKwHXbuTc+RlRSnoZ0hyHg684OlZl0=', 'Zein El abidine Admin', '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'admin', '$2y$10$k6DrfbhOHbLyToqY2Isbs.ccqlQzo1wA9h704xy0XUAUVRj82ELXa', '2025-10-09 20:11:44'),
 (6, 'dr6jw2UmHLK2mcPYZoM6P6+jVIX97D3SXz3q2Oli2UQ=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', '$2y$10$k1SzIVmdkrKp4qXHHE6j2eqqu88Ff5cCymgmcma/Q3wF6Uq4uGpdW', '2025-10-09 20:11:44'),
-(7, 'vko0rlEooCTEMzE1AykWTRLzI1IWKXW6+LRqojM1PG8=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', NULL, '2025-10-09 20:11:44'),
 (8, 'erFjToDlo6CBDjwpnPlMohrDByip5E4e53FBIHpmSCA=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', NULL, '2025-10-09 20:11:44'),
 (9, 'AwZe0UZp/3yHdpd9Dthb/n8xxUA3hc9AgKlhp56b5LE=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', NULL, '2025-10-09 20:11:44'),
 (10, 'LND3xaNN/F7+3wftJmjEHP8zB1/7TM0opnqpeuDPCQ8=', NULL, '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'user', NULL, '2025-10-09 20:11:44'),
@@ -276,13 +278,13 @@ ALTER TABLE `candidates`
 -- AUTO_INCREMENT for table `election`
 --
 ALTER TABLE `election`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `election_admins`
 --
 ALTER TABLE `election_admins`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `position`

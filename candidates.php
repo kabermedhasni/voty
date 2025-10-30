@@ -15,6 +15,13 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['user', 'admin', 
     exit();
 }
 
+
+// Check if user is super_admin (redirect to super_admin pages)
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'super_admin') {
+    header('Location: super_admin/dashboard.php');
+    exit();
+}
+
 include 'includes/header.php';
 ?>
 <?php
