@@ -188,21 +188,17 @@ include '../includes/admin-header.php';
                 </button>
             </div>
             <div class="modal-body">
-                <div style="text-align: center; padding: 1rem 0;">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #ef4444; margin: 0 auto 1rem;">
-                        <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <h3 style="margin-bottom: 0.5rem;"><?php echo t('delete_candidate_title', 'Supprimer ce candidat ?'); ?></h3>
-                    <p style="color: #666;"><?php echo t('delete_candidate_warning', 'Cette action est irréversible. Voulez-vous vraiment supprimer ce candidat ?'); ?></p>
+                <p style="color: #ccc; text-align: center; margin-bottom: 2rem;">
+                    <?php echo t('delete_candidate_confirm', 'Êtes-vous sûr de vouloir supprimer ce candidat ?'); ?>
+                </p>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelDeleteBtn">
+                        <?php echo t('cancel', 'Annuler'); ?>
+                    </button>
+                    <button type="button" class="btn-danger" id="confirmDeleteBtn">
+                        <?php echo t('delete', 'Supprimer'); ?>
+                    </button>
                 </div>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-secondary" id="cancelDeleteBtn">
-                    <?php echo t('cancel', 'Annuler'); ?>
-                </button>
-                <button type="button" class="btn-danger" id="confirmDeleteBtn">
-                    <?php echo t('delete', 'Supprimer'); ?>
-                </button>
             </div>
         </div>
     </div>
