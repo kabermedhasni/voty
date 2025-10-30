@@ -48,11 +48,35 @@ if ($action === 'sendVote') {
 
     $response = curl_exec($ch);
 
+    if ($response === false) {
+        $error = curl_error($ch);
+        curl_close($ch);
+        echo json_encode(['status' => 'error', 'message' => 'Failed to connect to Hedera API: ' . $error]);
+        exit;
+    }
+
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     
+    if ($httpCode !== 200) {
+        echo json_encode(['status' => 'error', 'message' => 'Hedera API returned status code: ' . $httpCode]);
+        exit;
+    }
+    
     $res = json_decode($response, true);
+    
+    if (!isset($res['data']) || !is_array($res['data'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid response from Hedera API', 'response' => $response]);
+        exit;
+    }
+    
     $votes = $res['data'];
+
+    // If no votes, return empty object
+    if (empty($votes)) {
+        echo json_encode([]);
+        exit;
+    }
 
     $votesByPositions = [];
     foreach($votes as $vote) {
@@ -74,12 +98,11 @@ if ($action === 'sendVote') {
     foreach ($votesByPositions as $pos => $candidates) {
         $totalVotes = array_sum($candidates);
         foreach ($candidates as $cand => $count) {
-            $percentagesByPositions[$pos][$cand] = ($count / $totalVotes) * 100;
+            $percentagesByPositions[$pos][$cand] = round(($count / $totalVotes) * 100, 3);
         }
     }
     
     echo json_encode($percentagesByPositions);
-    // echo json_encode($votes);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'invalid action']);
 }

@@ -75,6 +75,20 @@ include '../includes/admin-header.php';
                             </p>
                         <?php endif; ?>
                         
+                        <div class="election-type-selector" style="margin: 1rem 0;">
+                            <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                <strong><?php echo t('election_type', 'Type d\'élection'); ?>:</strong>
+                            </label>
+                            <select class="election-type-dropdown" data-election-id="<?= $election['id']; ?>" onchange="updateElectionType(<?= $election['id']; ?>, this.value)" style="width: 100%; padding: 0.5rem; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 6px; color: #fff; font-size: 0.9rem;">
+                                <option value="" <?= empty($election['election_type']) ? 'selected' : '' ?>><?php echo t('select_type', 'Sélectionner un type'); ?></option>
+                                <option value="university" <?= ($election['election_type'] ?? '') === 'university' ? 'selected' : '' ?>><?php echo t('university', 'Universitaire'); ?></option>
+                                <option value="municipal" <?= ($election['election_type'] ?? '') === 'municipal' ? 'selected' : '' ?>><?php echo t('municipal', 'Municipal'); ?></option>
+                                <option value="governmental" <?= ($election['election_type'] ?? '') === 'governmental' ? 'selected' : '' ?>><?php echo t('governmental', 'Gouvernemental'); ?></option>
+                                <option value="student" <?= ($election['election_type'] ?? '') === 'student' ? 'selected' : '' ?>><?php echo t('student', 'Étudiant'); ?></option>
+                                <option value="professional" <?= ($election['election_type'] ?? '') === 'professional' ? 'selected' : '' ?>><?php echo t('professional', 'Professionnel'); ?></option>
+                            </select>
+                        </div>
+                        
                         <div class="election-dates">
                             <div class="date-item">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

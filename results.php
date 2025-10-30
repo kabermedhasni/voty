@@ -21,6 +21,14 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'super_admin') {
     exit();
 }
 
+// Check if user has any elections assigned
+$stmtAll = $pdo->prepare(
+    'SELECT * FROM election WHERE id IN (SELECT id_election FROM `users_election` WHERE user_id_hmac = ?)',
+);
+$stmtAll->execute([$_SESSION['user_id']]);
+$allElections = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
+
+// Get published elections
 $stmt = $pdo->prepare(
     'SELECT * FROM election WHERE `results` = \'publish\' AND id IN (SELECT id_election FROM `users_election` WHERE user_id_hmac = ?)',
 );
@@ -49,33 +57,33 @@ include 'includes/header.php';
 <div class="results-container">
     <?php if (count($elections) > 0): ?>
         <?php foreach($elections as $election): ?>
-            <h1>Student Elections</h1>
-            <h2 class="year"><?= $election['year']; ?></h2>
-            <h3 class="organizer">Organized by :  <span class="green"><?= $election[$current_lang.'_organizer']; ?></span></h3>
-            <?php $positions = get_Positions_by_election($pdo, $election['id']); ?>
-            <div class="intro-and-results">
-                <?php foreach($positions as $position): ?>
-                    <section class="election-results">
-                        <?php $candidates = get_candidates_by_position($pdo, $position['id']);?>
-                        <?php if(count($candidates) > 0): ?>
-                            <h3>Election the <span class="green"><?= $position[$current_lang.'_name'] ?> </span>:</h3>
-                            <ul class="candidate-list">
-                                <?php foreach($candidates as $candidate): ?>
-                                    <li class="candidate-item">
-                                        <div class="candidate-info">
-                                        <img src="<?= $candidate['photo_path'] ?>" class="photo-candidate">
-                                        <span class="name"><?= ($current_lang === 'ar')? $candidate['ar_name'] : $candidate['name'] ?></span>
-                                        </div>
-                                        <span class="union snem"><?= $candidate['Supporting_party'] ?></span>
-                                        <img src="<?= $candidate['path_supporting_party_logo'] ?>" class="union-logo">
-                                        <span class="percentage" data-id="<?= $candidate['id'] ?>"></span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                    </section>
-                <?php endforeach; ?>
+            <div class="header">
+                <span class="title"><?= !empty($election['election_type']) ? ucfirst($election['election_type']) . ' Elections' : 'Elections' ?></span>
+                <h2 class="year"><?= $election['year']; ?></h2>
+                <h3 class="organizer">Organized by :  <span class="green"><?= $election[$current_lang.'_organizer']; ?></span></h3>
+                <h1><?php echo t('list_of_candidates', 'List of candidates:'); ?><span>:</span></h1>
             </div>
+            <?php $positions = get_Positions_by_election($pdo, $election['id']); ?>
+            <?php foreach($positions as $position): ?>
+                <?php $candidates = get_candidates_by_position($pdo, $position['id']);?>
+                <?php if(count($candidates) > 0): ?>
+                    <div class="election-results">
+                        <div class="position-header"><?= $position[$current_lang.'_name'] ?>: </div>
+                        <?php foreach($candidates as $candidate): ?>
+                            <div class="candidate-item">
+                                <div class="candidate-info">
+                                    <img src="<?= $candidate['photo_path'] ?>" class="photo-candidate">
+                                    <span class="name"><?= ($current_lang === 'ar')? $candidate['ar_name'] : $candidate['name'] ?></span>
+                                </div>
+                                <span class="union snem"><?= $candidate['Supporting_party'] ?></span>
+                                <img src="<?= $candidate['path_supporting_party_logo'] ?>" class="union-logo">
+                                <span class="percentage" data-id="<?= $candidate['id'] ?>"></span>
+                                <div class="separator-line"></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         <?php endforeach ?>
     <?php else: ?>
         <div class="empty-state">
@@ -84,8 +92,13 @@ include 'includes/header.php';
               <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
             </svg>
           </div>
-          <h3>No Elections Available</h3>
-          <p>There are currently no active elections.</p>
+          <?php if (count($allElections) > 0): ?>
+            <h3><?php echo t('results_not_published', 'Results Not Published Yet'); ?></h3>
+            <p><?php echo t('results_not_published_msg', 'The election results have not been published yet. Please check back later.'); ?></p>
+          <?php else: ?>
+            <h3><?php echo t('no_elections_available', 'No Elections Available'); ?></h3>
+            <p><?php echo t('no_elections_msg', 'There are currently no elections assigned to you.'); ?></p>
+          <?php endif; ?>
         </div>
     <?php endif; ?>
 </div>

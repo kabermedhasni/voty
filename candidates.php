@@ -25,8 +25,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'super_admin') {
 include 'includes/header.php';
 ?>
 <?php
-    // Fetch positions and candidates
-    $stmtEle = $pdo->prepare("SELECT * FROM election WHERE results = 'publish' AND id IN (SELECT id_election FROM `users_election` WHERE user_id_hmac = ?) ORDER BY id");
+    // Fetch active elections for this user
+    $stmtEle = $pdo->prepare("SELECT * FROM election WHERE status = 1 AND id IN (SELECT id_election FROM `users_election` WHERE user_id_hmac = ?) ORDER BY id");
     $stmtEle->execute([$_SESSION['user_id']]);
     $elections = $stmtEle->fetchAll(); 
 
@@ -35,7 +35,7 @@ include 'includes/header.php';
     <?php if (count($elections) > 0): ?>
         <?php foreach($elections as $election): ?>
             <div class="header">
-                <span class="title">Student Election</span>
+                <span class="title"><?= !empty($election['election_type']) ? ucfirst($election['election_type']) . ' Elections' : 'Elections' ?></span>
                 <h2 class="year"><?= $election['year']; ?></h2>
                 <h3 class="organizer">Organized by :  <span class="green"><?= $election[$current_lang.'_organizer']; ?></span></h3>
                 <h1><?php echo t('list_of_candidates', 'List of candidates:'); ?><span>:</span></h1>
@@ -100,6 +100,7 @@ include 'includes/header.php';
                                 <div class="candidate-bio"><?php echo htmlspecialchars($bio); ?></div>
                             </div>
                         </div>
+                        <div class="separator-line"></div>
                     </div>
                     <?php } ?>
                 </div>

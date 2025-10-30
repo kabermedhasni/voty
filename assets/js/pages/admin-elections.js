@@ -468,3 +468,28 @@ function managePositions(electionId) {
   }
 }
 
+// Update election type from dropdown on election card
+function updateElectionType(electionId, electionType) {
+  const formData = new FormData();
+  formData.append('action', 'updateElectionType');
+  formData.append('election_id', electionId);
+  formData.append('election_type', electionType);
+
+  fetch('../apis/api.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      showNotification('Election type updated successfully!', 'success');
+    } else {
+      showNotification(data.message || 'Failed to update election type', 'error');
+    }
+  })
+  .catch(err => {
+    console.error('Error:', err);
+    showNotification('An error occurred while updating election type', 'error');
+  });
+}
+

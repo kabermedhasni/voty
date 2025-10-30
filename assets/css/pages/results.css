@@ -7,20 +7,43 @@
 }
 
 .results-container {
+  max-width: 960px;
   min-height: 80vh;
-  margin: 4vh;
-  max-width: 60%;
-  margin-left: 20%;
+  margin: 5vh auto;
 }
 
-/* body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--dark-bg);
-  color: var(--text-color);
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-} */
+/* Match candidates page header styles */
+.header {
+  margin-bottom: 30px;
+}
+
+.header .title {
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.header h1 {
+  color: #06ac7d;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.position-header {
+  padding: 22px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #06ac7d;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+html[dir="rtl"] .position-header {
+  text-align: right;
+}
 
 h1 {
   font-size: 2.5em;
@@ -44,52 +67,42 @@ h1 {
   color: var(--light-green);
 }
 
-.intro-and-results {
-  display: flex;
-  flex-direction: column; 
-  gap: 20px;
-}
-
-.intro-text {
-  text-align: center;
-  color: #ccc;
-  font-size: 1.1em;
-  padding: 10px 0;
-}
-
 .election-results {
-  flex-grow: 1;
-  background-color: var(--darker-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.election-results h3 {
-  font-size: 1.3em;
-  padding: 20px 30px 10px;
-  margin: 0;
-  font-weight: 500;
-}
-
-.candidate-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 40px;
+  border: 2px solid #3a3a3a;
+  border-radius: 14px;
 }
 
 .candidate-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 30px;
-  border-top: 1px solid #333;
-  transition: background-color 0.2s, transform 0.2s;
+  flex-wrap: wrap;
+  background: #252525;
+  border-radius: 0;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.candidate-item:hover {
-  background-color: var(--hover-color);
-  transform: translateX(5px);
+.candidate-item:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.separator-line {
+  height: 1px;
+  background: #333;
+  width: 100%;
+  position: relative;
+  top: 20px;
+}
+
+.candidate-item:last-child .separator-line {
+  display: none;
 }
 
 .candidate-item.winner {
@@ -100,28 +113,29 @@ h1 {
 .candidate-info {
   display: flex;
   align-items: center;
-  width: 40%;
+  gap: 20px;
+  flex: 1;
 }
 
 .photo-candidate {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px;
+  border: 2px solid #06ac7d;
+  flex-shrink: 0;
 }
 
 .name {
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .union {
+  color: #06ac7d; 
+  font-size: 16px;
   font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.9em;
-  width: 15%;
-  text-align: right;
-  color: #aaa;
+  letter-spacing: 1px;
 }
 
 .union-logo {
@@ -134,8 +148,6 @@ h1 {
 .percentage {
   font-size: 1.2em;
   font-weight: bold;
-  width: 15%;
-  text-align: right;
 }
 
 .win-percent {

@@ -43,12 +43,7 @@ switch ($action){
             echo json_encode(["error" => "id is required"]);
             break;
         }
-        $stmt = $pdo->prepare("
-            SELECT e.*, ea.admin_user_id 
-            FROM `election` e 
-            LEFT JOIN election_admins ea ON e.id = ea.election_id 
-            WHERE e.id = ?
-        ");
+        $stmt = $pdo->prepare("SELECT * FROM `election` WHERE id = ?");
         $stmt->execute([$id]);
         echo json_encode($stmt->fetch(PDO::FETCH_ASSOC) ?: new stdClass());
         break;
@@ -457,9 +452,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_election = clean_input($_POST['id']);
             $id_admin = getCurrentUserDbId($pdo);
 
+            // Insert position
             $stmt = $pdo->prepare("INSERT INTO `position`(`fr_name`, `en_name`, `ar_name`, `id_election`, `created_by`, `created_at`) VALUES (?, ?, ?, ?, ?, NOW())");
             $stmt->execute([$fr_name, $en_name, $ar_name, $id_election, $id_admin]);
+            
             echo json_encode(["success" => "Position Add Successfuly"]);
+            break;
+        case 'updateElectionType':
+            try {
+                $election_id = clean_input($_POST['election_id']);
+                $election_type = clean_input($_POST['election_type']);
+                
+                // Update election type
+                $stmt = $pdo->prepare("UPDATE `election` SET `election_type` = ? WHERE `id` = ?");
+                $stmt->execute([$election_type, $election_id]);
+                
+                echo json_encode(["status" => "success", "message" => "Election type updated successfully"]);
+            } catch (Exception $e) {
+                echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+            }
             break;
         default:
             echo json_encode(["error" => "Unknown action"]);
