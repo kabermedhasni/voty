@@ -359,6 +359,7 @@ return [
     'subject' => 'الموضوع',
     'your_message' => 'رسالتك',
     'send_message' => 'إرسال الرسالة',
+    'telephone' => 'رقم الهاتف',
     
     // Results page
     'election_results' => 'نتائج الانتخابات',

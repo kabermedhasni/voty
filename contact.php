@@ -26,8 +26,8 @@ include 'includes/header.php';
     <div class="contact-info">
         <div class="curved-lines"></div>
         <div class="left-container">
-        <h1>Contact information</h1>
-        <p class="subtitle">Si vous avez des questions, n'hésitez pas à nous contacter</p>
+        <h1><?php echo t('contact_us', 'Contact information'); ?></h1>
+        <p class="subtitle"><?php echo t('contact_desc', "Si vous avez des questions, n'hésitez pas à nous contacter"); ?></p>
         
         <div class="info-label">
             <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +69,7 @@ include 'includes/header.php';
                         stroke-linecap="round" 
                         stroke-linejoin="round"/>
             </svg>
-            <span>Nouckchott, mauritanie</span>
+            <span><?php echo t('nouakchott', 'Nouakchott'); ?></span>
         </div>
         
         <div class="social-icons">
@@ -80,7 +80,7 @@ include 'includes/header.php';
             </a>
             <a href="#" aria-label="Twitter">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.60a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
                 </svg>
             </a>
             <a href="#" aria-label="YouTube">
@@ -96,31 +96,31 @@ include 'includes/header.php';
         <form class="right-container">
             <div class="form-row">
                 <div class="form-group">
-                    <label>Prenom<span class="required">*</span></label>
+                    <label><?php echo t('your_name', 'First Name'); ?><span class="required">*</span></label>
                     <input type="text" required>
                 </div>
                 <div class="form-group">
-                    <label>Nom<span class="required">*</span></label>
+                    <label><?php echo t('surname', 'Last Name'); ?><span class="required">*</span></label>
                     <input type="text" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Email</label>
+                <label><?php echo t('your_email', 'Email'); ?></label>
                 <input type="email">
             </div>
 
             <div class="form-group">
-                <label>Telephone</label>
+                <label><?php echo t('telephone', 'Telephone'); ?></label>
                 <input type="tel">
             </div>
 
             <div class="form-group">
-                <label>Message</label>
+                <label><?php echo t('your_message', 'Message'); ?></label>
                 <textarea></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Send Message</button>
+            <button type="submit" class="submit-btn"><?php echo t('send_message', 'Send Message'); ?></button>
         </form>
     </div>
 </div>
@@ -128,3 +128,4 @@ include 'includes/header.php';
 <script src="assets/js/pages/contact.js" defer></script>
 
 <?php include 'includes/footer.php'; ?>
+
