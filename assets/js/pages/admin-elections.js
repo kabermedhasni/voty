@@ -97,7 +97,7 @@ function addNewCandidate(electionId, lang) {
   const closeBtn = document.getElementById('closeAddCandidateModal');
   const cancelBtn = document.getElementById('cancelAddCandidateBtn');
   const saveBtn = document.getElementById('saveAddCandidateBtn');
-  const positionInput = document.getElementById('add_id_position');
+  const positionSelect = document.getElementById('add_id_position');
   
   if (!modal || !form) return;
   
@@ -105,24 +105,30 @@ function addNewCandidate(electionId, lang) {
   form.reset();
   document.getElementById('add_election_id').value = electionId;
   
-  // Automatically fetch the position for this election (each election has only one position)
+  // Fetch all positions for this election and populate dropdown
   fetch(`../apis/api.php?action=getPositionByElection&id_election=${electionId}`)
     .then(res => res.json())
     .then(positions => {
       if (!positions || positions.length === 0) {
-        alert('No position found for this election. Please contact the administrator.');
+        alert('No positions found for this election. Please add positions first.');
         return;
       }
       
-      // Set the first (and only) position ID automatically
-      positionInput.value = positions[0].id;
+      // Clear and populate position dropdown
+      positionSelect.innerHTML = '<option value="">Select a position</option>';
+      positions.forEach(pos => {
+        const option = document.createElement('option');
+        option.value = pos.id;
+        option.textContent = pos.en_name || pos.fr_name || pos.ar_name || 'Position';
+        positionSelect.appendChild(option);
+      });
       
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     })
     .catch(err => {
       console.error('Error:', err);
-      alert('Failed to load election position');
+      alert('Failed to load positions for this election');
     });
   
   const closeHandler = () => {
@@ -137,9 +143,10 @@ function addNewCandidate(electionId, lang) {
   form.onsubmit = async function(e) {
     e.preventDefault();
     
-    // Validate position is set
-    if (!positionInput.value) {
-      alert('No position assigned to this election. Cannot add candidate.');
+    // Validate position is selected
+    if (!positionSelect.value) {
+      alert('Please select a position for this candidate.');
+      positionSelect.focus();
       return;
     }
     

@@ -1,6 +1,7 @@
 <?php
 require_once '../core/lang.php';
 require_once '../core/config.php';
+require_once '../apis/crypto.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
@@ -34,16 +35,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         switch ($_POST['action']) {
             case 'add':
                 $username = trim($_POST['username']);
-                $user_id = trim($_POST['user_id']);
+                $user_id_input = trim($_POST['user_id']);
                 $password = trim($_POST['password']);
                 
-                if (empty($username) || empty($user_id) || empty($password)) {
+                if (empty($username) || empty($user_id_input) || empty($password)) {
                     throw new Exception(t('all_fields_required', 'Tous les champs sont requis'));
                 }
                 
+                // Hash the user_id
+                $user_id_hmac = hmac_national_id($user_id_input, $HMAC_KEY);
+                
                 // Check if user_id already exists
                 $stmt = $pdo->prepare('SELECT id FROM users WHERE user_id_hmac = ?');
-                $stmt->execute([$user_id]);
+                $stmt->execute([$user_id_hmac]);
                 if ($stmt->fetch()) {
                     throw new Exception(t('user_id_exists', 'Cet ID utilisateur existe déjà'));
                 }
@@ -58,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
                 $stmt = $pdo->prepare('INSERT INTO users (user_id_hmac, username, password_hash, role) VALUES (?, ?, ?, ?)');
-                $stmt->execute([$user_id, $username, $password_hash, 'super_admin']);
+                $stmt->execute([$user_id_hmac, $username, $password_hash, 'super_admin']);
                 
                 echo json_encode(['success' => true, 'message' => t('super_admin_added', 'Super administrateur ajouté avec succès')]);
                 break;
@@ -66,18 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             case 'edit':
                 $id = (int)$_POST['id'];
                 $username = trim($_POST['username']);
-                $user_id = trim($_POST['user_id']);
+                $user_id_input = trim($_POST['user_id']);
                 $password = trim($_POST['password']);
                 
-                if (empty($username) || empty($user_id)) {
-                    throw new Exception(t('username_user_id_required', 'Le nom d\'utilisateur et l\'ID utilisateur sont requis'));
-                }
-                
-                // Check if user_id already exists for other users
-                $stmt = $pdo->prepare('SELECT id FROM users WHERE user_id_hmac = ? AND id != ?');
-                $stmt->execute([$user_id, $id]);
-                if ($stmt->fetch()) {
-                    throw new Exception(t('user_id_exists', 'Cet ID utilisateur existe déjà'));
+                if (empty($username)) {
+                    throw new Exception(t('username_required', 'Le nom d\'utilisateur est requis'));
                 }
                 
                 // Check if username already exists for other users
@@ -87,13 +84,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     throw new Exception(t('username_exists', 'Ce nom d\'utilisateur existe déjà'));
                 }
                 
-                if (!empty($password)) {
+                // Only update user_id if a new one is provided
+                $update_user_id = !empty($user_id_input);
+                if ($update_user_id) {
+                    // Hash the new user_id
+                    $user_id_hmac = hmac_national_id($user_id_input, $HMAC_KEY);
+                    
+                    // Check if user_id already exists for other users
+                    $stmt = $pdo->prepare('SELECT id FROM users WHERE user_id_hmac = ? AND id != ?');
+                    $stmt->execute([$user_id_hmac, $id]);
+                    if ($stmt->fetch()) {
+                        throw new Exception(t('user_id_exists', 'Cet ID utilisateur existe déjà'));
+                    }
+                }
+                
+                // Build update query based on what needs updating
+                if ($update_user_id && !empty($password)) {
                     $password_hash = password_hash($password, PASSWORD_DEFAULT);
                     $stmt = $pdo->prepare('UPDATE users SET user_id_hmac = ?, username = ?, password_hash = ? WHERE id = ? AND role = ?');
-                    $stmt->execute([$user_id, $username, $password_hash, $id, 'super_admin']);
-                } else {
+                    $stmt->execute([$user_id_hmac, $username, $password_hash, $id, 'super_admin']);
+                } elseif ($update_user_id) {
                     $stmt = $pdo->prepare('UPDATE users SET user_id_hmac = ?, username = ? WHERE id = ? AND role = ?');
-                    $stmt->execute([$user_id, $username, $id, 'super_admin']);
+                    $stmt->execute([$user_id_hmac, $username, $id, 'super_admin']);
+                } elseif (!empty($password)) {
+                    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                    $stmt = $pdo->prepare('UPDATE users SET username = ?, password_hash = ? WHERE id = ? AND role = ?');
+                    $stmt->execute([$username, $password_hash, $id, 'super_admin']);
+                } else {
+                    $stmt = $pdo->prepare('UPDATE users SET username = ? WHERE id = ? AND role = ?');
+                    $stmt->execute([$username, $id, 'super_admin']);
                 }
                 
                 echo json_encode(['success' => true, 'message' => t('super_admin_updated', 'Super administrateur mis à jour avec succès')]);
@@ -242,8 +261,11 @@ include '../includes/super-admin-header.php';
                     </div>
 
                     <div class="form-group">
-                        <h6><?php echo t('user_id', 'ID utilisateur'); ?> <span class="required">*</span></h6>
+                        <h6 id="userIdLabel"><?php echo t('user_id', 'ID utilisateur'); ?> <span class="required" id="userIdRequired">*</span></h6>
                         <input type="text" id="user_id" name="user_id" required>
+                        <small id="userIdHelp" style="display: none; color: #999; font-size: 0.8rem;">
+                            <?php echo t('leave_empty_keep_current_id', 'Laissez vide pour conserver l\'ID actuel'); ?>
+                        </small>
                     </div>
 
                     <div class="form-group">

@@ -77,7 +77,12 @@ include '../includes/admin-header.php';
                         </div>
                     </div>
 
-                    <input type="hidden" id="id_position" name="id_position" value="">
+                    <div class="form-group">
+                        <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
+                        <select id="id_position" name="id_position" required>
+                            <option value=""><?php echo t('select_position', 'Sélectionner une position'); ?></option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Descriptions -->

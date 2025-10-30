@@ -44,13 +44,9 @@ switch ($action){
             break;
         }
         $stmt = $pdo->prepare("
-            SELECT e.*, ea.admin_user_id, 
-            p.en_name as position_en_name, 
-            p.fr_name as position_fr_name, 
-            p.ar_name as position_ar_name 
+            SELECT e.*, ea.admin_user_id 
             FROM `election` e 
             LEFT JOIN election_admins ea ON e.id = ea.election_id 
-            LEFT JOIN position p ON e.id = p.id_election 
             WHERE e.id = ?
         ");
         $stmt->execute([$id]);
@@ -180,16 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 
-                // Create position for this election if position data is provided
-                $position_en = clean_input($_POST['position_en_name'] ?? '');
-                $position_fr = clean_input($_POST['position_fr_name'] ?? '');
-                $position_ar = clean_input($_POST['position_ar_name'] ?? '');
-                
-                if ($position_en && $position_fr && $position_ar) {
-                    $posStmt = $pdo->prepare("INSERT INTO `position`(`en_name`, `fr_name`, `ar_name`, `id_election`, `created_by`) VALUES (?, ?, ?, ?, ?)");
-                    $posStmt->execute([$position_en, $position_fr, $position_ar, $electionId, $created_by]);
-                }
-                
                 echo json_encode(["success" => "Election added successfully", "id" => $electionId]);
             } catch (PDOException $e) {
                 echo json_encode(["error" => $e->getMessage()]);
@@ -229,28 +215,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (is_numeric($adminId)) {
                             $assignStmt->execute([(int)$adminId, $id]);
                         }
-                    }
-                }
-                
-                // Update position for this election if position data is provided
-                $position_en = clean_input($_POST['position_en_name'] ?? '');
-                $position_fr = clean_input($_POST['position_fr_name'] ?? '');
-                $position_ar = clean_input($_POST['position_ar_name'] ?? '');
-                
-                if ($position_en && $position_fr && $position_ar) {
-                    // Check if position already exists for this election
-                    $checkPos = $pdo->prepare("SELECT id FROM position WHERE id_election = ?");
-                    $checkPos->execute([$id]);
-                    $existingPos = $checkPos->fetch(PDO::FETCH_ASSOC);
-                    
-                    if ($existingPos) {
-                        // Update existing position
-                        $updatePos = $pdo->prepare("UPDATE position SET en_name=?, fr_name=?, ar_name=? WHERE id_election=?");
-                        $updatePos->execute([$position_en, $position_fr, $position_ar, $id]);
-                    } else {
-                        // Create new position for this election
-                        $insertPos = $pdo->prepare("INSERT INTO position (en_name, fr_name, ar_name, id_election, created_by) VALUES (?, ?, ?, ?, ?)");
-                        $insertPos->execute([$position_en, $position_fr, $position_ar, $id, getCurrentUserDbId($pdo)]);
                     }
                 }
                 

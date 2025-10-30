@@ -89,8 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (editBtn) {
             const id = editBtn.dataset.id;
             const username = editBtn.dataset.username;
-            const userId = editBtn.dataset.userId;
-            openUserModal(id, username, userId);
+            openUserModal(id, username);
         }
         
         if (deleteBtn) {
@@ -99,24 +98,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    function openUserModal(id = null, username = '', userId = '') {
+    function openUserModal(id = null, username = '') {
         isEditing = !!id;
         currentUserId = id;
         
         // Reset form
         userForm.reset();
         
+        const userIdLabel = document.getElementById('userIdLabel');
+        const userIdRequired = document.getElementById('userIdRequired');
+        const userIdHelp = document.getElementById('userIdHelp');
+        
         if (isEditing) {
             userModalTitle.textContent = translations.edit_admin;
             userIdHidden.value = id;
             usernameField.value = username;
-            userIdField.value = userId;
+            // Clear user_id field for edit (leave empty to keep current)
+            userIdField.value = '';
+            userIdField.required = false;
+            if (userIdRequired) userIdRequired.style.display = 'none';
+            if (userIdHelp) userIdHelp.style.display = 'block';
             passwordField.required = false;
             passwordLabel.innerHTML = translations.password_optional + ' <span class="optional"></span>';
             passwordHelp.style.display = 'block';
         } else {
             userModalTitle.textContent = translations.add_admin;
             userIdHidden.value = '';
+            userIdField.required = true;
+            userIdField.placeholder = '';
+            if (userIdRequired) userIdRequired.style.display = 'inline';
+            if (userIdHelp) userIdHelp.style.display = 'none';
             passwordField.required = true;
             passwordLabel.innerHTML = translations.password + ' <span class="required">*</span>';
             passwordHelp.style.display = 'none';

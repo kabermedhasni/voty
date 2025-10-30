@@ -160,19 +160,37 @@ function getAdminElections($pdo, $adminUserId = null) {
     // Admins only see assigned elections
     if (isAdmin()) {
         $stmt = $pdo->prepare("
-            SELECT e.*, 
-            MAX(p.en_name) as position_en_name, 
-            MAX(p.fr_name) as position_fr_name, 
-            MAX(p.ar_name) as position_ar_name 
+            SELECT e.*
             FROM election e
             INNER JOIN election_admins ea ON e.id = ea.election_id
-            LEFT JOIN position p ON e.id = p.id_election
             WHERE ea.admin_user_id = ?
-            GROUP BY e.id
             ORDER BY e.year DESC, e.id DESC
         ");
         $stmt->execute([$adminUserId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $elections = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Fetch positions for each election
+        foreach ($elections as &$election) {
+            $posStmt = $pdo->prepare("
+                SELECT en_name, fr_name, ar_name 
+                FROM position 
+                WHERE id_election = ? 
+                ORDER BY id
+            ");
+            $posStmt->execute([$election['id']]);
+            $positions = $posStmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Store positions array
+            $election['positions'] = $positions;
+            
+            // Create formatted position strings for each language
+            $election['position_en_names'] = array_column($positions, 'en_name');
+            $election['position_fr_names'] = array_column($positions, 'fr_name');
+            $election['position_ar_names'] = array_column($positions, 'ar_name');
+        }
+        unset($election);
+        
+        return $elections;
     }
     
     return [];

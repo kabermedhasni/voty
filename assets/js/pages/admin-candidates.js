@@ -1,11 +1,13 @@
 // Admin Candidates (for regular admins)
 // - Loads candidates (optionally filtered by election)
 // - Supports opening the add modal via URL (?add=1&id_election=...)
-// - Prefills hidden id_position for the election (first available position)
+// - Loads positions for the election and populates dropdown
 // - Creates candidate via core/candidate-handler.php (action=create)
 // - Simple delete with confirm via core/candidate-handler.php (action=delete)
 
 let candidates = [];
+let positions = [];
+let currentElectionId = null;
 
 // DOM
 const candidatesGrid = document.getElementById('candidatesGrid');
@@ -23,7 +25,7 @@ const enDescInput = document.getElementById('en_description');
 const frDescInput = document.getElementById('fr_description');
 const arDescInput = document.getElementById('ar_description');
 const supportingPartyInput = document.getElementById('supporting_party');
-const idPositionInput = document.getElementById('id_position');
+const idPositionSelect = document.getElementById('id_position');
 const photoInput = document.getElementById('photo');
 const partyLogoInput = document.getElementById('party_logo');
 const photoPreview = document.getElementById('photoPreview');
@@ -38,16 +40,18 @@ const deleteLabel = adminContainer?.dataset?.deleteLabel || 'Delete';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const electionId = getQueryParam('id_election');
+  currentElectionId = electionId;
+  
   await loadCandidates();
-  if (electionId) filterCandidatesByElection(electionId);
+  // Don't filter - show all candidates for admin's elections
   renderCandidates();
 
   initEvents();
 
-  // Open modal directly when add=1
+  // Open modal only if election ID is provided
   const shouldAdd = getQueryParam('add');
   if (shouldAdd === '1' && electionId) {
-    await prefillPositionForElection(electionId);
+    await loadPositionsForElection(electionId);
     openAddModal();
   }
 });
@@ -83,11 +87,12 @@ function filterCandidatesByElection(electionId) {
 
 function renderCandidates() {
   if (!candidatesGrid) return;
+  
   if (!Array.isArray(candidates) || candidates.length === 0) {
     candidatesGrid.innerHTML = `
       <div class="empty-state">
         <h3>No candidates yet</h3>
-        <p>Start by adding your first candidate</p>
+        <p>Start by adding your first candidate from the <a href="admin-elections.php">Elections page</a></p>
       </div>
     `;
     return;
@@ -134,21 +139,56 @@ function createCandidateCard(candidate) {
   `;
 }
 
-async function prefillPositionForElection(electionId) {
+async function loadPositionsForElection(electionId) {
   try {
     const res = await fetch(`../apis/api.php?action=getPositionByElection&id_election=${encodeURIComponent(electionId)}`);
     const list = await res.json();
-    const positions = Array.isArray(list) ? list : [];
-    if (positions.length) {
-      idPositionInput && (idPositionInput.value = String(positions[0].id));
-    }
+    positions = Array.isArray(list) ? list : [];
+    populatePositionDropdown();
   } catch (e) {
-    console.error('Failed to prefill position', e);
+    console.error('Failed to load positions', e);
+    positions = [];
   }
 }
 
+function populatePositionDropdown() {
+  if (!idPositionSelect) return;
+  
+  // Clear existing options
+  idPositionSelect.innerHTML = '<option value="">Select a position</option>';
+  
+  if (positions.length === 0) {
+    idPositionSelect.innerHTML = '<option value="">No positions available - Please add positions first</option>';
+    idPositionSelect.disabled = true;
+    notify('No positions available for this election. Please add positions first.', 'warning');
+    return;
+  }
+  
+  idPositionSelect.disabled = false;
+  positions.forEach(pos => {
+    const option = document.createElement('option');
+    option.value = pos.id;
+    // Use the appropriate language name
+    option.textContent = pos.en_name || pos.fr_name || pos.ar_name || 'Position';
+    idPositionSelect.appendChild(option);
+  });
+}
+
 function openAddModal() {
+  // Check if election is selected
+  if (!currentElectionId) {
+    notify('Please select an election first', 'error');
+    return;
+  }
+  
+  // Check if positions are loaded
+  if (positions.length === 0) {
+    notify('No positions available for this election. Please add positions first.', 'error');
+    return;
+  }
+  
   resetForm();
+  populatePositionDropdown(); // Ensure dropdown is populated when modal opens
   candidateModal?.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -185,7 +225,7 @@ function populateForm(c) {
   if (frDescInput) frDescInput.value = c.fr_description || '';
   if (arDescInput) arDescInput.value = c.ar_description || '';
   if (supportingPartyInput) supportingPartyInput.value = c.Supporting_party || '';
-  if (idPositionInput) idPositionInput.value = c.id_position || '';
+  if (idPositionSelect) idPositionSelect.value = c.id_position || '';
 
   if (c.photo_path && photoPreview) {
     photoPreview.innerHTML = `<img src="../${c.photo_path}" alt="Candidate photo">`;
@@ -222,6 +262,20 @@ async function handleCreate(e) {
   e.preventDefault();
   if (!candidateForm) return;
 
+  // Validate position is selected
+  const selectedPosition = idPositionSelect?.value;
+  if (!selectedPosition) {
+    notify('Please select a position for this candidate', 'error');
+    idPositionSelect?.focus();
+    return;
+  }
+
+  // Check if positions are available
+  if (positions.length === 0) {
+    notify('No positions available. Please add positions to the election first.', 'error');
+    return;
+  }
+
   saveBtn?.classList.add('loading');
   if (saveBtn) saveBtn.disabled = true;
 
@@ -241,7 +295,7 @@ async function handleCreate(e) {
       const electionId = getQueryParam('id_election');
       if (electionId) filterCandidatesByElection(electionId);
       renderCandidates();
-      notify('Candidate saved', 'success');
+      notify('Candidate saved successfully', 'success');
     } else {
       notify(data.message || data.error || 'Failed to save candidate', 'error');
     }

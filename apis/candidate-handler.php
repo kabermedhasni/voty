@@ -50,7 +50,7 @@ function getAllCandidates() {
     $user_id = getCurrentUserDbId($pdo);
 
     $stmt = $pdo->prepare("
-        SELECT c.*, p.fr_name, p.ar_name, p.en_name
+        SELECT c.*, p.fr_name, p.ar_name, p.en_name, p.id_election as position_election_id
         FROM candidates c 
         LEFT JOIN position p ON c.id_position = p.id 
         WHERE p.id_election IN (SELECT id FROM election WHERE id IN (SELECT election_id FROM election_admins WHERE admin_user_id = ?))  
@@ -132,6 +132,22 @@ function createCandidate() {
         return;
     }
     
+    // Validate position is required
+    if (empty($id_position)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Position is required. Please select a position for this candidate.']);
+        return;
+    }
+    
+    // Verify position exists
+    $stmt = $pdo->prepare("SELECT id FROM position WHERE id = ?");
+    $stmt->execute([$id_position]);
+    if (!$stmt->fetch()) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Invalid position selected']);
+        return;
+    }
+    
     // Handle photo upload
     $photo_path = 'assets/images/candidates/profile/candidate-placeholder.png';
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
@@ -204,6 +220,22 @@ function updateCandidate() {
     $ar_description = $_POST['ar_description'] ?? $existing['ar_description'];
     $supporting_party = $_POST['supporting_party'] ?? $existing['Supporting_party'];
     $id_position = !empty($_POST['id_position']) ? $_POST['id_position'] : $existing['id_position'];
+    
+    // Validate position is required
+    if (empty($id_position)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Position is required']);
+        return;
+    }
+    
+    // Verify position exists
+    $stmt = $pdo->prepare("SELECT id FROM position WHERE id = ?");
+    $stmt->execute([$id_position]);
+    if (!$stmt->fetch()) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Invalid position selected']);
+        return;
+    }
     
     $photo_path = $existing['photo_path'];
     $party_logo_path = $existing['path_supporting_party_logo'];

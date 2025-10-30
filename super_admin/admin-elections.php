@@ -27,13 +27,8 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['user', 'admin', 
 }
 
 $stmt = $pdo->prepare(
-    'SELECT e.*, 
-     MAX(p.en_name) as position_en_name, 
-     MAX(p.fr_name) as position_fr_name, 
-     MAX(p.ar_name) as position_ar_name 
+    'SELECT e.* 
     FROM election e 
-    LEFT JOIN position p ON e.id = p.id_election 
-    GROUP BY e.id
     ORDER BY e.id DESC'
 );
 $stmt->execute();
@@ -43,11 +38,6 @@ $elections = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $adminStmt = $pdo->prepare("SELECT id, username FROM users WHERE role = 'admin' ORDER BY username");
 $adminStmt->execute();
 $adminUsers = $adminStmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Get all template positions for the dropdown (not linked to any election)
-$positionStmt = $pdo->prepare("SELECT * FROM position WHERE id_election IS NULL OR id_election = 0 ORDER BY en_name");
-$positionStmt->execute();
-$positions = $positionStmt->fetchAll(PDO::FETCH_ASSOC);
 
 include '../includes/super-admin-header.php';
 ?>
@@ -72,11 +62,6 @@ include '../includes/super-admin-header.php';
                 
                 <div class="election-card-body">
                     <h3 class="election-organizer"><?= $election[$current_lang.'_organizer']; ?></h3>
-                    <?php if (!empty($election['position_'.$current_lang.'_name'])): ?>
-                        <p style="color: #888; font-size: 0.9rem; margin: 0.5rem 0;">
-                            <strong><?php echo t('position', 'Position'); ?>:</strong> <?= $election['position_'.$current_lang.'_name']; ?>
-                        </p>
-                    <?php endif; ?>
                     
                     <div class="election-dates">
                         <div class="date-item">

@@ -61,9 +61,17 @@ include '../includes/admin-header.php';
                     
                     <div class="election-card-body">
                         <h3 class="election-organizer"><?= $election[$current_lang.'_organizer']; ?></h3>
-                        <?php if (!empty($election['position_'.$current_lang.'_name'])): ?>
+                        <?php 
+                        $positionKey = 'position_'.$current_lang.'_names';
+                        if (!empty($election[$positionKey]) && is_array($election[$positionKey])): 
+                            $positions = $election[$positionKey];
+                            $displayPositions = array_slice($positions, 0, 3);
+                            $hasMore = count($positions) > 3;
+                        ?>
                             <p style="color: #888; font-size: 0.9rem; margin: 0.5rem 0;">
-                                <strong><?php echo t('position', 'Position'); ?>:</strong> <?= $election['position_'.$current_lang.'_name']; ?>
+                                <strong><?php echo t('positions', 'Positions'); ?>:</strong> 
+                                <?= htmlspecialchars(implode(', ', $displayPositions)); ?>
+                                <?php if ($hasMore): ?>...etc<?php endif; ?>
                             </p>
                         <?php endif; ?>
                         
@@ -192,7 +200,6 @@ include '../includes/admin-header.php';
             
             <form class="modal-body" id="addCandidateForm" enctype="multipart/form-data">
                 <input type="hidden" id="add_election_id" name="id_election">
-                <input type="hidden" id="add_id_position" name="id_position">
                 
                 <!-- Basic Information -->
                 <div class="form-section">
@@ -208,6 +215,13 @@ include '../includes/admin-header.php';
                             <h6><?php echo t('candidate_name_ar', 'الاسم (العربية)'); ?> <span class="required">*</span></h6>
                             <input type="text" id="add_ar_name" name="ar_name" required placeholder="جون دو" dir="rtl">
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
+                        <select id="add_id_position" name="id_position" required>
+                            <option value=""><?php echo t('select_position', 'Sélectionner une position'); ?></option>
+                        </select>
                     </div>
                 </div>
 
