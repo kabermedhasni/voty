@@ -1,3 +1,6 @@
+// Import multi-select dropdown functions
+import { reinitMultiSelectDropdown, resetMultiSelectDropdown } from '../utilities/multi-select-dropdown.js';
+
 // Search functionality for elections
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById('searchElectionsInput');
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function stopElection(electionId, lang) {
+window.stopElection = function(electionId, lang) {
     const modal = document.getElementById('stopElectionModal');
     const message = document.getElementById('stopElectionMessage');
     const closeBtn = document.getElementById('closeStopElectionModal');
@@ -60,7 +63,7 @@ function stopElection(electionId, lang) {
     };
 }
 
-function addElection(lang) {
+window.addElection = function(lang) {
     const modal = document.getElementById('addElectionModal');
     const form = document.getElementById('addElectionForm');
     const closeBtn = document.getElementById('closeAddElectionModal');
@@ -106,22 +109,9 @@ function addElection(lang) {
     form.reset();
     
     // Reset multi-select dropdown
-    const hiddenInput = document.getElementById('election_admin_user_ids');
-    if (hiddenInput) {
-        hiddenInput.value = '';
-    }
     const container = document.getElementById('adminMultiSelect');
     if (container) {
-        // Clear all checkboxes
-        const checkboxes = container.querySelectorAll('.multi-select-checkbox');
-        checkboxes.forEach(cb => cb.classList.remove('checked'));
-        
-        // Reset display
-        const display = container.querySelector('.multi-select-display');
-        if (display) {
-            const placeholder = display.getAttribute('data-placeholder') || 'Select options...';
-            display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
-        }
+        resetMultiSelectDropdown(container);
     }
     
     modal.classList.add('active');
@@ -166,7 +156,7 @@ function addElection(lang) {
     };
 }
 
-function editElection(electionId, lang) {
+window.editElection = function(electionId, lang) {
     const modal = document.getElementById('addElectionModal');
     const form = document.getElementById('addElectionForm');
     const closeBtn = document.getElementById('closeAddElectionModal');
@@ -194,44 +184,14 @@ function editElection(electionId, lang) {
             
             // Populate multi-select dropdown with assigned admins
             const hiddenInput = document.getElementById('election_admin_user_ids');
-            if (hiddenInput && Array.isArray(admins)) {
+            const container = document.getElementById('adminMultiSelect');
+            
+            if (hiddenInput && container && Array.isArray(admins)) {
                 const adminIds = admins.map(a => a.admin_user_id).join(',');
                 hiddenInput.value = adminIds;
                 
-                // Trigger multi-select update
-                const container = document.getElementById('adminMultiSelect');
-                if (container) {
-                    // Update checkboxes
-                    admins.forEach(admin => {
-                        const item = container.querySelector(`.multi-select-item[data-value="${admin.admin_user_id}"]`);
-                        if (item) {
-                            const checkbox = item.querySelector('.multi-select-checkbox');
-                            if (checkbox) checkbox.classList.add('checked');
-                        }
-                    });
-                    
-                    // Update display
-                    const display = container.querySelector('.multi-select-display');
-                    if (display) {
-                        display.innerHTML = '';
-                        admins.forEach(admin => {
-                            const item = container.querySelector(`.multi-select-item[data-value="${admin.admin_user_id}"]`);
-                            if (item) {
-                                const tag = document.createElement('span');
-                                tag.className = 'multi-select-tag';
-                                tag.innerHTML = `
-                                    <span class="multi-select-tag-text">${item.textContent.trim()}</span>
-                                    <button type="button" class="multi-select-tag-close" data-value="${admin.admin_user_id}">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                        </svg>
-                                    </button>
-                                `;
-                                display.appendChild(tag);
-                            }
-                        });
-                    }
-                }
+                // Reinitialize the multi-select dropdown with new values
+                reinitMultiSelectDropdown(container);
             }
             
             modal.classList.add('active');
@@ -248,22 +208,9 @@ function editElection(electionId, lang) {
         modalTitle.textContent = lang === 'ar' ? 'إضافة انتخابات جديدة' : lang === 'fr' ? 'Ajouter une nouvelle élection' : 'Add new Election';
         
         // Reset multi-select dropdown
-        const hiddenInput = document.getElementById('election_admin_user_ids');
-        if (hiddenInput) {
-            hiddenInput.value = '';
-        }
         const container = document.getElementById('adminMultiSelect');
         if (container) {
-            // Clear all checkboxes
-            const checkboxes = container.querySelectorAll('.multi-select-checkbox');
-            checkboxes.forEach(cb => cb.classList.remove('checked'));
-            
-            // Reset display
-            const display = container.querySelector('.multi-select-display');
-            if (display) {
-                const placeholder = display.getAttribute('data-placeholder') || 'Select options...';
-                display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
-            }
+            resetMultiSelectDropdown(container);
         }
     };
     
@@ -319,7 +266,7 @@ function editElection(electionId, lang) {
     };
 }
 
-function addNewCandidate(electionId, lang) {
+window.addNewCandidate = function(electionId, lang) {
     const candidateModal = document.getElementById('candidateModal');
     const candidateForm = document.getElementById('candidateForm');
     const positionInput = document.getElementById('candidate_id_position');
@@ -404,7 +351,7 @@ function addNewCandidate(electionId, lang) {
     };
 }
 
-function publishResults(electionId) {
+window.publishResults = function(electionId) {
     const formData = new FormData();
     formData.append('action', 'publishResults');
     formData.append('id_election', electionId);
@@ -418,7 +365,7 @@ function publishResults(electionId) {
     window.location.reload();
 }
 
-function stopPublishingResults(electionId) {
+window.stopPublishingResults = function(electionId) {
     const formData = new FormData();
     formData.append('action', 'stopPublishingResults');
     formData.append('id_election', electionId);
@@ -432,11 +379,11 @@ function stopPublishingResults(electionId) {
     window.location.reload();
 }
 
-function getListOfCandidates(electionId) {
+window.getListOfCandidates = function(electionId) {
     window.location.href = `../super_admin/admin-candidates.php?id_election=${electionId}`;
 }
 
-function getResults(electionId) {
+window.getResults = function(electionId) {
     window.location.href = `../admin/admin-results.php?id_election=${electionId}`;
 }
 

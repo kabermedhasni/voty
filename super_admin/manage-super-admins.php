@@ -134,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 
             case 'search':
                 $search = trim($_POST['search']);
-                $stmt = $pdo->prepare('SELECT id, user_id_hmac, username FROM users WHERE role = ? AND (username LIKE ? OR user_id LIKE ?) ORDER BY username');
-                $stmt->execute(['super_admin', "%$search%", "%$search%"]);
+                $stmt = $pdo->prepare('SELECT id, user_id_hmac, username FROM users WHERE role = ? AND username LIKE ? ORDER BY username');
+                $stmt->execute(['super_admin', "%$search%"]);
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 echo json_encode(['success' => true, 'users' => $users]);

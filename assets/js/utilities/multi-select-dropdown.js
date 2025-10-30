@@ -153,9 +153,50 @@ export function initMultiSelectDropdowns(root = document) {
 export function reinitMultiSelectDropdown(container) {
   // Remove initialization flag to allow re-init
   if (container.dataset.multiSelectInitialized === 'true') {
+    // Remove all event listeners by cloning and replacing the container's interactive elements
+    const button = container.querySelector(".multi-select-button");
+    const display = container.querySelector(".multi-select-display");
+    const items = container.querySelectorAll(".multi-select-item");
+    
+    if (button) {
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+    }
+    
+    if (display) {
+      const newDisplay = display.cloneNode(true);
+      display.parentNode.replaceChild(newDisplay, display);
+    }
+    
+    items.forEach(item => {
+      const newItem = item.cloneNode(true);
+      item.parentNode.replaceChild(newItem, item);
+    });
+    
     container.dataset.multiSelectInitialized = 'false';
   }
   initMultiSelectDropdown(container);
+}
+
+// Export function to reset a multi-select dropdown
+export function resetMultiSelectDropdown(container) {
+  const hiddenInput = container.querySelector("input[type='hidden']");
+  const display = container.querySelector(".multi-select-display");
+  const checkboxes = container.querySelectorAll('.multi-select-checkbox');
+  const placeholderText = display?.getAttribute("data-placeholder") || "Select options...";
+  
+  // Clear hidden input
+  if (hiddenInput) {
+    hiddenInput.value = '';
+  }
+  
+  // Clear all checkboxes
+  checkboxes.forEach(cb => cb.classList.remove('checked'));
+  
+  // Reset display
+  if (display) {
+    display.innerHTML = `<span class="multi-select-placeholder">${placeholderText}</span>`;
+  }
 }
 
 // Auto-init on DOM ready

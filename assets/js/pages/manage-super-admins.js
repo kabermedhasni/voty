@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentUserId = null;
     let isEditing = false;
     
+    // Store original table HTML for search reset
+    const originalTableHTML = usersTableBody.innerHTML;
+    
     // Translations
     const translations = {
         add_super_admin: 'Ajouter un super administrateur',
@@ -237,7 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchTerm = searchInput.value.trim();
         
         if (searchTerm === '') {
-            window.location.reload();
+            // Restore original table content instead of reloading
+            usersTableBody.innerHTML = originalTableHTML;
             return;
         }
         
