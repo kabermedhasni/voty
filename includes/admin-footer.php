@@ -38,5 +38,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Global Scripts -->
+    <script src="../assets/js/utilities/toast.js" defer></script>
 </body>
 </html>

@@ -153,13 +153,13 @@ function addElection(lang) {
                 closeHandler();
                 window.location.reload();
             } else {
-                alert(data.error || 'Failed to add election');
+                showToast(data.error || 'Failed to add election', 'error');
                 saveBtn.classList.remove('loading');
                 saveBtn.disabled = false;
             }
         } catch (err) {
             console.error('Error:', err);
-            alert('An error occurred while adding the election');
+            showToast('An error occurred while adding the election', 'error');
             saveBtn.classList.remove('loading');
             saveBtn.disabled = false;
         }
@@ -239,7 +239,7 @@ function editElection(electionId, lang) {
         })
         .catch(err => {
             console.error('Error loading election:', err);
-            alert('Failed to load election data');
+            showToast('Failed to load election data', 'error');
         });
     
     const closeHandler = () => {
@@ -294,7 +294,7 @@ function editElection(electionId, lang) {
                         closeHandler();
                         window.location.reload();
                     } else {
-                        alert(data.error || 'Failed to update election');
+                        showToast(data.error || 'Failed to update election', 'error');
                         saveBtn.classList.remove('loading');
                         saveBtn.disabled = false;
                     }
@@ -306,13 +306,13 @@ function editElection(electionId, lang) {
             } else {
                 // Response not OK
                 const data = await response.json().catch(() => ({ error: 'Failed to update election' }));
-                alert(data.error || 'Failed to update election');
+                showToast(data.error || 'Failed to update election', 'error');
                 saveBtn.classList.remove('loading');
                 saveBtn.disabled = false;
             }
         } catch (err) {
             console.error('Error:', err);
-            alert('An error occurred while updating the election');
+            showToast('An error occurred while updating the election', 'error');
             saveBtn.classList.remove('loading');
             saveBtn.disabled = false;
         }
@@ -339,7 +339,7 @@ function addNewCandidate(electionId, lang) {
         .then(list => {
             const positions = Array.isArray(list) ? list : [];
             if (!positions.length) {
-                alert('Please create a position for this election in Settings first.');
+                showToast('Please create a position for this election in Settings first.', 'error');
                 return;
             }
             // Enforce single position: take the first one
@@ -351,7 +351,7 @@ function addNewCandidate(electionId, lang) {
         })
         .catch(err => {
             console.error('Error loading positions:', err);
-            alert('Failed to load election position');
+            showToast('Failed to load election position', 'error');
         });
 
     // Close modal handlers
@@ -369,7 +369,7 @@ function addNewCandidate(electionId, lang) {
         e.preventDefault();
 
         if (!positionInput.value) {
-            alert('No position is set for this election.');
+            showToast('No position is set for this election.', 'error');
             return;
         }
 
@@ -392,11 +392,11 @@ function addNewCandidate(electionId, lang) {
                 window.location.reload();
             } else {
                 console.error('Server Response:', data);
-                alert('Error: ' + data);
+                showToast('Error: ' + data, 'error');
             }
         } catch (err) {
             console.error('Error:', err);
-            alert('An error occurred while saving the candidate');
+            showToast('An error occurred while saving the candidate', 'error');
         } finally {
             saveCandidateBtn.classList.remove('loading');
             saveCandidateBtn.disabled = false;

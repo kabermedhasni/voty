@@ -16,75 +16,81 @@ function initMultiSelectDropdown(container) {
   
   if (!button || !menu || !display || !hiddenInput) return;
 
-  // Store selected values
-  let selectedValues = [];
+  // Check if already initialized to prevent double initialization
+  if (container.dataset.multiSelectInitialized === 'true') return;
+  container.dataset.multiSelectInitialized = 'true';
+
+  // Store selected values as a Set for better performance
+  let selectedValues = new Set();
   const placeholderText = display.getAttribute("data-placeholder") || "Select options...";
 
   // Toggle open/close
-  button.addEventListener("click", (e) => {
+  const toggleHandler = (e) => {
     // Don't toggle if clicking on a tag close button
     if (e.target.closest('.multi-select-tag-close')) return;
     
     button.classList.toggle("active");
     menu.classList.toggle("active");
-  });
+  };
+  button.addEventListener("click", toggleHandler);
 
   // Close when clicking outside this container
-  document.addEventListener("click", (event) => {
+  const outsideClickHandler = (event) => {
     if (!container.contains(event.target)) {
       button.classList.remove("active");
       menu.classList.remove("active");
     }
-  });
+  };
+  document.addEventListener("click", outsideClickHandler);
 
   // Update display with selected items
   function updateDisplay() {
     display.innerHTML = '';
     
-    if (selectedValues.length === 0) {
+    if (selectedValues.size === 0) {
       display.innerHTML = `<span class="multi-select-placeholder">${placeholderText}</span>`;
-      return;
+      hiddenInput.value = '';
+    } else {
+      // Create tags for selected items
+      selectedValues.forEach(value => {
+        const item = menu.querySelector(`.multi-select-item[data-value="${value}"]`);
+        if (!item) return;
+        
+        const tag = document.createElement('span');
+        tag.className = 'multi-select-tag';
+        tag.innerHTML = `
+          <span class="multi-select-tag-text">${item.textContent.trim()}</span>
+          <button type="button" class="multi-select-tag-close" data-value="${value}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        `;
+        
+        display.appendChild(tag);
+      });
+
+      // Update hidden input
+      hiddenInput.value = Array.from(selectedValues).join(',');
     }
-
-    // Create tags for selected items
-    selectedValues.forEach(value => {
-      const item = menu.querySelector(`.multi-select-item[data-value="${value}"]`);
-      if (!item) return;
-      
-      const tag = document.createElement('span');
-      tag.className = 'multi-select-tag';
-      tag.innerHTML = `
-        <span class="multi-select-tag-text">${item.textContent.trim()}</span>
-        <button type="button" class="multi-select-tag-close" data-value="${value}">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      `;
-      
-      display.appendChild(tag);
-    });
-
-    // Update hidden input
-    hiddenInput.value = selectedValues.join(',');
 
     // Dispatch change event
     const changeEvent = new CustomEvent("multiselect:change", {
       bubbles: true,
-      detail: { container, selectedValues, hiddenInput },
+      detail: { container, selectedValues: Array.from(selectedValues), hiddenInput },
     });
     container.dispatchEvent(changeEvent);
   }
 
   // Handle tag removal
-  display.addEventListener('click', (e) => {
+  const tagRemovalHandler = (e) => {
     const closeBtn = e.target.closest('.multi-select-tag-close');
     if (closeBtn) {
       e.stopPropagation();
       const value = closeBtn.getAttribute('data-value');
       
       // Remove from selected values
-      selectedValues = selectedValues.filter(v => v !== value);
+      selectedValues.delete(value);
       
       // Update checkbox state
       const item = menu.querySelector(`.multi-select-item[data-value="${value}"]`);
@@ -95,12 +101,13 @@ function initMultiSelectDropdown(container) {
       
       updateDisplay();
     }
-  });
+  };
+  display.addEventListener('click', tagRemovalHandler);
 
   // Item selection
   const items = container.querySelectorAll(".multi-select-item");
   items.forEach((item) => {
-    item.addEventListener("click", (e) => {
+    const itemClickHandler = (e) => {
       e.stopPropagation();
       const value = item.getAttribute("data-value");
       const checkbox = item.querySelector('.multi-select-checkbox');
@@ -108,37 +115,47 @@ function initMultiSelectDropdown(container) {
       if (!value) return;
 
       // Toggle selection
-      if (selectedValues.includes(value)) {
-        selectedValues = selectedValues.filter(v => v !== value);
+      if (selectedValues.has(value)) {
+        selectedValues.delete(value);
         if (checkbox) checkbox.classList.remove('checked');
       } else {
-        selectedValues.push(value);
+        selectedValues.add(value);
         if (checkbox) checkbox.classList.add('checked');
       }
 
       updateDisplay();
-    });
+    };
+    item.addEventListener("click", itemClickHandler);
   });
 
   // Initialize from hidden input value if present
-  if (hiddenInput.value) {
-    selectedValues = hiddenInput.value.split(',').filter(v => v.trim() !== '');
-    selectedValues.forEach(value => {
-      const item = menu.querySelector(`.multi-select-item[data-value="${value}"]`);
+  if (hiddenInput.value && hiddenInput.value.trim() !== '') {
+    const values = hiddenInput.value.split(',').filter(v => v.trim() !== '');
+    values.forEach(value => {
+      selectedValues.add(value.trim());
+      const item = menu.querySelector(`.multi-select-item[data-value="${value.trim()}"]`);
       if (item) {
         const checkbox = item.querySelector('.multi-select-checkbox');
         if (checkbox) checkbox.classList.add('checked');
       }
     });
-    updateDisplay();
-  } else {
-    updateDisplay();
   }
+  
+  updateDisplay();
 }
 
 export function initMultiSelectDropdowns(root = document) {
   const containers = root.querySelectorAll(".multi-select-container");
   containers.forEach(initMultiSelectDropdown);
+}
+
+// Export for re-initialization
+export function reinitMultiSelectDropdown(container) {
+  // Remove initialization flag to allow re-init
+  if (container.dataset.multiSelectInitialized === 'true') {
+    container.dataset.multiSelectInitialized = 'false';
+  }
+  initMultiSelectDropdown(container);
 }
 
 // Auto-init on DOM ready

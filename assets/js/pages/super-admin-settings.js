@@ -42,7 +42,7 @@ document.querySelectorAll('.edit-btn').forEach(btn => {
             openModal(positionModal);
         } catch (err) {
             console.error('Error:', err);
-            alert('Error loading position data');
+            showToast('Error loading position data', 'error');
         }
     });
 });
@@ -99,11 +99,11 @@ positionForm.onsubmit = async function(e) {
             window.location.reload();
         } else {
             console.error('Server Response:', data);
-            alert('Error: ' + data);
+            showToast('Error: ' + data, 'error');
         }
     } catch (err) {
         console.error('Error:', err);
-        alert('An error occurred while saving the position');
+        showToast('An error occurred while saving the position', 'error');
     } finally {
         savePositionBtn.classList.remove('loading');
         savePositionBtn.disabled = false;
@@ -126,6 +126,6 @@ confirmDeleteBtn.onclick = async function() {
         window.location.reload();
     } catch (err) {
         console.error('Error:', err);
-        alert('An error occurred while deleting the position');
+        showToast('An error occurred while deleting the position', 'error');
     }
 };
