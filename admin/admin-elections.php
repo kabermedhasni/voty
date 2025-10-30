@@ -398,15 +398,15 @@ include '../includes/admin-header.php';
                     <h3><?php echo t('election_configuration', 'Configuration élection'); ?></h3>
                     
                     <div class="form-group">
-                        <h6><?php echo t('election_type', 'Type élection'); ?> <span class="required">*</span></h6>
+                        <h6><?php echo t('upload_new_users', 'upload the new users'); ?> <span class="required">*</span></h6>
                         <div class="file-upload-container">
-                            <input type="file" id="excelFile" accept=".xlsx,.xls" class="file-excel-input">
-                            <!-- <label for="add_photo" class="file-label">
+                            <input type="file" id="excelFile" accept=".xlsx,.xls" class="file-input file-excel-input">
+                            <label for="excelFile" class="file-label">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span id="addPhotoLabel"><?php echo t('upload_excel', 'Télécharger un fichier Excel'); ?></span>
-                            </label> -->
+                                <span id="excelFileLabel"><?php echo t('upload_excel', 'Télécharger un fichier Excel'); ?></span>
+                            </label>
                             <div class="file-preview" id="addFilePreview"></div>
                         </div>
                     </div>

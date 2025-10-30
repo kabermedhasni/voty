@@ -25,6 +25,7 @@ return [
     'req_lowercase' => 'Le mot de passe doit contenir des lettres minuscules',
     'req_uppercase' => 'Le mot de passe doit contenir des lettres majuscules',
     'req_number' => 'Le mot de passe doit contenir au moins un chiffre',
+    'upload_new_users' => 'Télécharger les nouveaux utilisateurs',
 
     // Dashboard
     'welcome_dashboard' => 'Bienvenue sur le tableau de bord!',

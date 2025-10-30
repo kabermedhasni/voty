@@ -349,6 +349,7 @@ return [
     'vote_confirmation_msg' => 'هل أنت متأكد من أنك تريد التصويت لهذا المرشح؟',
     'yes_submit' => 'نعم، إرسال',
     'no_cancel' => 'لا، إلغاء',
+    'upload_new_users' => 'تحميل المستخدمين الجدد',
     
     // Contact page
     'contact_us' => 'اتصل بنا',
