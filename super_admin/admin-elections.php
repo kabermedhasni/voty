@@ -40,7 +40,7 @@ $stmt->execute();
 $elections = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Get all admin users for the dropdown
-$adminStmt = $pdo->prepare("SELECT id FROM users WHERE role = 'admin' ");
+$adminStmt = $pdo->prepare("SELECT id, username FROM users WHERE role = 'admin' ORDER BY username");
 $adminStmt->execute();
 $adminUsers = $adminStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -184,7 +184,25 @@ include '../includes/super-admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('admin_responsible', 'Administrateur responsable'); ?> <span class="required">*</span></h6>
-                        <input type="text" id="election_admin_user_id" name="admin_user_id" required>
+                        <div class="multi-select-container" id="adminMultiSelect">
+                            <div class="multi-select-button">
+                                <div class="multi-select-display" data-placeholder="<?php echo t('select_admins', 'Sélectionner les administrateurs'); ?>"></div>
+                                <span class="multi-select-chevron">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="multi-select-menu">
+                                <?php foreach($adminUsers as $admin): ?>
+                                    <div class="multi-select-item" data-value="<?= $admin['id']; ?>">
+                                        <span class="multi-select-checkbox"></span>
+                                        <span><?= htmlspecialchars($admin['username']); ?></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <input type="hidden" id="election_admin_user_ids" name="admin_user_ids">
+                        </div>
                     </div>
                 </div>
 
@@ -236,6 +254,7 @@ include '../includes/super-admin-header.php';
 
 </div>
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script type="module" src="../assets/js/utilities/multi-select-dropdown.js"></script>
 <script src="../assets/js/pages/super-admin-elections.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

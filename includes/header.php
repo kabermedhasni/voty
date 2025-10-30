@@ -18,7 +18,6 @@ require_once 'core/lang.php'; ?>
   <link rel="stylesheet" href="assets/css/pages/contact.css" />
   <link rel="stylesheet" href="assets/css/layout/footer.css" />
   <link rel="icon" type="image/png" href="assets/images/voty.svg" />
-  <script src="assets/js/utilities/linkDropdown.js" defer></script>
   <script src="assets/js/layout/header.js" defer></script>
 </head>
 

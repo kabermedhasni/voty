@@ -80,6 +80,16 @@ switch ($action){
         $stmt->execute([$id_admin]);
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         break;
+    case 'getElectionAdmins':
+        $election_id = $_GET['election_id'] ?? null;
+        if (!$election_id) {
+            echo json_encode(["error" => "election_id is required"]);
+            break;
+        }
+        $stmt = $pdo->prepare("SELECT admin_user_id FROM election_admins WHERE election_id = ?");
+        $stmt->execute([$election_id]);
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        break;
     case '':
         break;
     default:
@@ -150,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $end_date = clean_input($_POST['end_date']);
             $status = isset($_POST['status']) ? (int)$_POST['status'] : 1;
             $election_type = clean_input($_POST['election_type'] ?? '');
-            $admin_user_id = isset($_POST['admin_user_id']) ? (int)$_POST['admin_user_id'] : null;
+            $admin_user_ids = isset($_POST['admin_user_ids']) ? $_POST['admin_user_ids'] : '';
             $created_by = getCurrentUserDbId($pdo);
 
             try {
@@ -159,10 +169,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $electionId = $pdo->lastInsertId();
                 
-                // Assign admin if specified
-                if ($admin_user_id) {
+                // Assign admins if specified (comma-separated IDs)
+                if (!empty($admin_user_ids)) {
+                    $adminIds = array_filter(array_map('trim', explode(',', $admin_user_ids)));
                     $assignStmt = $pdo->prepare("INSERT INTO election_admins (admin_user_id, election_id) VALUES (?, ?)");
-                    $assignStmt->execute([$admin_user_id, $electionId]);
+                    foreach ($adminIds as $adminId) {
+                        if (is_numeric($adminId)) {
+                            $assignStmt->execute([(int)$adminId, $electionId]);
+                        }
+                    }
                 }
                 
                 // Create position for this election if position data is provided
@@ -195,21 +210,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $end_date = clean_input($_POST['end_date']);
             $status = isset($_POST['status']) ? (int)$_POST['status'] : 1;
             $election_type = clean_input($_POST['election_type'] ?? '');
-            $admin_user_id = isset($_POST['admin_user_id']) ? (int)$_POST['admin_user_id'] : null;
+            $admin_user_ids = isset($_POST['admin_user_ids']) ? $_POST['admin_user_ids'] : '';
 
             try {
                 $stmt = $pdo->prepare("UPDATE `election` SET `en_organizer`=?, `fr_organizer`=?, `ar_organizer`=?, `year`=?, `start_date`=?, `end_date`=?, `status`=?, `election_type`=? WHERE id=?");
                 $stmt->execute([$en_organizer, $fr_organizer, $ar_organizer, $year, $start_date, $end_date, $status, $election_type, $id]);
                 
-                // Update admin assignment if specified
-                if ($admin_user_id) {
-                    // Remove existing assignments
-                    $delStmt = $pdo->prepare("DELETE FROM election_admins WHERE election_id = ?");
-                    $delStmt->execute([$id]);
-                    
-                    // Add new assignment
+                // Update admin assignments if specified (comma-separated IDs)
+                // Remove existing assignments
+                $delStmt = $pdo->prepare("DELETE FROM election_admins WHERE election_id = ?");
+                $delStmt->execute([$id]);
+                
+                // Add new assignments
+                if (!empty($admin_user_ids)) {
+                    $adminIds = array_filter(array_map('trim', explode(',', $admin_user_ids)));
                     $assignStmt = $pdo->prepare("INSERT INTO election_admins (admin_user_id, election_id) VALUES (?, ?)");
-                    $assignStmt->execute([$admin_user_id, $id]);
+                    foreach ($adminIds as $adminId) {
+                        if (is_numeric($adminId)) {
+                            $assignStmt->execute([(int)$adminId, $id]);
+                        }
+                    }
                 }
                 
                 // Update position for this election if position data is provided

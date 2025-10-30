@@ -83,6 +83,26 @@ function addElection(lang) {
     };
 
     form.reset();
+    
+    // Reset multi-select dropdown
+    const hiddenInput = document.getElementById('election_admin_user_ids');
+    if (hiddenInput) {
+        hiddenInput.value = '';
+    }
+    const container = document.getElementById('adminMultiSelect');
+    if (container) {
+        // Clear all checkboxes
+        const checkboxes = container.querySelectorAll('.multi-select-checkbox');
+        checkboxes.forEach(cb => cb.classList.remove('checked'));
+        
+        // Reset display
+        const display = container.querySelector('.multi-select-display');
+        if (display) {
+            const placeholder = display.getAttribute('data-placeholder') || 'Select options...';
+            display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
+        }
+    }
+    
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
@@ -136,10 +156,12 @@ function editElection(electionId, lang) {
     // Change modal title
     modalTitle.textContent = lang === 'ar' ? 'تعديل الانتخابات' : lang === 'fr' ? 'Modifier l\'élection' : 'Edit Election';
     
-    // Fetch election data
-    fetch(`../apis/api.php?action=getElection&id=${electionId}`)
-        .then(res => res.json())
-        .then(election => {
+    // Fetch election data and assigned admins
+    Promise.all([
+        fetch(`../apis/api.php?action=getElection&id=${electionId}`).then(res => res.json()),
+        fetch(`../apis/api.php?action=getElectionAdmins&election_id=${electionId}`).then(res => res.json())
+    ])
+        .then(([election, admins]) => {
             // Populate form
             document.getElementById('election_ar_organizer').value = election.ar_organizer || '';
             document.getElementById('election_en_organizer').value = election.en_organizer || '';
@@ -149,8 +171,46 @@ function editElection(electionId, lang) {
             document.getElementById('election_end_date').value = election.end_date || '';
             document.getElementById('election_status').value = election.status || '1';
             
-            if (document.getElementById('election_admin_user_id')) {
-                document.getElementById('election_admin_user_id').value = election.admin_user_id || '';
+            // Populate multi-select dropdown with assigned admins
+            const hiddenInput = document.getElementById('election_admin_user_ids');
+            if (hiddenInput && Array.isArray(admins)) {
+                const adminIds = admins.map(a => a.admin_user_id).join(',');
+                hiddenInput.value = adminIds;
+                
+                // Trigger multi-select update
+                const container = document.getElementById('adminMultiSelect');
+                if (container) {
+                    // Update checkboxes
+                    admins.forEach(admin => {
+                        const item = container.querySelector(`.multi-select-item[data-value="${admin.admin_user_id}"]`);
+                        if (item) {
+                            const checkbox = item.querySelector('.multi-select-checkbox');
+                            if (checkbox) checkbox.classList.add('checked');
+                        }
+                    });
+                    
+                    // Update display
+                    const display = container.querySelector('.multi-select-display');
+                    if (display) {
+                        display.innerHTML = '';
+                        admins.forEach(admin => {
+                            const item = container.querySelector(`.multi-select-item[data-value="${admin.admin_user_id}"]`);
+                            if (item) {
+                                const tag = document.createElement('span');
+                                tag.className = 'multi-select-tag';
+                                tag.innerHTML = `
+                                    <span class="multi-select-tag-text">${item.textContent.trim()}</span>
+                                    <button type="button" class="multi-select-tag-close" data-value="${admin.admin_user_id}">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                `;
+                                display.appendChild(tag);
+                            }
+                        });
+                    }
+                }
             }
             
             modal.classList.add('active');
@@ -165,6 +225,25 @@ function editElection(electionId, lang) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
         modalTitle.textContent = lang === 'ar' ? 'إضافة انتخابات جديدة' : lang === 'fr' ? 'Ajouter une nouvelle élection' : 'Add new Election';
+        
+        // Reset multi-select dropdown
+        const hiddenInput = document.getElementById('election_admin_user_ids');
+        if (hiddenInput) {
+            hiddenInput.value = '';
+        }
+        const container = document.getElementById('adminMultiSelect');
+        if (container) {
+            // Clear all checkboxes
+            const checkboxes = container.querySelectorAll('.multi-select-checkbox');
+            checkboxes.forEach(cb => cb.classList.remove('checked'));
+            
+            // Reset display
+            const display = container.querySelector('.multi-select-display');
+            if (display) {
+                const placeholder = display.getAttribute('data-placeholder') || 'Select options...';
+                display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
+            }
+        }
     };
     
     closeBtn.onclick = closeHandler;
