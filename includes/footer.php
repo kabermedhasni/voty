@@ -13,7 +13,7 @@
         
         <div class="footer-center">
             <div class="language-selector" aria-label="Language selector">
-                <div class="lang-title"><?php echo t('language', 'Langue'); ?></div>
+                <div class="lang-title"><?php echo t('language', 'Language'); ?></div>
                 <div class="lang-options" role="group" aria-label="Languages">
                     <?php $cl = current_lang(); ?>
                     <a href="?lang=en" class="lang-btn <?php echo $cl === 'en' ? 'active' : ''; ?>" aria-pressed="<?php echo $cl === 'en' ? 'true' : 'false'; ?>"><?php echo t('english', 'English'); ?></a>

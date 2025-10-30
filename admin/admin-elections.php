@@ -39,7 +39,7 @@ include '../includes/admin-header.php';
 ?>
 <div class="admin-elections-container">
     <div class="header-elections">
-        <h1><?php echo t('manage_elections', 'Gérer les élections'); ?></h1>
+        <h1><?php echo t('manage_elections', 'Manage Elections'); ?></h1>
     </div>
     
     <!-- Search Section -->
@@ -49,13 +49,13 @@ include '../includes/admin-header.php';
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                 <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Rechercher des élections...'); ?>">
+            <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Search elections...'); ?>">
         </div>
     </div>
     
     <?php if (empty($elections)): ?>
         <div class="no-elections-message">
-            <p><?php echo t('no_elections_assigned', 'Aucune élection ne vous est assignée.'); ?></p>
+            <p><?php echo t('no_elections_assigned', 'No elections assigned to you.'); ?></p>
         </div>
     <?php else: ?>
         <div class="elections-grid">
@@ -88,20 +88,20 @@ include '../includes/admin-header.php';
                         
                         <div class="election-type-selector" style="margin: 1rem 0;">
                             <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">
-                                <strong><?php echo t('election_type', 'Type d\'\u00e9lection'); ?>:</strong>
+                                <strong><?php echo t('election_type', 'Election type'); ?>:</strong>
                             </label>
-                            <div class="dropdown-container" id="electionTypeDropdown_<?= $election['id']; ?>" data-election-id="<?= $election['id']; ?>" data-searchable data-search-placeholder="<?php echo t('search_type', 'Rechercher...'); ?>">
+                            <div class="dropdown-container" id="electionTypeDropdown_<?= $election['id']; ?>" data-election-id="<?= $election['id']; ?>" data-searchable data-search-placeholder="<?php echo t('search_type', 'Search...'); ?>">
                                 <button type="button" class="dropdown-button" style="width: 100%;">
                                     <span class="dropdown-text">
                                         <?php 
                                         $typeLabels = [
-                                            'university' => t('university', 'Universitaire'),
+                                            'university' => t('university', 'University'),
                                             'municipal' => t('municipal', 'Municipal'),
-                                            'governmental' => t('governmental', 'Gouvernemental'),
-                                            'student' => t('student', 'Étudiant'),
-                                            'professional' => t('professional', 'Professionnel')
+                                            'governmental' => t('governmental', 'Governmental'),
+                                            'student' => t('student', 'Student'),
+                                            'professional' => t('professional', 'Professional')
                                         ];
-                                        echo empty($election['election_type']) ? t('select_type', 'Sélectionner un type') : ($typeLabels[$election['election_type']] ?? $election['election_type']);
+                                        echo empty($election['election_type']) ? t('select_type', 'Select type') : ($typeLabels[$election['election_type']] ?? $election['election_type']);
                                         ?>
                                     </span>
                                     <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,22 +110,22 @@ include '../includes/admin-header.php';
                                 </button>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item" data-value="">
-                                        <span><?php echo t('select_type', 'Sélectionner un type'); ?></span>
+                                        <span><?php echo t('select_type', 'Select type'); ?></span>
                                     </div>
                                     <div class="dropdown-item" data-value="university">
-                                        <span><?php echo t('university', 'Universitaire'); ?></span>
+                                        <span><?php echo t('university', 'University'); ?></span>
                                     </div>
                                     <div class="dropdown-item" data-value="municipal">
                                         <span><?php echo t('municipal', 'Municipal'); ?></span>
                                     </div>
                                     <div class="dropdown-item" data-value="governmental">
-                                        <span><?php echo t('governmental', 'Gouvernemental'); ?></span>
+                                        <span><?php echo t('governmental', 'Governmental'); ?></span>
                                     </div>
                                     <div class="dropdown-item" data-value="student">
-                                        <span><?php echo t('student', 'Étudiant'); ?></span>
+                                        <span><?php echo t('student', 'Student'); ?></span>
                                     </div>
                                     <div class="dropdown-item" data-value="professional">
-                                        <span><?php echo t('professional', 'Professionnel'); ?></span>
+                                        <span><?php echo t('professional', 'Professional'); ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -136,13 +136,13 @@ include '../includes/admin-header.php';
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span><?php echo t('start', 'Début'); ?>: <strong><?= $election['start_date']; ?></strong></span>
+                                <span><?php echo t('start', 'Start'); ?>: <strong><?= $election['start_date']; ?></strong></span>
                             </div>
                             <div class="date-item">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span><?php echo t('end', 'Fin'); ?>: <strong><?= $election['end_date']; ?></strong></span>
+                                <span><?php echo t('end', 'End'); ?>: <strong><?= $election['end_date']; ?></strong></span>
                             </div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@ include '../includes/admin-header.php';
                                     <path d="M15.5 19.5H20.5" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M18 22V17" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <?php echo t('candidates','Candidats'); ?>
+                                <?php echo t('candidates', 'Candidates'); ?>
                             </button>
 
                             <button class="btn-action" onclick="addNewPosition(<?= $election['id']; ?>)">
@@ -237,7 +237,7 @@ include '../includes/admin-header.php';
                         <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                         <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <input type="text" id="searchModalCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+                    <input type="text" id="searchModalCandidatesInput" placeholder="<?php echo t('search_candidates', 'Search candidates...'); ?>">
                 </div>
             </div>
             <div class="modal-body" id="candidateListContent">
@@ -284,9 +284,9 @@ include '../includes/admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
-                        <div class="dropdown-container" id="addPositionDropdown" data-searchable data-search-placeholder="<?php echo t('search_position', 'Rechercher une position...'); ?>">
+                        <div class="dropdown-container" id="addPositionDropdown" data-searchable data-search-placeholder="<?php echo t('search_position', 'Search position...'); ?>">
                             <button type="button" class="dropdown-button" style="width: 100%;">
-                                <span class="dropdown-text"><?php echo t('select_position', 'Sélectionner une position'); ?></span>
+                                <span class="dropdown-text"><?php echo t('select_position', 'Select a position'); ?></span>
                                 <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
@@ -310,7 +310,7 @@ include '../includes/admin-header.php';
                     </div>
                     
                     <div class="form-group">
-                        <h6><?php echo t('description_fr', 'Description (Français)'); ?> <span class="required">*</span></h6>
+                        <h6><?php echo t('description_fr', 'Description (French)'); ?> <span class="required">*</span></h6>
                         <textarea id="add_fr_description" name="fr_description" required rows="4" 
                                 placeholder="Entrez la description du candidat en français"></textarea>
                     </div>
@@ -339,7 +339,7 @@ include '../includes/admin-header.php';
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span id="addPartyLogoLabel"><?php echo t('upload_image', 'Télécharger une image'); ?></span>
+                                <span id="addPartyLogoLabel"><?php echo t('upload_image', 'Upload image'); ?></span>
                             </label>
                             <div class="file-preview" id="addPartyLogoPreview"></div>
                         </div>
@@ -358,7 +358,7 @@ include '../includes/admin-header.php';
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span id="addPhotoLabel"><?php echo t('upload_image', 'Télécharger une image'); ?></span>
+                                <span id="addPhotoLabel"><?php echo t('upload_image', 'Upload image'); ?></span>
                             </label>
                             <div class="file-preview" id="addPhotoPreview"></div>
                         </div>

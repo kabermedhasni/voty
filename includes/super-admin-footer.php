@@ -11,7 +11,19 @@
             </div>
             
             <div class="footer-center">
-                &copy; 2025 Voty. All rights reserved.
+                <div class="language-selector" aria-label="Language selector">
+                    <div class="lang-title"><?php echo t('language', 'Language'); ?></div>
+                    <div class="lang-options" role="group" aria-label="Languages">
+                        <?php $cl = current_lang(); ?>
+                        <a href="?lang=en" class="lang-btn <?php echo $cl === 'en' ? 'active' : ''; ?>" aria-pressed="<?php echo $cl === 'en' ? 'true' : 'false'; ?>"><?php echo t('english', 'English'); ?></a>
+                        <a href="?lang=fr" class="lang-btn <?php echo $cl === 'fr' ? 'active' : ''; ?>" aria-pressed="<?php echo $cl === 'fr' ? 'true' : 'false'; ?>"><?php echo t('french', 'Français'); ?></a>
+                        <a href="?lang=ar" class="lang-btn <?php echo $cl === 'ar' ? 'active' : ''; ?>" aria-pressed="<?php echo $cl === 'ar' ? 'true' : 'false'; ?>"><?php echo t('arabic', 'العربية'); ?></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copy"><?php echo t('footer_copy', '&copy; 2025 Voty. All rights reserved.') ?></div>
             </div>
             
             <div class="footer-right">

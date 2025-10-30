@@ -85,7 +85,7 @@ function getListOfCandidates(electionId) {
     .then((candidates) => {
       if (!candidates || candidates.length === 0) {
         content.innerHTML =
-          '<p style="text-align: center; padding: 2rem;">No candidates found for this election.</p>';
+          `<p style="text-align: center; padding: 2rem;">${window.t('no_candidates_found')}</p>`;
         return;
       }
 
@@ -96,14 +96,14 @@ function getListOfCandidates(electionId) {
           <div class="candidate-item" style="border: 2px solid #3a3a3a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
             <div>
               <h4 style="margin: 0 0 0.5rem 0;">${candidate.name} / ${candidate.ar_name}</h4>
-              <p style="margin: 0; color: #666; font-size: 0.9rem;">Position: ${candidate.position_name}</p>
-              <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">Party: ${candidate.Supporting_party}</p>
+              <p style="margin: 0; color: #666; font-size: 0.9rem;">${window.t('position')}: ${candidate.position_name}</p>
+              <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">${window.t('party')}: ${candidate.Supporting_party}</p>
             </div>
             <button class="btn-danger" onclick="removeCandidate(${candidate.id}, ${electionId})" style="padding: 0.5rem 1rem;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 5.98C17.67 5.65 14.32 5.48 10.98 5.48C9 5.48 7.02 5.58 5.04 5.78L3 5.98M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97M18.85 9.14L18.2 19.21C18.09 20.78 18 22 15.21 22H8.79C6 22 5.91 20.78 5.8 19.21L5.15 9.14M10.33 16.5H13.66M9.5 12.5H14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              Remove
+              ${window.t('remove')}
             </button>
           </div>
         `;
@@ -115,7 +115,7 @@ function getListOfCandidates(electionId) {
     .catch((err) => {
       console.error("Error:", err);
       content.innerHTML =
-        '<p style="text-align: center; padding: 2rem; color: red;">Failed to load candidates</p>';
+        `<p style="text-align: center; padding: 2rem; color: red;">${window.t('failed_to_load_candidates')}</p>`;
     });
 
   const closeHandler = () => {
@@ -128,7 +128,7 @@ function getListOfCandidates(electionId) {
 }
 
 function removeCandidate(candidateId, electionId) {
-  if (!confirm("Are you sure you want to remove this candidate?")) return;
+  if (!confirm(window.t('are_you_sure_remove_candidate'))) return;
 
   const formData = new FormData();
   formData.append("action", "delete");
@@ -138,15 +138,15 @@ function removeCandidate(candidateId, electionId) {
     .then((res) => res.json())
     .then((data) => {
       if (data.success || data.message) {
-        showToast("Candidate removed successfully", "success");
+        showToast(window.t('candidate_removed_successfully'), "success");
         getListOfCandidates(electionId); // Refresh list
       } else {
-        showToast(data.error || "Failed to remove candidate", "error");
+        showToast(data.error || window.t('failed_to_remove_candidate'), "error");
       }
     })
     .catch((err) => {
       console.error("Error:", err);
-      showToast("An error occurred while removing the candidate", "error");
+      showToast(window.t('error_removing_candidate'), "error");
     });
 }
 
@@ -171,7 +171,7 @@ function addNewCandidate(electionId, lang) {
 
   // Reset dropdown
   if (positionDropdownButton) {
-    positionDropdownButton.textContent = "Select a position";
+    positionDropdownButton.textContent = window.t('select_a_position');
   }
 
   // Load positions for this election
@@ -183,7 +183,7 @@ function addNewCandidate(electionId, lang) {
       positionDropdownMenu.innerHTML = "";
 
       if (!positions || positions.length === 0) {
-        showToast("Please create a position for this election first.", "error");
+        showToast(window.t('create_position_first'), "error");
         return;
       }
 
@@ -271,7 +271,7 @@ function addNewCandidate(electionId, lang) {
     // Validate position is selected
     const positionInput = document.getElementById("add_id_position");
     if (!positionInput || !positionInput.value) {
-      showToast("Please select a position for this candidate.", "error");
+      showToast(window.t('select_position_for_candidate'), "error");
       return;
     }
 
@@ -290,15 +290,15 @@ function addNewCandidate(electionId, lang) {
       const data = await response.json();
 
       if (data.success || data.id) {
-        showToast("Candidate added successfully", "success");
+        showToast(window.t('candidate_added_successfully'), "success");
         closeHandler();
         window.location.reload();
       } else {
-        showToast(data.error || "Failed to add candidate", "error");
+        showToast(data.error || window.t('failed_to_add_candidate'), "error");
       }
     } catch (err) {
       console.error("Error:", err);
-      showToast("An error occurred while adding the candidate", "error");
+      showToast(window.t('error_adding_candidate'), "error");
     } finally {
       saveBtn.classList.remove("loading");
       saveBtn.disabled = false;
@@ -349,15 +349,15 @@ function addNewPosition(electionId) {
       const data = await response.json();
 
       if (data.success || data.id) {
-        showToast("Position added successfully", "success");
+        showToast(window.t('position_added_successfully'), "success");
         closeHandler();
         window.location.reload();
       } else {
-        showToast(data.error || "Failed to add Position", "error");
+        showToast(data.error || window.t('failed_to_add_position'), "error");
       }
     } catch (err) {
       console.error("Error:", err);
-      showToast("An error occurred while adding the position", "error");
+      showToast(window.t('error_adding_position'), "error");
     } finally {
       saveBtn.classList.remove("loading");
       saveBtn.disabled = false;
@@ -384,7 +384,7 @@ function publishResults(electionId) {
       try {
         const data = JSON.parse(text);
         if (data.error) {
-          showToast(data.error || "Failed to publish results", "error");
+          showToast(data.error || window.t('failed_to_publish_results'), "error");
         } else {
           window.location.reload();
         }
@@ -396,7 +396,7 @@ function publishResults(electionId) {
     })
     .catch((err) => {
       console.error("Network error:", err);
-      showToast("Network error occurred. Please try again.", "error");
+      showToast(window.t('network_error_try_again'), "error");
     });
 }
 
@@ -419,7 +419,7 @@ function stopPublishingResults(electionId) {
       try {
         const data = JSON.parse(text);
         if (data.error) {
-          showToast(data.error || "Failed to unpublish results", "error");
+          showToast(data.error || window.t('failed_to_unpublish_results'), "error");
         } else {
           window.location.reload();
         }
@@ -431,7 +431,7 @@ function stopPublishingResults(electionId) {
     })
     .catch((err) => {
       console.error("Network error:", err);
-      showToast("Network error occurred. Please try again.", "error");
+      showToast(window.t('network_error_try_again'), "error");
     });
 }
 
@@ -474,7 +474,7 @@ function excelFileProcessing(electionId) {
 
   saveBtn.addEventListener("click", async () => {
     if (jsonData.length === 0) {
-      console.log("Please , Enter the Excel file");
+      console.log(window.t('enter_excel_file'));
       return;
     }
 
@@ -511,7 +511,7 @@ function excelFileProcessing(electionId) {
         // window.location.reload();
       }
     } else {
-      console.log("format excel no valid");
+      console.log(window.t('excel_format_invalid'));
     }
   });
   form.onsubmit = async function (e) {
@@ -524,21 +524,19 @@ function managePositions(electionId) {
     if (!electionId) return;
 
     const action = (
-      prompt(
-        'Type "add" to create a position, or "delete" to remove one for this election:'
-      ) || ""
+      prompt(window.t('type_add_or_delete')) || ""
     )
       .trim()
       .toLowerCase();
     if (!action) return;
 
     if (action === "add") {
-      const ar = (prompt("Arabic name:") || "").trim();
-      if (!ar) return showToast("Cancelled", "gray");
-      const en = (prompt("English name:") || "").trim();
-      if (!en) return showToast("Cancelled", "gray");
-      const fr = (prompt("French name:") || "").trim();
-      if (!fr) return showToast("Cancelled", "gray");
+      const ar = (prompt(window.t('arabic_name')) || "").trim();
+      if (!ar) return showToast(window.t('cancelled'), "gray");
+      const en = (prompt(window.t('english_name')) || "").trim();
+      if (!en) return showToast(window.t('cancelled'), "gray");
+      const fr = (prompt(window.t('french_name')) || "").trim();
+      if (!fr) return showToast(window.t('cancelled'), "gray");
 
       const formData = new FormData();
       formData.append("action", "addPosition");
@@ -558,7 +556,7 @@ function managePositions(electionId) {
         })
         .then((data) => {
           if (data && (data.success || data.id)) {
-            showToast("Position added successfully", "success");
+            showToast(window.t('position_added_successfully'), "success");
             window.location.reload();
           } else {
             showToast(
@@ -570,16 +568,14 @@ function managePositions(electionId) {
         })
         .catch((err) => {
           console.error(err);
-          showToast("Error while adding position", "error");
+          showToast(window.t('error_adding_position'), "error");
         });
       return;
     }
 
     if (action === "delete") {
       if (
-        !confirm(
-          "Delete a position for this election? This will detach linked candidates."
-        )
+        !confirm(window.t('delete_position_confirm'))
       )
         return;
       const formData = new FormData();
@@ -597,7 +593,7 @@ function managePositions(electionId) {
         })
         .then((data) => {
           if (data && (data.success || data.ok)) {
-            showToast("Position delete request completed", "success");
+            showToast(window.t('position_delete_completed'), "success");
             window.location.reload();
           } else {
             showToast(
@@ -609,7 +605,7 @@ function managePositions(electionId) {
         })
         .catch((err) => {
           console.error(err);
-          showToast("Error while deleting position", "error");
+          showToast(window.t('error_deleting_position'), "error");
         });
     }
   } catch (e) {
@@ -674,7 +670,7 @@ function updateElectionType(electionId, type) {
     })
     .catch((err) => {
       console.error("Error:", err);
-      showToast("An error occurred while updating election type", "error");
+      showToast(window.t('error_updating_election_type'), "error");
     });
 }
 
@@ -682,6 +678,7 @@ function updateElectionType(electionId, type) {
 window.addNewCandidate = addNewCandidate;
 window.addNewPosition = addNewPosition;
 window.getListOfCandidates = getListOfCandidates;
+window.removeCandidate = removeCandidate;
 window.publishResults = publishResults;
 window.stopPublishingResults = stopPublishingResults;
 window.excelFileProcessing = excelFileProcessing;

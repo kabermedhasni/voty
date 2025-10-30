@@ -30,12 +30,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Store original table HTML for search reset
     const originalTableHTML = usersTableBody.innerHTML;
     
-    // Translations
+    // Use global translations from window.t
     const translations = {
-        add_admin: 'Ajouter un administrateur',
-        edit_admin: 'Modifier l\'administrateur',
-        password: 'Mot de passe',
-        password_optional: 'Mot de passe (optionnel)',
+        add_admin: window.t('add_admin'),
+        edit_admin: window.t('edit_admin'),
+        password: window.t('password'),
+        password_optional: window.t('password_optional'),
         required: '*',
         optional: ''
     };
@@ -178,12 +178,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.reload();
                 }, 1000);
             } else {
-                showToast(data.message || 'Une erreur est survenue', 'error');
+                showToast(data.message || window.t('an_error_occurred'), 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showToast('Une erreur est survenue', 'error');
+            showToast(window.t('an_error_occurred'), 'error');
         })
         .finally(() => {
             saveUserBtn.classList.remove('loading');
@@ -223,12 +223,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 1000);
                 }
             } else {
-                showToast(data.message || 'Une erreur est survenue', 'error');
+                showToast(data.message || window.t('an_error_occurred'), 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showToast('Une erreur est survenue', 'error');
+            showToast(window.t('an_error_occurred'), 'error');
         })
         .finally(() => {
             confirmDeleteBtn.classList.remove('loading');
@@ -275,8 +275,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M12.5 7C12.5 9.20914 10.7091 11 8.5 11C6.29086 11 4.5 9.20914 4.5 7C4.5 4.79086 6.29086 3 8.5 3C10.7091 3 12.5 4.79086 12.5 7ZM20 8V14M23 11H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <h3>Aucun résultat trouvé</h3>
-                            <p>Essayez avec d'autres termes de recherche</p>
+                            <h3>${window.t('no_results_found')}</h3>
+                            <p>${window.t('try_different_search')}</p>
                         </div>
                     </td>
                 </tr>
@@ -296,13 +296,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13M18.5 2.5C18.8978 2.1022 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.1022 21.5 2.5C21.8978 2.8978 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.1022 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            Modifier
+                            ${window.t('modifier')}
                         </button>
                         <button class="icon-btn delete-btn" data-id="${user.id}">
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3 6H5H21M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            Supprimer
+                            ${window.t('supprimer')}
                         </button>
                     </div>
                 </td>

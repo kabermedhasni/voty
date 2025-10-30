@@ -33,7 +33,7 @@ include '../includes/admin-header.php';
 ?>
 <div class="admin-candidates-container" data-edit-label="<?php echo htmlspecialchars(t('edit_candidate', 'Modifier le candidat')); ?>" data-delete-label="<?php echo htmlspecialchars(t('delete', 'Supprimer')); ?>">
     <div class="page-header">
-        <h1><?php echo t('manage_candidates', 'Gérer les candidats'); ?></h1>
+        <h1><?php echo t('manage_candidates', 'Manage Candidates'); ?></h1>
     </div>
 
     <!-- Search Section -->
@@ -43,7 +43,7 @@ include '../includes/admin-header.php';
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                 <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+            <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Search candidates...'); ?>">
         </div>
     </div>
 
@@ -90,9 +90,9 @@ include '../includes/admin-header.php';
 
                     <div class="form-group">
                         <h6><?php echo t('position', 'Position'); ?> <span class="required">*</span></h6>
-                        <div class="dropdown-container" id="positionDropdown" data-searchable data-search-placeholder="<?php echo t('search_position', 'Rechercher une position...'); ?>">
+                        <div class="dropdown-container" id="positionDropdown" data-searchable data-search-placeholder="<?php echo t('search_position', 'Search position...'); ?>">
                             <button type="button" class="dropdown-button" style="width: 100%;">
-                                <span class="dropdown-text"><?php echo t('select_position', 'Sélectionner une position'); ?></span>
+                                <span class="dropdown-text"><?php echo t('select_position', 'Select a position'); ?></span>
                                 <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
@@ -116,7 +116,7 @@ include '../includes/admin-header.php';
                     </div>
                     
                     <div class="form-group">
-                        <h6><?php echo t('description_fr', 'Description (Français)'); ?> <span class="required">*</span></h6>
+                        <h6><?php echo t('description_fr', 'Description (French)'); ?> <span class="required">*</span></h6>
                         <textarea id="fr_description" name="fr_description" required rows="4" 
                                 placeholder="Entrez la description du candidat en français"></textarea>
                     </div>
@@ -145,7 +145,7 @@ include '../includes/admin-header.php';
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span id="partyLogoLabel"><?php echo t('upload_image', 'Télécharger une image'); ?></span>
+                                <span id="partyLogoLabel"><?php echo t('upload_image', 'Upload image'); ?></span>
                             </label>
                             <div class="file-preview" id="partyLogoPreview"></div>
                         </div>
@@ -164,7 +164,7 @@ include '../includes/admin-header.php';
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span id="photoLabel"><?php echo t('upload_image', 'Télécharger une image'); ?></span>
+                                <span id="photoLabel"><?php echo t('upload_image', 'Upload image'); ?></span>
                             </label>
                             <div class="file-preview" id="photoPreview"></div>
                         </div>

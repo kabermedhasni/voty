@@ -38,13 +38,13 @@ require_once 'core/lang.php'; ?>
 
   <nav class="mobile-menu" aria-label="Primary">
     <ul class="nav-list">
-      <li><a href="./" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>"><?php echo t('home', 'Accueil'); ?></a></li>
+      <li><a href="./" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>"><?php echo t('home', 'Home'); ?></a></li>
       <li><a href="profile.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'profile.php') ? 'active' : ''; ?>"><?php echo t('profile', 'Profile'); ?></a></li>
-      <li><a href="candidates.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'candidates.php') ? 'active' : ''; ?>"><?php echo t('candidates', 'Candidats'); ?></a></li>
-      <li><a href="results.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'results.php') ? 'active' : ''; ?>"><?php echo t('results', 'Résultats'); ?></a></li>
-      <li><a href="about.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>"><?php echo t('about', 'À propos'); ?></a></li>
+      <li><a href="candidates.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'candidates.php') ? 'active' : ''; ?>"><?php echo t('candidates', 'Candidates'); ?></a></li>
+      <li><a href="results.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'results.php') ? 'active' : ''; ?>"><?php echo t('results', 'Results'); ?></a></li>
+      <li><a href="about.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>"><?php echo t('about', 'About'); ?></a></li>
       <li><a href="contact.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>"><?php echo t('contact', 'Contact'); ?></a></li>
-      <li><a href="core/logout.php" class="btn-danger"><?php echo t('logout', 'Déconnexion'); ?></a></li>
+      <li><a href="core/logout.php" class="btn-danger"><?php echo t('logout', 'Logout'); ?></a></li>
     </ul>
   </nav>
 
@@ -56,10 +56,10 @@ require_once 'core/lang.php'; ?>
 
     <nav class="primary-nav" aria-label="Primary">
       <ul class="nav-list">
-        <li><a href="./" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>"><?php echo t('home', 'Accueil'); ?></a></li>
-        <li><a href="candidates.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'candidates.php') ? 'active' : ''; ?>"><?php echo t('candidates', 'Candidats'); ?></a></li>
-        <li><a href="results.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'results.php') ? 'active' : ''; ?>"><?php echo t('results', 'Résultats'); ?></a></li>
-        <li><a href="about.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>"><?php echo t('about', 'À propos'); ?></a></li>
+        <li><a href="./" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>"><?php echo t('home', 'Home'); ?></a></li>
+        <li><a href="candidates.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'candidates.php') ? 'active' : ''; ?>"><?php echo t('candidates', 'Candidates'); ?></a></li>
+        <li><a href="results.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'results.php') ? 'active' : ''; ?>"><?php echo t('results', 'Results'); ?></a></li>
+        <li><a href="about.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>"><?php echo t('about', 'About'); ?></a></li>
         <li><a href="contact.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'active' : ''; ?>"><?php echo t('contact', 'Contact'); ?></a></li>
       </ul>
     </nav>
@@ -71,7 +71,7 @@ require_once 'core/lang.php'; ?>
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
           </svg>
         </span>
-        <span class="item-label btn-text"><?php echo t('logout', 'Déconnexion'); ?></span>
+        <span class="item-label btn-text"><?php echo t('logout', 'Logout'); ?></span>
         <svg class="spinner-svg" viewBox="25 25 50 50">
           <circle r="20" cy="50" cx="50"></circle>
         </svg>

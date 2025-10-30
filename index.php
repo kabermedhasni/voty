@@ -43,7 +43,7 @@ include 'includes/header.php';
             <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
             <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Rechercher des élections...'); ?>">
+          <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Search elections...'); ?>">
         </div>
       </div>
       
@@ -96,7 +96,7 @@ include 'includes/header.php';
             <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
             <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Rechercher des candidats...'); ?>">
+          <input type="text" id="searchCandidatesInput" placeholder="<?php echo t('search_candidates', 'Search candidates...'); ?>">
         </div>
       </div>
       

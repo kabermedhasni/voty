@@ -32,14 +32,14 @@ include '../includes/super-admin-header.php';
 ?>
 <div class="admin-settings-container">
     <div class="page-header">
-        <h1><?php echo t('settings', 'Paramètres'); ?></h1>
+        <h1><?php echo t('settings', 'Settings'); ?></h1>
     </div>
 
 
     <!-- Management Options Section -->
     <div class="settings-section">
         <div class="section-header">
-            <h2><?php echo t('management_options', 'Options de gestion'); ?></h2>
+            <h2><?php echo t('management_options', 'Management Options'); ?></h2>
         </div>
 
         <div class="management-grid">
@@ -51,12 +51,12 @@ include '../includes/super-admin-header.php';
                     </svg>
                 </div>
                 <div class="management-content">
-                    <h3><?php echo t('manage_super_admins', 'Gérer les super administrateurs'); ?></h3>
-                    <p><?php echo t('manage_super_admins_desc', 'Ajouter, modifier et supprimer les super administrateurs'); ?></p>
+                    <h3><?php echo t('manage_super_admins', 'Manage Super Administrators'); ?></h3>
+                    <p><?php echo t('manage_super_admins_desc', 'Add, edit and delete super administrators'); ?></p>
                 </div>
                 <div class="management-action">
                     <a href="manage-super-admins.php" class="btn-primary">
-                        <?php echo t('manage', 'Gérer'); ?>
+                        <?php echo t('manage', 'Manage'); ?>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -72,12 +72,12 @@ include '../includes/super-admin-header.php';
                     </svg>
                 </div>
                 <div class="management-content">
-                    <h3><?php echo t('manage_admins', 'Gérer les administrateurs'); ?></h3>
-                    <p><?php echo t('manage_admins_desc', 'Ajouter, modifier et supprimer les administrateurs'); ?></p>
+                    <h3><?php echo t('manage_admins', 'Manage Administrators'); ?></h3>
+                    <p><?php echo t('manage_admins_desc', 'Add, edit and delete administrators'); ?></p>
                 </div>
                 <div class="management-action">
                     <a href="manage-admins.php" class="btn-primary">
-                        <?php echo t('manage', 'Gérer'); ?>
+                        <?php echo t('manage', 'Manage'); ?>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>

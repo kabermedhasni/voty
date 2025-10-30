@@ -39,14 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $password = trim($_POST['password']);
                 
                 if (empty($username) || empty($user_id) || empty($password)) {
-                    throw new Exception(t('all_fields_required', 'Tous les champs sont requis'));
+                    throw new Exception(t('all_fields_required', 'All fields are required'));
                 }
                 
                 // Check if user_id already exists
                 $stmt = $pdo->prepare('SELECT id FROM users WHERE user_id_hmac = ?');
                 $stmt->execute([$user_id]);
                 if ($stmt->fetch()) {
-                    throw new Exception(t('user_id_exists', 'Cet ID utilisateur existe déjà'));
+                    throw new Exception(t('user_id_exists', 'This user ID already exists'));
                 }
                 
                 // Check if username already exists
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $stmt = $pdo->prepare('INSERT INTO users (user_id_hmac, username, password_hash, role) VALUES (?, ?, ?, ?)');
                 $stmt->execute([$user_id, $username, $password_hash, 'admin']);
                 
-                echo json_encode(['success' => true, 'message' => t('admin_added', 'Administrateur ajouté avec succès')]);
+                echo json_encode(['success' => true, 'message' => t('admin_added', 'Administrator added successfully')]);
                 break;
                 
             case 'edit':
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     $stmt = $pdo->prepare('SELECT id FROM users WHERE user_id_hmac = ? AND id != ?');
                     $stmt->execute([$user_id_hmac, $id]);
                     if ($stmt->fetch()) {
-                        throw new Exception(t('user_id_exists', 'Cet ID utilisateur existe déjà'));
+                        throw new Exception(t('user_id_exists', 'This user ID already exists'));
                     }
                 }
                 
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     $stmt->execute([$username, $id, 'admin']);
                 }
                 
-                echo json_encode(['success' => true, 'message' => t('admin_updated', 'Administrateur mis à jour avec succès')]);
+                echo json_encode(['success' => true, 'message' => t('admin_updated', 'Administrator updated successfully')]);
                 break;
                 
             case 'delete':
@@ -120,13 +120,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 
                 // Prevent deleting the current user
                 if ($id == $_SESSION['user_id']) {
-                    throw new Exception(t('cannot_delete_self', 'Vous ne pouvez pas supprimer votre propre compte'));
+                    throw new Exception(t('cannot_delete_self', 'You cannot delete your own account'));
                 }
                 
                 $stmt = $pdo->prepare('DELETE FROM users WHERE id = ? AND role = ?');
                 $stmt->execute([$id, 'admin']);
                 
-                echo json_encode(['success' => true, 'message' => t('admin_deleted', 'Administrateur supprimé avec succès')]);
+                echo json_encode(['success' => true, 'message' => t('admin_deleted', 'Administrator deleted successfully')]);
                 break;
                 
             case 'search':
@@ -160,15 +160,15 @@ include '../includes/super-admin-header.php';
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <?php echo t('back_to_settings', 'Retour aux paramètres'); ?>
+                <?php echo t('back_to_settings', 'Back to Settings'); ?>
             </a>
-            <h1><?php echo t('manage_admins', 'Gérer les administrateurs'); ?></h1>
+            <h1><?php echo t('manage_admins', 'Manage Administrators'); ?></h1>
         </div>
         <button class="btn-primary" id="addUserBtn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <?php echo t('add_admin', 'Ajouter un administrateur'); ?>
+            <?php echo t('add_admin', 'Add Administrator'); ?>
         </button>
     </div>
 
@@ -179,7 +179,7 @@ include '../includes/super-admin-header.php';
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                 <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <input type="text" id="searchInput" placeholder="<?php echo t('search_admins', 'Rechercher des administrateurs...'); ?>">
+            <input type="text" id="searchInput" placeholder="<?php echo t('search_admins', 'Search administrators...'); ?>">
         </div>
     </div>
 
@@ -201,8 +201,8 @@ include '../includes/super-admin-header.php';
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M12.5 7C12.5 9.20914 10.7091 11 8.5 11C6.29086 11 4.5 9.20914 4.5 7C4.5 4.79086 6.29086 3 8.5 3C10.7091 3 12.5 4.79086 12.5 7ZM20 8V14M23 11H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-                                    <h3><?php echo t('no_admins', 'Aucun administrateur'); ?></h3>
-                                    <p><?php echo t('add_first_admin', 'Commencez par ajouter votre premier administrateur'); ?></p>
+                                    <h3><?php echo t('no_admins', 'No Administrators'); ?></h3>
+                                    <p><?php echo t('add_first_admin', 'Start by adding your first administrator'); ?></p>
                                 </div>
                             </td>
                         </tr>
@@ -216,7 +216,7 @@ include '../includes/super-admin-header.php';
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13M18.5 2.5C18.8978 2.1022 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.1022 21.5 2.5C21.8978 2.8978 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.1022 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
-                                            <?php echo t('edit', 'Modifier'); ?>
+                                            <?php echo t('edit', 'Edit'); ?>
                                         </button>
                                         <button class="icon-btn delete-btn" data-id="<?php echo $user['id']; ?>">
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -239,7 +239,7 @@ include '../includes/super-admin-header.php';
         <div class="modal-overlay"></div>
         <div class="modal-content modal-small">
             <div class="modal-header">
-                <h2 id="userModalTitle"><?php echo t('add_admin', 'Ajouter un administrateur'); ?></h2>
+                <h2 id="userModalTitle"><?php echo t('add_admin', 'Add Administrator'); ?></h2>
                 <button class="modal-close" id="closeUserModal">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -250,7 +250,7 @@ include '../includes/super-admin-header.php';
                 <input type="hidden" id="user_id_hidden" name="id">
                 
                 <div class="form-section">
-                    <h3><?php echo t('user_information', 'Informations utilisateur'); ?></h3>
+                    <h3><?php echo t('user_information', 'User Information'); ?></h3>
                     
                     <div class="form-group">
                         <h6><?php echo t('username', 'Nom d\'utilisateur'); ?> <span class="required">*</span></h6>
@@ -258,7 +258,7 @@ include '../includes/super-admin-header.php';
                     </div>
 
                     <div class="form-group">
-                        <h6 id="userIdLabel"><?php echo t('user_id', 'ID utilisateur'); ?> <span class="required" id="userIdRequired">*</span></h6>
+                        <h6 id="userIdLabel"><?php echo t('user_id', 'User ID'); ?> <span class="required" id="userIdRequired">*</span></h6>
                         <input type="text" id="user_id" name="user_id" required>
                         <small id="userIdHelp" style="display: none; color: #999; font-size: 0.8rem;">
                             <?php echo t('leave_empty_keep_current_id', 'Laissez vide pour conserver l\'ID actuel'); ?>
@@ -266,10 +266,10 @@ include '../includes/super-admin-header.php';
                     </div>
 
                     <div class="form-group">
-                        <h6 id="passwordLabel"><?php echo t('password', 'Mot de passe'); ?> <span class="required">*</span></h6>
+                        <h6 id="passwordLabel"><?php echo t('password', 'Password'); ?> <span class="required">*</span></h6>
                         <input type="password" id="password" name="password" required>
                         <small id="passwordHelp" style="display: none; color: #999; font-size: 0.8rem;">
-                            <?php echo t('leave_empty_keep_current', 'Laissez vide pour conserver le mot de passe actuel'); ?>
+                            <?php echo t('leave_empty_keep_current', 'Leave empty to keep current password'); ?>
                         </small>
                     </div>
                 </div>
@@ -303,7 +303,7 @@ include '../includes/super-admin-header.php';
             </div>
             <div class="modal-body">
                 <p style="color: #ccc; text-align: center; margin-bottom: 2rem;">
-                    <?php echo t('delete_admin_confirm', 'Êtes-vous sûr de vouloir supprimer cet administrateur ?'); ?>
+                    <?php echo t('delete_admin_confirm', 'Are you sure you want to delete this administrator?'); ?>
                 </p>
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" id="cancelDeleteBtn">

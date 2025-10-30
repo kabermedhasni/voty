@@ -43,9 +43,9 @@ include '../includes/super-admin-header.php';
 ?>
 <div class="admin-elections-container">
     <div class="header-elections">
-        <h1><?php echo t('manage_elections', 'Gérer les élections'); ?></h1>
+        <h1><?php echo t('manage_elections', 'Manage Elections'); ?></h1>
         <div class="btn-add-election">
-            <button class="add-election" onclick="addElection(<?= '\''.$current_lang.'\''; ?>)"><?php echo t('add_election', 'Ajouter une nouvelle élection'); ?></button>
+            <button class="add-election" onclick="addElection(<?= '\''.$current_lang.'\''; ?>)"><?php echo t('add_election', 'Add New Election'); ?></button>
         </div>
     </div>
     
@@ -56,7 +56,7 @@ include '../includes/super-admin-header.php';
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                 <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Rechercher des élections...'); ?>">
+            <input type="text" id="searchElectionsInput" placeholder="<?php echo t('search_elections', 'Search elections...'); ?>">
         </div>
     </div>
     
@@ -80,13 +80,13 @@ include '../includes/super-admin-header.php';
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span><?php echo t('start', 'Début'); ?>: <strong><?= $election['start_date']; ?></strong></span>
+                            <span><?php echo t('start', 'Start'); ?>: <strong><?= $election['start_date']; ?></strong></span>
                         </div>
                         <div class="date-item">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span><?php echo t('end', 'Fin'); ?>: <strong><?= $election['end_date']; ?></strong></span>
+                            <span><?php echo t('end', 'End'); ?>: <strong><?= $election['end_date']; ?></strong></span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ include '../includes/super-admin-header.php';
                             <path d="M16.04 3.02001L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96001C22.34 6.60001 22.98 5.02001 20.98 3.02001C18.98 1.02001 17.4 1.66001 16.04 3.02001Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M14.91 4.1499C15.58 6.5399 17.45 8.4099 19.85 9.0899" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <?php echo t('edit','Modifier'); ?>
+                        <?php echo t('edit', 'Edit'); ?>
                     </button>
                     
                     <?php if( $election['status'] === 1 ): ?>
@@ -152,7 +152,7 @@ include '../includes/super-admin-header.php';
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h2><?php echo t('add_election', 'Ajouter une élection'); ?></h2>
+                <h2><?php echo t('add_election', 'Add Election'); ?></h2>
                 <button class="modal-close" id="closeAddElectionModal">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -161,11 +161,11 @@ include '../includes/super-admin-header.php';
             </div>
             <form class="modal-body" id="addElectionForm">
                 <div class="form-section">
-                    <h3><?php echo t('election_information', 'Informations sur l\'élection'); ?></h3>
+                    <h3><?php echo t('election_information', 'Election Information'); ?></h3>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <h6><?php echo t('organizer_ar', 'المنظم (العربية)'); ?> <span class="required">*</span></h6>
+                            <h6><?php echo t('organizer_ar', 'Organizer (Arabic)'); ?> <span class="required">*</span></h6>
                             <input type="text" id="election_ar_organizer" name="ar_organizer" required dir="rtl">
                         </div>
                         <div class="form-group">
@@ -175,15 +175,15 @@ include '../includes/super-admin-header.php';
                     </div>
 
                     <div class="form-group">
-                        <h6><?php echo t('organizer_fr', 'Organisateur (Français)'); ?> <span class="required">*</span></h6>
+                        <h6><?php echo t('organizer_fr', 'Organizer (French)'); ?> <span class="required">*</span></h6>
                         <input type="text" id="election_fr_organizer" name="fr_organizer" required>
                     </div>
 
                     <div class="form-group">
-                        <h6><?php echo t('admin_responsible', 'Administrateur responsable'); ?> <span class="required">*</span></h6>
-                        <div class="multi-select-container" id="adminMultiSelect" data-searchable data-search-placeholder="<?php echo t('search_admins', 'Rechercher des administrateurs...'); ?>">
+                        <h6><?php echo t('admin_responsible', 'Responsible Administrator'); ?> <span class="required">*</span></h6>
+                        <div class="multi-select-container" id="adminMultiSelect" data-searchable data-search-placeholder="<?php echo t('search_admins', 'Search administrators...'); ?>">
                             <div class="multi-select-button">
-                                <div class="multi-select-display" data-placeholder="<?php echo t('select_admins', 'Sélectionner les administrateurs'); ?>"></div>
+                                <div class="multi-select-display" data-placeholder="<?php echo t('select_admins', 'Select administrators'); ?>"></div>
                                 <span class="multi-select-chevron">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -204,28 +204,28 @@ include '../includes/super-admin-header.php';
                 </div>
 
                 <div class="form-section">
-                    <h3><?php echo t('election_dates', 'Dates de l\'élection'); ?></h3>
+                    <h3><?php echo t('election_dates', 'Election Dates'); ?></h3>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <h6><?php echo t('year', 'Année'); ?> <span class="required">*</span></h6>
+                            <h6><?php echo t('year', 'Year'); ?> <span class="required">*</span></h6>
                             <input type="number" id="election_year" name="year" required min="2000" max="2100">
                         </div>
                         <div class="form-group">
-                            <h6><?php echo t('status', 'Statut'); ?> <span class="required">*</span></h6>
+                            <h6><?php echo t('status', 'Status'); ?> <span class="required">*</span></h6>
                             <div class="dropdown-container" id="statusDropdown">
                                 <button type="button" class="dropdown-button">
-                                    <span class="dropdown-text"><?php echo t('select_status', 'Sélectionner un statut'); ?></span>
+                                    <span class="dropdown-text"><?php echo t('select_status', 'Select a status'); ?></span>
                                     <svg class="dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item" data-value="1">
-                                        <span><?php echo t('active', 'Actif'); ?></span>
+                                        <span><?php echo t('active', 'Active'); ?></span>
                                     </div>
                                     <div class="dropdown-item" data-value="0">
-                                        <span><?php echo t('inactive', 'Inactif'); ?></span>
+                                        <span><?php echo t('inactive', 'Inactive'); ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -235,11 +235,11 @@ include '../includes/super-admin-header.php';
 
                     <div class="form-row">
                         <div class="form-group">
-                            <h6><?php echo t('start_date', 'Date de début'); ?> <span class="required">*</span></h6>
+                            <h6><?php echo t('start_date', 'Start Date'); ?> <span class="required">*</span></h6>
                             <input type="date" id="election_start_date" name="start_date" required>
                         </div>
                         <div class="form-group">
-                            <h6><?php echo t('end_date', 'Date de fin'); ?> <span class="required">*</span></h6>
+                            <h6><?php echo t('end_date', 'End Date'); ?> <span class="required">*</span></h6>
                             <input type="date" id="election_end_date" name="end_date" required>
                         </div>
                     </div>
@@ -247,10 +247,10 @@ include '../includes/super-admin-header.php';
 
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" id="cancelAddElectionBtn">
-                        <?php echo t('cancel', 'Annuler'); ?>
+                        <?php echo t('cancel', 'Cancel'); ?>
                     </button>
                     <button type="submit" class="btn-primary" id="saveElectionBtn">
-                        <span class="btn-text"><?php echo t('save', 'Enregistrer'); ?></span>
+                        <span class="btn-text"><?php echo t('save', 'Save'); ?></span>
                         <svg class="spinner-svg" viewBox="25 25 50 50">
                             <circle r="20" cy="50" cx="50"></circle>
                         </svg>

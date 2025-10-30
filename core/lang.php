@@ -3,9 +3,9 @@
 require_once __DIR__ . '/session.php';
 init_session();
 
-// Set default language to French
+// Set default language to English
 if (!isset($_SESSION['lang'])) {
-    $_SESSION['lang'] = 'fr';
+    $_SESSION['lang'] = 'en';
 }
 
 // Handle language change requests
@@ -58,8 +58,8 @@ $lang_file = __DIR__ . "/../lang/{$current_lang}.php";
 if (file_exists($lang_file)) {
     $translations = include $lang_file;
 } else {
-    // Fallback to French if file doesn't exist
-    $translations = include __DIR__ . '/../lang/fr.php';
+    // Fallback to English if file doesn't exist
+    $translations = include __DIR__ . '/../lang/en.php';
 }
 
 // Function to format dates according to current language

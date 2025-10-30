@@ -50,7 +50,7 @@ require_once '../core/lang.php'; ?>
                     d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                 </svg>
               </span>
-              <span class="label"><?php echo t('dashboard', 'Tableau de bord'); ?></span>
+              <span class="label"><?php echo t('dashboard', 'Dashboard'); ?></span>
             </a>
           </li>
 
@@ -99,7 +99,7 @@ require_once '../core/lang.php'; ?>
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
               </span>
-              <span class="label"><?php echo t('settings', 'Paramètres'); ?></span>
+              <span class="label"><?php echo t('settings', 'Settings'); ?></span>
             </a>
           </li>
         </ul>
@@ -118,7 +118,7 @@ require_once '../core/lang.php'; ?>
                     d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                 </svg>
               </span>
-              <span class="label btn-text"><?php echo t('logout', 'Déconnexion'); ?></span>
+              <span class="label btn-text"><?php echo t('logout', 'Logout'); ?></span>
               <svg class="spinner-svg" viewBox="25 25 50 50">
                 <circle r="20" cy="50" cx="50"></circle>
               </svg>

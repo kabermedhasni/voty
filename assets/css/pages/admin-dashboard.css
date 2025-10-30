@@ -1,3 +1,10 @@
-.dashboard-container {
-  height: 100vh;
+/* Import super-admin dashboard styles */
+@import url('super-admin-dashboard.css');
+
+/* Admin-specific overrides if needed */
+.admin-dashboard-container {
+  padding: 2rem;
+  min-height: 80vh;
+  max-height: 100vh;
+  overflow-y: auto;
 }
