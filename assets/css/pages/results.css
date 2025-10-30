@@ -14,22 +14,55 @@
 
 /* Match candidates page header styles */
 .header {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+  border-radius: 16px;
+  border: 2px solid #3a3a3a;
 }
 
 .header .title {
+  color: #06ac7d;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.header .year {
   color: #ffffff;
-  font-size: 40px;
+  font-size: 48px;
+  font-weight: 400;
+  margin: 10px 0;
+  line-height: 0.8;
+}
+
+.header .organizer {
+  color: #b0b0b0;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 12px 0 20px 0;
+}
+
+.header .organizer .green {
+  color: #06ac7d;
   font-weight: 600;
-  margin-top: 20px;
 }
 
 .header h1 {
-  color: #06ac7d;
-  font-size: 32px;
+  color: #ffffff;
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 8px;
-  margin-top: 0;
+  margin-bottom: 0;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #3a3a3a;
+}
+
+.header h1 span {
+  color: #06ac7d;
 }
 
 .position-header {
@@ -45,33 +78,13 @@ html[dir="rtl"] .position-header {
   text-align: right;
 }
 
-h1 {
-  font-size: 2.5em;
-  font-weight: 300;
-  margin-bottom: 5px;
-}
-
-.year {
-  font-size: 4em;
-  color: var(--light-green);
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 1vh;
-}
-
-.organizer {
-  margin-bottom: 2vh;
-}
-
-.green {
-  color: var(--light-green);
-}
 
 .election-results {
   display: flex;
   flex-direction: column;
   gap: 0;
   margin-bottom: 40px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
   border: 2px solid #3a3a3a;
   border-radius: 14px;
 }
@@ -81,7 +94,6 @@ h1 {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  background: #252525;
   border-radius: 0;
   padding: 20px;
   cursor: pointer;
@@ -93,14 +105,10 @@ h1 {
   border-bottom-right-radius: 12px;
 }
 
-.candidate-item:hover {
-  background: #2a2a2a;
-}
-
 .separator-line {
-  height: 1px;
+  height: 2px;
   background: #333;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
 }
 

@@ -69,10 +69,10 @@ include 'includes/header.php';
         
         <?php foreach($elections as $election): ?>
             <div class="header">
-                <span class="title"><?= !empty($election['election_type']) ? ucfirst($election['election_type']) . ' Elections' : 'Elections' ?></span>
+                <span class="title"><?= (isset($election['election_type']) && trim($election['election_type']) !== '') ? ucfirst(trim($election['election_type'])) . ' Elections' : 'Elections' ?></span>
                 <h2 class="year"><?= $election['year']; ?></h2>
                 <h3 class="organizer">Organized by :  <span class="green"><?= $election[$current_lang.'_organizer']; ?></span></h3>
-                <h1><?php echo t('list_of_candidates', 'List of candidates:'); ?><span>:</span></h1>
+                <h1><?php echo t('list_of_candidates', 'List of candidates'); ?></h1>
             </div>
             <?php $positions = get_Positions_by_election($pdo, $election['id']); ?>
             <?php foreach($positions as $position): ?>
