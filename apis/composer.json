@@ -1,0 +1,16 @@
+{
+    "name": "voty/auth-apis",
+    "autoload": {
+        "psr-4": {
+            "Voty\\AuthApis\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Voty"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

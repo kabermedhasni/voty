@@ -1,0 +1,314 @@
+/* Global styles and font import */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* Ensure inputs and placeholders inherit Outfit */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+/* Placeholder styling across browsers */
+::placeholder {
+  font-family: inherit;
+}
+::-webkit-input-placeholder {
+  font-family: inherit;
+}
+:-ms-input-placeholder {
+  font-family: inherit;
+}
+::-ms-input-placeholder {
+  font-family: inherit;
+}
+
+/* ---------------------------------- */
+/* Global utilities                   */
+/* ---------------------------------- */
+/* Simple text fade utility */
+.text-fade {
+  transition: opacity 0.25s ease;
+}
+.hidden-opacity {
+  opacity: 0;
+}
+
+/* ---------------------------------- */
+/* Form elements (global defaults)    */
+/* ---------------------------------- */
+.form-group {
+  margin-bottom: 1.5rem;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.form-group h6 {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+  cursor: default;
+}
+.form-group h6 .required {
+  color: #ff4444;
+}
+.input-wrapper {
+  position: relative;
+}
+.form-group input {
+  width: 100%;
+  height: 37px;
+  background: #2a2a2a;
+  border: 2px solid #3a3a3a;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.25s ease, background-color 0.25s ease,
+    color 0.25s ease, box-shadow 0.2s ease;
+}
+/* LTR input padding */
+html[dir="ltr"] .form-group input {
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+}
+/* RTL input padding */
+html[dir="rtl"] .form-group input {
+  padding-right: 0.7rem;
+  padding-left: 0.7rem;
+  text-align: right;
+}
+.form-group input:hover {
+  border-color: #505050;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: #00593f;
+  background: #2f2f2f;
+}
+.form-group input::placeholder {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Input validation and animation */
+.form-group input.error {
+  border-color: #762119;
+  background-color: #1f1612;
+  animation: none; /* default: no shake */
+}
+/* Enable shake only when explicitly allowed (e.g., on submit) */
+.shake-enabled .form-group input.error {
+  animation: shake 0.8s ease-in-out;
+}
+/* Suppress shake when toggling modes and reapplying error state */
+.form-group input.error.no-shake {
+  animation: none;
+}
+.form-group input.error:hover {
+  border-color: #932626;
+}
+.form-group input.success {
+  border-color: #00593f;
+  background-color: #0d2a1f;
+}
+.form-group input.success:hover {
+  border-color: #06ac7d;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+/* ---------------------------------- */
+/* Buttons                            */
+/* ---------------------------------- */
+.submit-btn {
+  width: 100%;
+  height: 40px;
+  background: #00593f;
+  color: #fff;
+  border: 2px solid #036d4f;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+.submit-btn:hover { background: #00422f; }
+.submit-btn:active { transform: scale(0.98); }
+.submit-btn:disabled {
+  background: #404040;
+  border-color: #404040;
+  color: #666;
+  cursor: not-allowed;
+}
+.submit-btn:disabled:hover {
+  background: #404040;
+  border-color: #404040;
+}
+
+/* ---------------------------------- */
+/* Toast notifications (global)       */
+/* ---------------------------------- */
+/* RTL adjustments */
+html[dir="rtl"] .toast-container { left: 20px; right: auto; }
+html[dir="rtl"] .toast-close { right: auto; left: 10px; }
+html[dir="rtl"] .toast-counter { right: -15px; }
+
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  top: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+}
+.toast {
+  background-color: #301816;
+  border: 1px solid #762119;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 350px;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(calc(100% + 30px));
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+  position: relative;
+  user-select: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.removing { margin-bottom: -60px; opacity: 0; transform: translateY(20px); }
+.toast.error { border-color: #762119; }
+.toast.success { border-color: #00593f; background-color: #0d2a1f; }
+.toast.gray { border-color: #505050; background-color: #2a2a2a; }
+.toast-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.toast-icon.error { background-color: #762119; color: #fff; }
+.toast-icon.error::before { content: "!"; font-weight: bold; font-size: 14px; }
+.toast-icon.success { background-color: #00593f; color: #fff; }
+.toast-icon.success::before { content: "✓"; font-weight: bold; font-size: 14px; }
+.toast-icon.gray { background-color: #505050; color: #fff; }
+.toast-icon.gray::before { content: "i"; font-weight: bold; font-size: 14px; font-style: normal; }
+.toast-message { color: #ff4444; font-size: 14px; font-weight: 500; line-height: 1.4; width: 245px; }
+.toast.success .toast-message { color: #06ac7d; }
+.toast.gray .toast-message { color: #ccc; }
+.toast-counter { position: relative; right: 15px; background: #762119; border-radius: 50%; color: #fff; font-size: 11px; font-weight: bold; min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; padding: 0; flex-shrink: 0; }
+.toast.success .toast-counter { background: #00593f; }
+.toast.gray .toast-counter { background: #505050; }
+.toast-close { background: none; border: none; color: #999; cursor: pointer; font-size: 20px; padding: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; transition: color 0.2s ease, opacity 0.2s ease; opacity: 0; visibility: hidden; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+.toast:hover .toast-close { opacity: 1; visibility: visible; }
+
+/* Mobile tweaks for toast */
+@media (max-width: 768px) {
+  .toast-container {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: calc(env(safe-area-inset-bottom) + 12px);
+    gap: 8px;
+    align-items: center;
+  }
+  /* On mobile, enforce equal gutters for RTL too */
+  html[dir="rtl"] .toast-container { left: 50%; right: auto; transform: translateX(-50%); }
+  .toast { width: auto; max-width: calc(100vw - 24px); }
+  .toast-message { white-space: normal; overflow-wrap: anywhere; }
+  html[dir="rtl"] .toast-message { text-align: right; }
+  html[dir="rtl"] .toast-counter { margin-left: 0; margin-right: 5px; }
+  /* Always show close button on touch devices */
+  .toast-close { opacity: 1; visibility: visible; }
+}
+
+/* ---------------------------------- */
+/* Components: Language dropdown      */
+/* ---------------------------------- */
+/* Default container behavior so menu positions relative to button */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-button {
+  background-color: #2a2a2a;
+  border: 2px solid #404040;
+  border-radius: 6px;
+  padding:8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 40px;
+}
+.dropdown-button:hover { border-color: #505050; }
+.dropdown-icon { width: 16px; height: 16px; color: #ffffff; }
+.dropdown-text { font-size: 14px; font-weight: 500; color: #ffffff; }
+.dropdown-chevron { width: 14px; height: 14px; color: #ffffff; transition: transform 0.3s ease; }
+.dropdown-button.active .dropdown-chevron { transform: rotate(180deg); }
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  background-color: #2a2a2a;
+  border: 2px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.3s ease;
+  z-index: 10;
+  width: 100%;
+  min-width: max-content;
+}
+html[dir="ltr"] .dropdown-menu { right: 0; }
+html[dir="rtl"] .dropdown-menu { left: 0; right: auto; }
+.dropdown-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
+.dropdown-item:hover { background-color: #3a3a3a; }
+
+/* Touch devices: remove hover effects for dropdown */
+@media (max-width: 768px) {
+  .dropdown-button:hover { border-color: #404040; }
+  .dropdown-item:hover { background-color: transparent; }
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  color: #ffffff;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.any-election {
+  font-size: 4vh;
+  color: rgba(145, 46, 46, 0.7);
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+}

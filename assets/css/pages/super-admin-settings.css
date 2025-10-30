@@ -1,0 +1,229 @@
+.admin-settings-container {
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Settings Section */
+.settings-section {
+  background: #2a2a2a;
+  border: 2px solid #3a3a3a;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #3a3a3a;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+/* Positions Grid */
+.positions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.position-card {
+  background: #1a1a1a;
+  border: 2px solid #3a3a3a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.position-card:hover {
+  border-color: #06ac7d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 172, 125, 0.1);
+}
+
+.position-info {
+  margin-bottom: 1rem;
+}
+
+.position-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.75rem 0;
+}
+
+.position-details {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.detail-label {
+  color: #999;
+}
+
+.detail-value {
+  color: #06ac7d;
+  font-weight: 500;
+}
+
+.position-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #3a3a3a;
+}
+
+/* Empty State */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #999;
+}
+
+.empty-state svg {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+  color: #06ac7d;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  color: #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 1rem;
+}
+
+/* Management Grid */
+.management-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.management-card {
+  background: #1a1a1a;
+  border: 2px solid #3a3a3a;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.management-card:hover {
+  border-color: #06ac7d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 172, 125, 0.1);
+}
+
+.management-icon {
+  margin-bottom: 1.5rem;
+}
+
+.management-icon svg {
+  color: #06ac7d;
+  width: 48px;
+  height: 48px;
+}
+
+.management-content {
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.management-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.75rem 0;
+}
+
+.management-content p {
+  color: #999;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.management-action {
+  width: 100%;
+}
+
+.management-action .btn-primary,
+.management-action a.btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-settings-container {
+    padding: 1rem;
+  }
+
+  .settings-section {
+    padding: 1rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .positions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .position-actions {
+    flex-direction: column;
+  }
+
+  .management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .management-card {
+    padding: 1.5rem;
+  }
+}

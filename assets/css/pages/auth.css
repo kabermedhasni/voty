@@ -1,0 +1,518 @@
+.container {
+  display: flex;
+  height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height for mobile */
+}
+
+.hero-section {
+  flex: 0 0 62%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("../../images/voting-arm-blurred.jpg") center/cover;
+  transform: scaleX(1);
+  transform-origin: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-logo {
+  position: absolute;
+  top: 3rem;
+  left: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.logo-icon {
+  width: 60px;
+  height: 60px;
+  filter: brightness(0) invert(1);
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  letter-spacing: 0.02em;
+}
+
+/* RTL positioning for logo */
+html[dir="rtl"] .hero-logo {
+  left: auto;
+  right: 4rem;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Flip hero image in RTL (Arabic) */
+html[dir="rtl"] .hero-section::before {
+  transform: scaleX(-1);
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  line-height: 0.9;
+}
+
+.hero-content p {
+  font-size: 1rem;
+  opacity: 0.9;
+  max-width: 400px;
+  line-height: 1.2;
+}
+
+.form-section {
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #1a1a1a;
+  padding: 3rem 2.5rem;
+  color: white;
+  position: relative;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Language Dropdown Styles */
+.dropdown-container {
+  position: fixed;
+  top: 10rem;
+  transform: translateY(-100%);
+  z-index: 20;
+}
+
+/* Default LTR positioning */
+html[dir="ltr"] .dropdown-container {
+  right: 10rem;
+}
+
+/* RTL positioning */
+html[dir="rtl"] .dropdown-container {
+  left: 10rem;
+  right: auto;
+}
+
+/* LTR menu positioning */
+
+/* RTL menu positioning */
+
+.form-header {
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: #999;
+  font-size: 0.95rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Input slide/fade animations - only inputs move, container layout stays fixed */
+.form-group.input-slide-out-right {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+/* Keep element's space while visually hidden to avoid layout shifts */
+
+.form-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.form-footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease, opacity 0.25s ease;
+}
+
+.form-footer a:hover {
+  color: #06ac7d;
+}
+
+.terms {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.terms a {
+  color: #999;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.terms a:hover {
+  color: #06ac7d;
+}
+
+.eye-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s;
+}
+
+/* LTR eye button positioning */
+html[dir="ltr"] .eye-button {
+  right: 0.7rem;
+}
+
+/* RTL eye button positioning */
+html[dir="rtl"] .eye-button {
+  left: 0.7rem;
+  right: auto;
+}
+
+/* RTL password input with eye button */
+html[dir="rtl"] #passwordGroup input {
+  padding-left: 2.5rem;
+}
+
+/* Adjust padding when warning indicator is visible */
+html[dir="ltr"] #passwordGroup.show-indicator input {
+  padding-right: 4.5rem;
+}
+
+html[dir="rtl"] #passwordGroup.show-indicator input {
+  padding-left: 4.5rem;
+}
+
+.eye-button:hover {
+  color: #2d7a4f;
+}
+
+.eye-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.eye-slash {
+  transform-origin: center;
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  transition: stroke-dashoffset 0.3s ease-in-out;
+}
+
+.eye-button.hidden .eye-slash {
+  stroke-dashoffset: 0;
+}
+
+.eye-button.hidden .eye-paths {
+  opacity: 1; /* keep color consistent when password is visible */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.eye-paths {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Password Requirements Indicator */
+.password-indicator-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 5;
+  color: #666;
+}
+
+/* LTR warning button positioning (next to eye button) */
+html[dir="ltr"] .password-indicator-button {
+  right: 2.5rem;
+}
+
+/* RTL warning button positioning (next to eye button) */
+html[dir="rtl"] .password-indicator-button {
+  left: 2.5rem;
+  right: auto;
+}
+
+#passwordGroup.show-indicator .password-indicator-button {
+  opacity: 1;
+  visibility: visible;
+}
+
+.warning-icon {
+  width: 19px;
+  height: 19px;
+  transition: color 0.2s;
+}
+
+.password-indicator-button:hover {
+  color: #d4af37;
+}
+
+.requirements-popover {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  padding: 20px;
+  min-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* LTR popover positioning - align with warning icon */
+html[dir="ltr"] .requirements-popover {
+  right: 2rem;
+}
+
+/* RTL popover positioning - align with warning icon */
+html[dir="rtl"] .requirements-popover {
+  left: 2rem;
+  right: auto;
+}
+
+.requirements-popover.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.requirements-popover::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  width: 16px;
+  height: 16px;
+  background: #2a2a2a;
+  border-right: 1px solid #3a3a3a;
+  border-bottom: 1px solid #3a3a3a;
+  transform: rotate(45deg);
+}
+
+/* LTR popover arrow - align with warning icon */
+html[dir="ltr"] .requirements-popover::after {
+  right: 8px;
+}
+
+/* RTL popover arrow - align with warning icon */
+html[dir="rtl"] .requirements-popover::after {
+  left: 8px;
+  right: auto;
+}
+
+.popover-title {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 16px;
+  font-weight: 500;
+  border-bottom: 1px solid #3a3a3a;
+  height: 30px;
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.requirement-item:last-child {
+  margin-bottom: 0;
+}
+
+.requirement-circle {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4a4a4a;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.requirement-circle.met {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.requirement-text {
+  font-size: 14px;
+  color: #999;
+  transition: all 0.2s;
+}
+
+.requirement-item.met .requirement-text {
+  color: #666;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overscroll-behavior-y: contain;
+    overflow-anchor: none;
+    overflow: visible;
+  }
+
+  body {
+    position: static;
+    width: 100%;
+    height: 100svh;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .container {
+    height: 100svh; /* stable height that won’t change when keyboard opens */
+    min-height: 100svh;
+    -webkit-overflow-scrolling: touch;
+    overflow-anchor: none;
+  }
+
+  .hero-section {
+    display: none;
+  }
+
+  .form-section {
+    position: relative;
+    flex: 0 0 100%;
+    justify-content: flex-start; /* avoid vertical re-centering on viewport height changes */
+    padding: 80px 1.5rem 0; /* fixed top offset instead of translate/bottom */
+    transform: none;
+    will-change: auto;
+    overflow-anchor: none;
+  }
+
+  .dropdown-container {
+    top: 4rem;
+  }
+
+  html[dir="ltr"] .dropdown-container {
+    right: 2rem;
+  }
+
+  /* RTL positioning */
+  html[dir="rtl"] .dropdown-container {
+    left: 2rem;
+    right: auto;
+  }
+
+  .form-group input {
+    padding-top: 1px;
+  }
+
+  /* Arabic-specific typography normalization (mobile only) */
+  html[lang="ar"] .form-header {
+    margin-bottom: 1.5rem; /* slightly tighter to match en/fr height */
+  }
+  html[lang="ar"] .form-header h2 {
+    line-height: 1.15;
+  }
+  html[lang="ar"] .form-header p,
+  html[lang="ar"] .form-group h6,
+  html[lang="ar"] .terms {
+    line-height: 1.2;
+  }
+  html[lang="ar"] .requirement-text {
+    line-height: 1.1; /* Reduce line height for Arabic requirements popover */
+  }
+
+  /* Touch devices: remove hover effects for specific controls */
+  .form-group input:hover {
+    border-color: #3a3a3a; /* keep base border on hover */
+  }
+  .form-group input.error:hover {
+    border-color: #762119; /* keep error color */
+  }
+  .form-group input.success:hover {
+    border-color: #00593f; /* keep success color */
+  }
+  .submit-btn:hover {
+    background: #00593f; /* keep default button background */
+  }
+
+  /* Touch devices: keep hover styles permanently for other interactive elements */
+  .eye-button {
+    color: #2d7a4f; /* as if hovered */
+  }
+  .form-footer a {
+    color: #06ac7d; /* hovered link color */
+  }
+  .terms a {
+    color: #06ac7d; /* hovered link color */
+  }
+  .password-indicator-button {
+    color: #d4af37; /* hovered warning icon color */
+  }
+
+  /* Toast: always show the close button on touch devices */
+  .toast-close {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #00593f;
+    background: #2f2f2f;
+  }
+}

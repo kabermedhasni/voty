@@ -1,0 +1,156 @@
+footer {
+    width: 100%;
+    background-color: #1a1a1a;
+    padding: 35px 0px;
+}
+
+.sidebar-separator {
+    width: 80%;
+    height: 2px;
+    background: #3a3a3a;
+    border: none;
+    margin: 0 auto;
+}
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Keep footer layout LTR even on RTL pages to avoid reversed positions */
+html[dir='rtl'] .footer-content { direction: ltr; }
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 14%;
+}
+
+.brand-description {
+    position: relative;
+    right: 5.2rem;
+    width: 18rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-svg {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-svg svg {
+    width: 100%;
+    height: 100%;
+}
+
+.brand-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.footer-center {
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+}
+
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.social-link {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.social-link:hover {
+    color: #06ac7d;
+}
+
+.social-link svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.footer-copy {
+    color: #999;
+    font-size: 13px;
+}
+
+.language-selector {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.lang-title {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.lang-options {
+    display: flex;
+    gap: 12px;
+}
+
+.lang-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #2a2a2a;
+    color: #e5e5e5;
+    text-decoration: none;
+    border: 1px solid #3a3a3a;
+    box-shadow: inset 0 -2px 0 rgba(255,255,255,0.02);
+    transition: background .2s, color .2s, transform .05s, box-shadow .2s;
+}
+
+.lang-btn:hover {
+    background: #333;
+    border-color: #00593f;
+}
+
+.lang-btn.active {
+    background: #0d2a1f;
+    color: #fff;
+    border-color: #00593f;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .footer-right { align-items: center; }
+    .social-links { gap: 24px; }
+}

@@ -1,0 +1,159 @@
+.candidates-container {
+  max-width: 960px;
+  min-height: 80vh;
+  margin: 5vh auto;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.header .title {
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.header h1 {
+  color: #06ac7d;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.candidates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 40px;
+}
+
+.position-header {
+  background: #2a2a2a;
+  padding: 22px 20px;
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid #3a3a3a;
+  font-size: 18px;
+  font-weight: 600;
+  color: #06ac7d;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+html[dir="rtl"] .position-header {
+  text-align: right;
+}
+
+.candidate-card {
+  background: #2a2a2a;
+  border-radius: 0;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.candidate-card:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom: none;
+}
+
+.candidate-card:hover {
+  background: #3a3a3a;
+  border-color: #505050;
+}
+
+.candidate-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.candidate-photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #06ac7d;
+  flex-shrink: 0;
+}
+
+.candidate-info {
+  flex: 1;
+}
+
+.candidate-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.candidate-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.organization {
+  color: #06ac7d; 
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.badge {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.candidate-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+  overflow: hidden;
+}
+
+.candidate-card.expanded .candidate-details {
+  grid-template-rows: 1fr;
+}
+
+.candidate-details-inner {
+  min-height: 0;
+}
+
+.candidate-bio {
+  color: #d1d5db;
+  line-height: 1.6;
+  font-size: 14px;
+  padding: 20px 0;
+  padding-left: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .candidates-container {
+    padding: 0 1.5rem;
+  }
+
+  .candidate-header {
+    flex-wrap: wrap;
+  }
+
+  .candidate-meta {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,5 @@
+@import url("./super-admin-elections.css");
+
+.admin-elections-container {
+    min-height: 90vh;
+}

@@ -1,0 +1,33 @@
+# Hide .php extension and canonicalize URLs
+# Works on localhost, shared hosting, VPS, and cloud hosting services
+<IfModule mod_rewrite.c>
+  Options -MultiViews
+  RewriteEngine On
+  RewriteBase /voty/
+
+  # Redirect /index.php to the project root
+  RewriteCond %{THE_REQUEST} \s+/[^\s]*index\.php(?:\s|\?) [NC]
+  RewriteRule ^index\.php$ /voty/ [R=302,L,QSA,CO=PHPSESSID:%{HTTP_COOKIE}PHPSESSID:.%{HTTP_HOST}:0:/]
+
+  # Redirect extensionless /index to the project root
+  RewriteRule ^index$ /voty/ [R=302,L,QSA]
+
+  # Don't redirect files in /core/ directory - they handle their own redirects
+  RewriteCond %{REQUEST_URI} ^/voty/core/ [NC]
+  RewriteRule ^ - [L]
+
+  # Redirect any .php request to extensionless (e.g., /auth.php -> /auth)
+  # Only for GET requests, preserve query string
+  RewriteCond %{REQUEST_METHOD} GET [NC]
+  RewriteCond %{THE_REQUEST} \s/+[^\s?]+\.php(?:[\s?]) [NC]
+  RewriteRule ^(.+)\.php$ $1 [R=302,L,QSA]
+
+  # Serve existing files or directories as-is (prevents rewriting assets)
+  RewriteCond %{REQUEST_FILENAME} -d [OR]
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Internally rewrite extensionless URLs to .php if such a file exists
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^(.+)$ $1.php [L,QSA]
+</IfModule>

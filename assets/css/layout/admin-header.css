@@ -1,0 +1,328 @@
+/* Admin Sidebar - Dark Theme */
+
+/* Main Sidebar Container */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 72px;
+    height: 100vh;
+    background: #1a1a1a;
+    padding: 14px 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 1000;
+    overflow-x: hidden;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* LTR: sidebar on left */
+html[dir='ltr'] .admin-sidebar {
+    left: 0;
+    border-right: 1px solid #404040;
+}
+
+/* RTL: sidebar on right */
+html[dir='rtl'] .admin-sidebar {
+    right: 0;
+    border-left: 1px solid #404040;
+}
+
+.admin-sidebar:hover,
+.admin-sidebar:focus-within {
+    width: 260px;
+    box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Body Layout Adjustment */
+body.admin-layout {
+    background: #1a1a1a;
+    color: #ffffff;
+    transition:
+        padding-left 0.25s ease,
+        padding-right 0.25s ease;
+}
+
+/* LTR: padding on left */
+html[dir='ltr'] body.admin-layout {
+    padding-left: 60px;
+}
+
+/* RTL: padding on right */
+html[dir='rtl'] body.admin-layout {
+    padding-right: 60px;
+}
+
+.admin-sidebar:hover ~ .page-content,
+.admin-sidebar:focus-within ~ .page-content,
+.admin-sidebar:hover ~ main,
+.admin-sidebar:focus-within ~ main {
+    margin-left: 260px;
+}
+
+/* Separator Line */
+.sidebar-separator {
+    width: 100%;
+    height: 1px;
+    background: #292929;
+    border: none;
+}
+
+/* Brand Header */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+    margin-left: 4px;
+}
+
+/* Search Bar */
+.sidebar-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    margin: 0 8px;
+    min-height: 38px;
+    background: #2a2a2a;
+    border: 2px solid #3a3a3a;
+    border-radius: 10px;
+    color: #ffffff;
+    transition:
+        background 0.2s,
+        width 0.2s,
+        padding 0.2s,
+        border-color 0.5s;
+}
+
+.sidebar-search:focus-within {
+    border-color: #00593f;
+}
+
+.sidebar-search .icon {
+    color: #505050;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.sidebar-search input {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    flex: 1;
+    min-width: 0;
+}
+
+.sidebar-search input::placeholder {
+    color: #7d7d7d;
+    opacity: 1;
+}
+
+/* Section Titles */
+.sidebar-section {
+    padding: 6px 4px;
+}
+
+.section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #7d7d7d;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    overflow: hidden;
+}
+
+/* Navigation List */
+.nav-list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+}
+
+.nav-list .active {
+    background: #2a2a2a;
+    color: #36e6a9;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.nav-link {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: #ffffff;
+    margin-bottom: 5px;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    transition:
+        background 0.3s,
+        color 0.3s,
+        border-color 0.3s,
+        transform 0.3s;
+}
+
+.nav-link .icon {
+    color: #7d7d7d;
+    display: inline-flex;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+.nav-link .label {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav-link:hover {
+    background: #2a2a2a;
+    color: #36e6a9;
+}
+
+/* Danger Link Variant */
+.nav-link.nav-danger {
+    color: #ff4444;
+}
+
+.nav-link.nav-danger:hover {
+    background: #301816;
+}
+
+.nav-link.nav-danger .icon {
+    color: #ff4444;
+}
+
+/* Hide/Show Elements on Collapse */
+.brand-name,
+.sidebar-search input,
+.section-title,
+.nav-link .label {
+    opacity: 0;
+    width: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.15s,
+        width 0.2s,
+        margin 0.25s;
+}
+
+.admin-sidebar:hover .brand-name,
+.admin-sidebar:focus-within .brand-name {
+    opacity: 1;
+    width: auto;
+    margin-left: 4px;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin-sidebar:hover .sidebar-search input,
+.admin-sidebar:focus-within .sidebar-search input {
+    opacity: 1;
+    width: 100%;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin-sidebar:focus-within .sidebar-search {
+    opacity: 1;
+    width: auto;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin-sidebar:hover .section-title,
+.admin-sidebar:focus-within .section-title {
+    opacity: 1;
+    width: auto;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin-sidebar:hover .nav-link .label,
+.admin-sidebar:focus-within .nav-link .label {
+    opacity: 1;
+    width: auto;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .admin-sidebar,
+    .admin-sidebar:hover,
+    .admin-sidebar:focus-within {
+        width: 62px;
+    }
+
+    html[dir='ltr'] .sidebar-header {
+        padding-right: 0px;
+        justify-content: center;
+    }
+
+    html[dir='rtl'] .sidebar-header {
+        justify-content: center;
+        padding-left: 0px;
+    }
+
+    .sidebar-search {
+        display: none;
+    }
+
+    .sidebar-section {
+        padding: 0px;
+    }
+
+    .nav-link:hover {
+        background: #1a1a1a;
+    }
+
+    .nav-link:active {
+        transform: scale(0.9);
+    }
+
+    .nav-link.nav-danger:hover {
+        background: #1a1a1a;
+    }
+
+    .nav-link.active:hover {
+        background: #2a2a2a;
+        color: #36e6a9;
+    }
+
+    /* Prevent brand name from showing on mobile hover */
+    .admin-sidebar:hover .brand-name,
+    .admin-sidebar:focus-within .brand-name {
+        opacity: 0;
+        width: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}

@@ -1,0 +1,5 @@
+@import url("./super-admin-candidates.css");
+
+.admin-candidates-container {
+    min-height: 90vh;
+}
