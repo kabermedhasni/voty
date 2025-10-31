@@ -185,13 +185,19 @@ mysql -u root -p voty < voty.sql
 
 #### 3️⃣ **Configure PHP Backend**
 
-Edit `core/config.php` with your database credentials:
+Create your environment file for the PHP backend using the template:
 
-```php
-$host = 'localhost';
-$dbname = 'voty';
-$username = 'root';      // Your MySQL username
-$password = 'yourpass';  // Your MySQL password
+```bash
+cp core/.env.example core/.env
+```
+
+Then edit `core/.env` with your database credentials:
+
+```env
+DB_HOST=the_database_host
+DB_NAME=the_database_name
+DB_USER=the_database_username
+DB_PASS=the_database_password
 ```
 
 #### 4️⃣ **Install PHP Dependencies**
@@ -330,13 +336,27 @@ OPERATOR_KEY_PRIVATE=302e020100300506032b657004220420xxxxxxxx...
 TOPIC_ID=0.0.XXXXXXX
 ```
 
-**`core/config.php`** (create from template):
-```php
-$host = 'localhost';
-$dbname = 'voty';
-$username = 'YOUR_DB_USER';
-$password = 'YOUR_DB_PASSWORD';
+**`core/.env.example`** (copy to `core/.env` for database settings):
+```env
+DB_HOST=the_database_host
+DB_NAME=the_database_name
+DB_USER=the_database_username
+DB_PASS=the_database_password
 ```
+
+**`apis/.env.example`** (copy to `apis/.env` for PHP crypto keys used by `apis/crypto.php`):
+```env
+# AES-256 encryption key (32 bytes, base64-encoded)
+AES_KEY=
+
+# HMAC-SHA256 signing key (32 bytes, base64-encoded)
+HMAC_KEY=
+```
+
+> Locations and purpose:
+> - `core/.env`: Database connection for PHP backend (used by `core/config.php`).
+> - `apis/.env`: Crypto keys for application-layer encryption/HMAC (`apis/crypto.php`).
+> - `apis/hedera-api/.env`: Hedera credentials for Node.js service (operator keys/topic).
 
 ### 🔑 Judge Credentials
 

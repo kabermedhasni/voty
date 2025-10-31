@@ -24,11 +24,17 @@ mysql -u root -p voty < voty.sql
 ### 2. Configure Database (1 minute)
 
 ```bash
-# Copy config template
-cp core/config.php.example core/config.php
+# Copy env template and set DB credentials
+cp core/.env.example core/.env
+```
 
-# Edit core/config.php with your MySQL credentials
-# Change: $username = 'root'; $password = 'yourpass';
+Then edit `core/.env` and fill in your MySQL credentials:
+
+```env
+DB_HOST=the_database_host
+DB_NAME=the_database_name
+DB_USER=the_database_username
+DB_PASS=the_database_password
 ```
 
 ### 3. Install Dependencies (3 minutes)
@@ -41,7 +47,25 @@ cd apis && composer install && cd ..
 cd apis/hedera-api && npm install && cd ../..
 ```
 
-### 4. Configure Hedera (2 minutes)
+### 4. Configure PHP Crypto (1 minute)
+
+```bash
+# Copy PHP crypto env template and set keys used by apis/crypto.php
+cp apis/.env.example apis/.env
+```
+
+Generate secure 32-byte base64 values for `AES_KEY` and `HMAC_KEY` and paste into `apis/.env`:
+
+- Linux/macOS:
+```bash
+openssl rand -base64 32
+```
+- Windows (PowerShell):
+```powershell
+[Convert]::ToBase64String((1..32 | ForEach-Object {Get-Random -Maximum 256}))
+```
+
+### 5. Configure Hedera (2 minutes)
 
 ```bash
 cd apis/hedera-api
@@ -56,7 +80,7 @@ cp .env.example .env
 # TOPIC_ID=0.0.7116561
 ```
 
-### 5. Start Application (1 minute)
+### 6. Start Application (1 minute)
 
 ```bash
 # Terminal 1: Start Hedera API
@@ -92,7 +116,7 @@ php -S localhost:8001 # Change from 8000
 
 ### Database Connection Failed
 - Verify MySQL is running: `mysql -u root -p`
-- Check credentials in `core/config.php`
+- Check credentials in `core/.env`
 - Ensure database 'voty' exists: `SHOW DATABASES;`
 
 ### Hedera API Errors
