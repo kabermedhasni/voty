@@ -324,6 +324,7 @@ include '../includes/super-admin-header.php';
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 
+<script src="../core/translations.php" defer></script>
 <script src="../assets/js/utilities/utils.js" defer></script>
 <script src="../assets/js/utilities/toast.js" defer></script>
 <script src="../assets/js/pages/manage-super-admins.js" defer></script>

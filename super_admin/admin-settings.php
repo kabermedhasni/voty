@@ -87,6 +87,11 @@ include '../includes/super-admin-header.php';
         </div>
     </div>
 </div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script src="../assets/js/utilities/toast.js" defer></script>
 
 <?php include '../includes/admin-footer.php'; ?>

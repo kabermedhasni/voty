@@ -214,8 +214,13 @@ include '../includes/admin-header.php';
         </div>
     </div>
 </div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
 <link rel="stylesheet" href="../assets/css/utilities/searchable-dropdown.css">
 <script src="../assets/js/utilities/utils.js" defer></script>
+<script src="../assets/js/utilities/toast.js" defer></script>
 <script type="module" src="../assets/js/utilities/dropdown.js"></script>
 <script type="module" src="../assets/js/utilities/searchable-dropdown.js"></script>
 <script src="../assets/js/pages/admin-candidates.js" defer></script>
