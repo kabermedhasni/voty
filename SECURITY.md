@@ -75,7 +75,6 @@ Voty takes security seriously. This document outlines our security practices, kn
 3. **Reproduction Steps**: How to reproduce the issue
 4. **Proof of Concept**: Code or screenshots (if applicable)
 5. **Suggested Fix**: If you have recommendations
-6. **Your Contact Info**: For follow-up questions
 
 ### Response Timeline
 
@@ -169,7 +168,6 @@ Before deploying to Mainnet:
 
 Subscribe to security updates:
 - **GitHub Security Advisories**: Watch this repository
-- **Email List**: [security-announce@voty.app]
 - **Discord**: #security-alerts channel
 
 ## Acknowledgments
