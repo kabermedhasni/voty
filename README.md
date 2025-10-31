@@ -30,10 +30,10 @@ Voty harnesses Hedera's unique capabilities to deliver a voting platform that is
 
 ## 🔗 Important Links
 
-- **GitHub Repository**: [https://github.com/your-username/voty](https://github.com/your-username/voty)
+- **GitHub Repository**: [https://github.com/kabermedhasni/voty](https://github.com/kabermedhasni/voty)
 - **Pitch Deck**: [Add your pitch deck link here]
 - **Demo Video**: [Add your demo video link here]
-- **Certification Links**: [Add certification links here]
+- **Certification Links**: [https://drive.google.com/drive/folders/1IEj6mnuorixe7LTMnsE3lC28HY7SP1eE]
 
 > **📧 Collaborator Access**: The email `Hackathon@hashgraph-association.com` has been invited as a collaborator to this repository for AI-assisted judging.
 
@@ -90,8 +90,8 @@ Our platform executes the following Hedera SDK transactions:
 | Mirror Node API Queries | Retrieve vote history, verify duplicates | Per page load / verification | Free |
 
 **Total Transaction Count (Testnet Deployment):**
-- **Votes Submitted**: [Add your count] votes
-- **Mirror Node Queries**: [Add your count] queries
+- **Votes Submitted**: 12 votes
+- **Mirror Node Queries**: 36 queries
 - **Estimated Production Cost** (10,000 voter election): **$1.00 USD**
 
 ---
@@ -167,7 +167,7 @@ DATA FLOW:
 #### 1️⃣ **Clone the Repository**
 
 ```bash
-git clone https://github.com/your-username/voty.git
+git clone https://github.com/kabermedhasni/voty.git
 cd voty
 ```
 
@@ -249,7 +249,6 @@ node create-topic.js  # This will output your TOPIC_ID
 
 ```bash
 # Terminal 1: Start Hedera API (Node.js)
-cd apis/hedera-api
 npm start
 # API runs on http://localhost:3000
 
@@ -268,8 +267,8 @@ php -S localhost:8000
 - **Super Admin**: `http://localhost:8000/super_admin/dashboard.php`
 
 **Default Test Credentials** (see DoraHacks submission for full list):
-- Super Admin: `admin@voty.com` / `password`
-- Voter: `voter@voty.com` / `password`
+- Super Admin: `ID` / `password`
+- Voter: `ID` / `password`
 
 ---
 
