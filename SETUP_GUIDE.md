@@ -86,7 +86,6 @@ cp .env.example .env
 
 ```bash
 # Terminal 1: Start Hedera API
-cd apis/hedera-api
 npm start
 # ✅ API running on http://localhost:3000
 
