@@ -1,8 +1,12 @@
 [phases.setup]
-nixPkgs = ["nodejs", "php82", "php82Packages.composer"]
+nixPkgs = ["nodejs", "php82", "php82Packages.composer", "bash"]
 
 [phases.install]
-cmds = ["npm install --prefix ./apis/hedera-api"]
+cmds = [
+  "npm install --prefix ./apis/hedera-api",
+  "cd apis && composer install --no-dev --optimize-autoloader && cd ..",
+  "chmod +x start.sh"
+]
 
 [start]
-cmd = "node apis/hedera-api/app.js"
+cmd = "bash start.sh"
