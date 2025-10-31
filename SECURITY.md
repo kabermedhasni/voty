@@ -20,9 +20,15 @@ Voty takes security seriously. This document outlines our security practices, kn
 
 ### 2. **Database Security**
 - ✅ PDO prepared statements prevent SQL injection
+- ✅ Encrypted database columns for sensitive data (implemented: email via AES-256-GCM; IDs via HMAC; passwords via password_hash)
 - ✅ Parameterized queries for all user inputs
 - ✅ Database credentials in excluded config file
 - ✅ Error messages sanitized (no stack traces in production)
+
+#### Encrypted User Data (at rest via application-layer crypto)
+- ✅ `email_encrypted`: AES-256-GCM with random 12-byte IV and 16-byte auth tag; stored as base64(iv || tag || ciphertext).
+- ✅ `user_id_hmac`, `nationality_hmac`: HMAC-SHA256 (stored base64) for exact-match lookup without storing raw identifiers.
+- ✅ `password_hash`: PHP `password_hash()` (verified with `password_verify()`).
 
 ### 3. **Authentication & Authorization**
 - ✅ HMAC hashing for voter IDs (privacy protection)
@@ -54,8 +60,6 @@ Voty takes security seriously. This document outlines our security practices, kn
 - [ ] Hardware Security Module (HSM) for key storage
 - [ ] Rate limiting on API endpoints
 - [ ] DDoS protection
-- [ ] Penetration testing and security audit
-- [ ] Encrypted database columns for sensitive data
 - [ ] Two-factor authentication (2FA)
 
 ## Reporting a Vulnerability
@@ -63,11 +67,6 @@ Voty takes security seriously. This document outlines our security practices, kn
 ### How to Report
 
 **DO NOT** open a public issue for security vulnerabilities.
-
-Instead, please email security reports to:
-- **Email**: security@voty.app (or contact info from DoraHacks submission)
-- **Subject**: [SECURITY] Brief description
-- **PGP Key**: [If available, add PGP key for encrypted communication]
 
 ### What to Include
 
