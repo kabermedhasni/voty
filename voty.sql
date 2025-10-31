@@ -116,8 +116,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id_hmac`, `username`, `nationality_hmac`, `email_encrypted`, `role`, `password_hash`, `created_at`) VALUES
-(1, '6P0tcPVynCO8AMTLWkPn+jqP8wFuaFJUquPPHKICqCM=', 'Kaber Sidi', '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'super_admin', '$2y$10$DDPXzcf0fHCM2.bw1rs6ruoBz3Qw0bmmSmWfMvPOEtYXkRqoS3PiC', '2025-10-09 20:11:43'),
-(2, '7Ta5LD9Y8NPlE2/z+kOQzR7JYQX7AiwZ5yi8zSf+nYA=', 'Zein El abidine', '4OwI6ALr0zOtLdUPP0hnUyJ9s0NlH8/BCvGcZkaUcgw=', NULL, 'super_admin', '$2y$10$9WXiTQx9DFjL78OqNW.sN.lYcuwVy4Ab8eJ/GAl9Ps3zD.fhxyyDa', '2025-10-09 20:11:44');
+(1, 'LcVagh/3ceJWe2Um2qVolR2wBDdAosA2Sjc1Rq5i9XA=', 'super admin 1', NULL, NULL, 'super_admin', '$2y$10$z1Pcr51hfIEGaT0RescorecGxPGDWt5xZMukoFfXZFbsaBG2CJ.A2', '2025-10-31 17:00:00');
 
 -- --------------------------------------------------------
 

@@ -30,10 +30,10 @@ Voty harnesses Hedera's unique capabilities to deliver a voting platform that is
 
 ## 🔗 Important Links
 
-- **GitHub Repository**: [https://github.com/kabermedhasni/voty](https://github.com/kabermedhasni/voty)
-- **Pitch Deck**: [Add your pitch deck link here]
+- **GitHub Repository**: [View on GitHub](https://github.com/kabermedhasni/voty)
+- **Pitch Deck**: [View Pitch Deck](https://drive.google.com/file/d/1P6GYst4uTmsqybgWtnD1S1C7DQYhZG-g/view?usp=drivesdk)
 - **Demo Video**: [Add your demo video link here]
-- **Certification Links**: [https://drive.google.com/drive/folders/1IEj6mnuorixe7LTMnsE3lC28HY7SP1eE]
+- **Certification Links**: [View Certification](https://drive.google.com/drive/folders/1IEj6mnuorixe7LTMnsE3lC28HY7SP1eE)
 
 > **📧 Collaborator Access**: The email `Hackathon@hashgraph-association.com` has been invited as a collaborator to this repository for AI-assisted judging.
 
@@ -306,6 +306,35 @@ php -S localhost:8000
 
 > **Note**: These are Testnet IDs for demonstration. Mainnet deployment would use production account IDs.
 
+---
+
+## 👥 User Provisioning (Admin Import)
+
+Administrators can bulk add voters via an Excel upload from the Admin panel. On import, users are also assigned to a specific election, ensuring each user only sees that election.
+
+### Required Spreadsheet Columns (Excel .xlsx)
+- **user_id**
+- **username**
+- **nationality**
+
+Notes:
+- Email is not imported yet (planned for future versions).
+- `role` is not imported; it defaults to `user` as defined in the database schema.
+- Import automatically associates each user with the selected election, stored in `users_election`, which isolates elections across organizations/countries. For example, a user imported under an Algerian organization's election will not see elections from a Moroccan organization.
+
+Security at import time follows the data protection rules in SECURITY.md (HMAC for identifiers; AES-GCM encryption for applicable fields when enabled).
+
+---
+
+## ✍️ Account Creation (Sign Up)
+
+After admins import or seed users (IDs only, no passwords), users create their own credentials:
+- Go to the site and click **Sign Up**.
+- Enter your assigned **ID**. If valid, you will be prompted to set a **password**.
+- After setting a password, you will be automatically **signed in**
+
+This ensures admins never handle user passwords.
+Once a password is set, the same ID can no longer be used to **Sign Up** again, use **Sign In** instead.
 ---
 
 ## 🔒 Security & Secrets
