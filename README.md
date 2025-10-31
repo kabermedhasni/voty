@@ -32,7 +32,7 @@ Voty harnesses Hedera's unique capabilities to deliver a voting platform that is
 
 - **GitHub Repository**: [View on GitHub](https://github.com/kabermedhasni/voty)
 - **Pitch Deck**: [View Pitch Deck](https://drive.google.com/file/d/1P6GYst4uTmsqybgWtnD1S1C7DQYhZG-g/view?usp=drivesdk)
-- **Demo Video**: [View video here]()
+- **Demo Video**: [View video here](https://youtu.be/yYUtg5lBQaI)
 - **Certification Links**: [View Certification](https://drive.google.com/drive/folders/1IEj6mnuorixe7LTMnsE3lC28HY7SP1eE)
 
 > **📧 Collaborator Access**: The email `Hackathon@hashgraph-association.com` has been invited as a collaborator to this repository for AI-assisted judging.
