@@ -2,8 +2,7 @@ apis/vendor
 apis/hedera-api/node_modules
 .vscode
 !.env.example
-apis/hedera-api/.env
-apis/.env
+*.env
 core/config.php
 assets/images/candidates/*
 assets/images/supportings/*
